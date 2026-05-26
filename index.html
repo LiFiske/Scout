@@ -37,7 +37,7 @@
     font-weight: 400;
     -webkit-font-smoothing: antialiased;
     overflow: hidden;
-    font-size: 16px;
+    font-size: 21px;
   }
   ::selection { background: var(--plum-soft); }
 
@@ -53,14 +53,14 @@
     backdrop-filter: blur(8px);
   }
   .brand { cursor: pointer; line-height: 1.1; }
-  .brand .name { font-weight: 500; font-size: 21px; letter-spacing: -0.01em; }
+  .brand .name { font-weight: 500; font-size: 26px; letter-spacing: -0.01em; }
   .brand .name em { font-style: italic; color: var(--plum); }
-  .brand .sub { font-size: 10px; color: var(--ink-mute); letter-spacing: 0.22em; text-transform: uppercase; margin-top: 3px; font-family: var(--serif); }
+  .brand .sub { font-size: 15px; color: var(--ink-mute); letter-spacing: 0.22em; text-transform: uppercase; margin-top: 3px; font-family: var(--serif); }
   .header-right { display: flex; gap: 8px; align-items: center; }
 
   .btn {
     font-family: var(--serif);
-    font-size: 13px;
+    font-size: 18px;
     font-weight: 500;
     letter-spacing: 0.02em;
     padding: 10px 20px;
@@ -82,7 +82,7 @@
   .btn.plum:hover { background: var(--plum-deep); border-color: var(--plum-deep); }
   .btn.ghost { background: transparent; color: var(--ink-dim); border-color: transparent; }
   .btn.ghost:hover { color: var(--ink); background: var(--bg-3); }
-  .btn.small { padding: 7px 14px; font-size: 12px; }
+  .btn.small { padding: 7px 14px; font-size: 17px; }
   .btn.icon { padding: 8px 11px; }
   .btn .pill { color: var(--plum); font-weight: 600; }
 
@@ -93,20 +93,20 @@
   #view-home { display: none; padding: 76px 24px 48px; }
   #view-home.active { display: block; }
   .home-wrap { max-width: 760px; margin: 24px auto 0; }
-  .home-kicker { font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--ink-mute); margin-bottom: 22px; text-align: center; }
-  .home-h1 { font-weight: 400; font-size: clamp(38px, 6vw, 66px); line-height: 1.04; letter-spacing: -0.02em; margin: 0 0 18px; text-align: center; text-wrap: balance; }
+  .home-kicker { font-size: 16px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--ink-mute); margin-bottom: 22px; text-align: center; }
+  .home-h1 { font-weight: 400; font-size: clamp(43px, 6vw, 72px); line-height: 1.04; letter-spacing: -0.02em; margin: 0 0 18px; text-align: center; text-wrap: balance; }
   .home-h1 em { font-style: italic; color: var(--plum); }
-  .home-lede { color: var(--ink-dim); font-size: 17px; line-height: 1.55; max-width: 50ch; margin: 0 auto 40px; text-align: center; }
+  .home-lede { color: var(--ink-dim); font-size: 22px; line-height: 1.55; max-width: 50ch; margin: 0 auto 40px; text-align: center; }
 
   .qcard { background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--radius); padding: 30px 30px 26px; box-shadow: 0 1px 0 rgba(0,0,0,0.02); }
   .qstep { margin-bottom: 26px; }
   .qstep:last-of-type { margin-bottom: 18px; }
-  .qstep-label { font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--sage-deep); margin-bottom: 12px; display: flex; align-items: baseline; gap: 8px; }
-  .qstep-label .n { font-style: italic; color: var(--plum); font-size: 15px; }
-  .qstep-hint { color: var(--ink-mute); font-size: 12px; letter-spacing: 0; text-transform: none; margin-left: auto; }
+  .qstep-label { font-size: 17px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--sage-deep); margin-bottom: 12px; display: flex; align-items: baseline; gap: 8px; }
+  .qstep-label .n { font-style: italic; color: var(--plum); font-size: 20px; }
+  .qstep-hint { color: var(--ink-mute); font-size: 17px; letter-spacing: 0; text-transform: none; margin-left: auto; }
   .opt-grid { display: flex; flex-wrap: wrap; gap: 8px; }
   .opt {
-    font-family: var(--serif); font-size: 14px; font-weight: 400;
+    font-family: var(--serif); font-size: 19px; font-weight: 400;
     padding: 9px 16px; border-radius: 999px; cursor: pointer;
     border: 1px solid var(--line-2); background: var(--bg); color: var(--ink-dim);
     transition: all 0.15s ease;
@@ -118,33 +118,33 @@
   .kw-input-row { display: flex; gap: 8px; }
   .kw-input-row input {
     flex: 1; background: var(--bg); border: 1px solid var(--line-2); border-radius: 10px;
-    padding: 11px 14px; color: var(--ink); font-family: var(--serif); font-size: 15px;
+    padding: 11px 14px; color: var(--ink); font-family: var(--serif); font-size: 20px;
   }
   .kw-input-row input:focus { outline: none; border-color: var(--sage); }
   .kw-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 12px; min-height: 4px; }
   .kw-chip {
-    display: inline-flex; align-items: center; gap: 7px; font-size: 13px;
+    display: inline-flex; align-items: center; gap: 7px; font-size: 18px;
     padding: 6px 8px 6px 13px; border-radius: 999px;
     background: var(--plum-soft); border: 1px solid #e0d2dc; color: var(--plum-deep);
   }
-  .kw-chip .x { cursor: pointer; width: 17px; height: 17px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: rgba(109,70,97,0.14); font-size: 12px; line-height: 1; }
+  .kw-chip .x { cursor: pointer; width: 17px; height: 17px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: rgba(109,70,97,0.14); font-size: 17px; line-height: 1; }
   .kw-chip .x:hover { background: rgba(109,70,97,0.28); }
 
   .qactions { display: flex; gap: 10px; align-items: center; margin-top: 24px; padding-top: 22px; border-top: 1px solid var(--line); }
   .qactions .spacer { flex: 1; }
 
-  .home-foot { text-align: center; margin-top: 26px; color: var(--ink-mute); font-size: 13px; font-style: italic; }
+  .home-foot { text-align: center; margin-top: 26px; color: var(--ink-mute); font-size: 18px; font-style: italic; }
 
   /* ---------- RESULTS ---------- */
   #view-results { padding: 92px 28px 64px; }
   .results-head { max-width: 1280px; margin: 0 auto 26px; display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap; }
-  .results-h { font-weight: 400; font-size: clamp(28px, 4vw, 44px); letter-spacing: -0.02em; line-height: 1.06; margin: 0 0 8px; max-width: 22ch; text-wrap: balance; }
+  .results-h { font-weight: 400; font-size: clamp(33px, 4vw, 50px); letter-spacing: -0.02em; line-height: 1.06; margin: 0 0 8px; max-width: 22ch; text-wrap: balance; }
   .results-h em { font-style: italic; color: var(--plum); }
-  .results-sub { color: var(--ink-dim); font-size: 14px; max-width: 60ch; line-height: 1.5; }
-  .results-sub .chip { display: inline-block; font-size: 11px; letter-spacing: 0.04em; padding: 3px 10px; border-radius: 999px; background: var(--sage-soft); color: var(--sage-deep); margin: 2px 3px; }
+  .results-sub { color: var(--ink-dim); font-size: 19px; max-width: 60ch; line-height: 1.5; }
+  .results-sub .chip { display: inline-block; font-size: 16px; letter-spacing: 0.04em; padding: 3px 10px; border-radius: 999px; background: var(--sage-soft); color: var(--sage-deep); margin: 2px 3px; }
   .results-actions { display: flex; gap: 9px; flex-wrap: wrap; }
 
-  .status-bar { max-width: 1280px; margin: 0 auto 22px; font-size: 13px; color: var(--ink-mute); font-style: italic; letter-spacing: 0.02em; }
+  .status-bar { max-width: 1280px; margin: 0 auto 22px; font-size: 18px; color: var(--ink-mute); font-style: italic; letter-spacing: 0.02em; }
   .status-bar .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--sage); margin-right: 8px; animation: pulse 1.1s ease-in-out infinite; vertical-align: middle; }
   @keyframes pulse { 0%,100% { opacity: 0.3; } 50% { opacity: 1; } }
 
@@ -156,17 +156,17 @@
   .tile .photo.loaded { opacity: 1; }
   .tile .scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(43,42,50,0) 35%, rgba(43,42,50,0.72) 100%); }
   .tile-body { position: absolute; left: 16px; right: 16px; bottom: 14px; top: 14px; color: #fff; display: flex; flex-direction: column; justify-content: flex-end; pointer-events: none; }
-  .tile-rank { position: absolute; top: 0; left: 0; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.9; }
-  .tile-kind { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; opacity: 0.9; margin-bottom: 6px; }
-  .tile-name { font-weight: 500; font-size: 21px; line-height: 1.08; letter-spacing: -0.01em; margin: 0 0 8px; text-shadow: 0 1px 14px rgba(0,0,0,0.5); }
+  .tile-rank { position: absolute; top: 0; left: 0; font-size: 15px; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.9; }
+  .tile-kind { font-size: 15px; letter-spacing: 0.16em; text-transform: uppercase; opacity: 0.9; margin-bottom: 6px; }
+  .tile-name { font-weight: 500; font-size: 26px; line-height: 1.08; letter-spacing: -0.01em; margin: 0 0 8px; text-shadow: 0 1px 14px rgba(0,0,0,0.5); }
   .tile-tags { display: flex; flex-wrap: wrap; gap: 4px; }
-  .tile .tag { font-size: 9px; letter-spacing: 0.06em; padding: 3px 8px; border-radius: 999px; background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.28); color: #fff; backdrop-filter: blur(2px); }
+  .tile .tag { font-size: 14px; letter-spacing: 0.06em; padding: 3px 8px; border-radius: 999px; background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.28); color: #fff; backdrop-filter: blur(2px); }
   .tile-saved-dot { position: absolute; top: 12px; right: 12px; width: 11px; height: 11px; border-radius: 50%; background: var(--plum); box-shadow: 0 0 0 2px rgba(255,255,255,0.85); display: none; }
   .tile.has-saves .tile-saved-dot { display: block; }
-  .tile-photo-count { position: absolute; bottom: 12px; right: 12px; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: #fff; background: rgba(43,42,50,0.55); padding: 4px 9px; border-radius: 999px; backdrop-filter: blur(3px); pointer-events: none; }
+  .tile-photo-count { position: absolute; bottom: 12px; right: 12px; font-size: 14px; letter-spacing: 0.14em; text-transform: uppercase; color: #fff; background: rgba(43,42,50,0.55); padding: 4px 9px; border-radius: 999px; backdrop-filter: blur(3px); pointer-events: none; }
 
   .empty-state { max-width: 640px; margin: 40px auto; text-align: center; color: var(--ink-mute); }
-  .empty-state .big { font-size: 22px; font-style: italic; color: var(--ink-dim); margin-bottom: 12px; }
+  .empty-state .big { font-size: 27px; font-style: italic; color: var(--ink-dim); margin-bottom: 12px; }
 
   /* ---------- DETAIL ---------- */
   .detail { position: fixed; inset: 0; background: rgba(43,42,50,0.4); z-index: 35; display: none; backdrop-filter: blur(6px); }
@@ -174,44 +174,47 @@
   .detail-inner { position: absolute; top: 40px; left: 40px; right: 40px; bottom: 40px; background: var(--bg); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; display: grid; grid-template-rows: auto 1fr; box-shadow: 0 30px 80px rgba(43,42,50,0.3); }
   @media (max-width: 760px) { .detail-inner { top: 12px; left: 12px; right: 12px; bottom: 12px; } }
   .detail-head { padding: 24px 28px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; background: var(--bg-2); }
-  .detail-title { font-weight: 500; font-size: clamp(24px, 3vw, 34px); line-height: 1.05; letter-spacing: -0.02em; margin: 0 0 4px; }
-  .detail-kind { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--plum); margin-bottom: 8px; }
-  .detail-desc { color: var(--ink-dim); font-size: 14px; max-width: 64ch; margin-top: 6px; line-height: 1.55; }
+  .detail-title { font-weight: 500; font-size: clamp(29px, 3vw, 40px); line-height: 1.05; letter-spacing: -0.02em; margin: 0 0 4px; }
+  .detail-kind { font-size: 16px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--plum); margin-bottom: 8px; }
+  .detail-desc { color: var(--ink-dim); font-size: 19px; max-width: 64ch; margin-top: 6px; line-height: 1.55; }
   .detail-tags { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; }
-  .detail-tags .tag { font-size: 11px; padding: 4px 11px; border-radius: 999px; background: var(--bg-3); border: 1px solid var(--line); color: var(--ink-dim); }
+  .detail-tags .tag { font-size: 16px; padding: 4px 11px; border-radius: 999px; background: var(--bg-3); border: 1px solid var(--line); color: var(--ink-dim); }
   .detail-actions { display: flex; gap: 8px; }
   .detail-body { overflow-y: auto; padding: 22px 28px 32px; }
-  .detail-status { font-size: 13px; color: var(--ink-mute); margin-bottom: 16px; font-style: italic; }
-  .detail-meta-row { display: flex; gap: 18px; flex-wrap: wrap; margin-bottom: 18px; font-size: 13px; color: var(--ink-dim); }
+  .detail-status { font-size: 18px; color: var(--ink-mute); margin-bottom: 16px; font-style: italic; }
+  .detail-meta-row { display: flex; gap: 18px; flex-wrap: wrap; margin-bottom: 18px; font-size: 18px; color: var(--ink-dim); }
   .detail-meta-row a { color: var(--sage-deep); text-decoration: none; border-bottom: 1px solid var(--sage-soft); }
   .detail-meta-row a:hover { border-color: var(--sage); }
   .detail-photos { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
   .photo-tile { position: relative; aspect-ratio: 4/3; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); background: var(--bg-3); cursor: pointer; transition: transform 0.2s ease, border-color 0.2s ease; }
   .photo-tile:hover { transform: translateY(-2px); border-color: var(--sage); }
   .photo-tile img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .photo-tile .pin { position: absolute; top: 8px; left: 8px; font-size: 9px; padding: 3px 8px; border-radius: 999px; background: rgba(43,42,50,0.7); color: #fff; letter-spacing: 0.14em; text-transform: uppercase; }
-  .photo-tile .save { position: absolute; bottom: 8px; right: 8px; width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.92); border: 1px solid var(--line-2); color: var(--plum); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 17px; transition: all 0.15s ease; }
+  .photo-tile .pin { position: absolute; top: 8px; left: 8px; font-size: 14px; padding: 3px 8px; border-radius: 999px; background: rgba(43,42,50,0.7); color: #fff; letter-spacing: 0.14em; text-transform: uppercase; }
+  .photo-tile .src { position: absolute; top: 8px; right: 8px; width: 26px; height: 26px; border-radius: 50%; background: rgba(43,42,50,0.62); color: #fff; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 18px; opacity: 0; transition: opacity 0.15s ease, background 0.15s ease; }
+  .photo-tile:hover .src { opacity: 1; }
+  .photo-tile .src:hover { background: var(--plum); }
+  .photo-tile .save { position: absolute; bottom: 8px; right: 8px; width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.92); border: 1px solid var(--line-2); color: var(--plum); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 22px; transition: all 0.15s ease; }
   .photo-tile .save:hover { transform: scale(1.08); border-color: var(--plum); }
   .photo-tile .save.saved { background: var(--plum); color: #fff; border-color: var(--plum); }
-  .photo-empty { padding: 56px 20px; text-align: center; color: var(--ink-mute); font-style: italic; font-size: 17px; line-height: 1.5; }
-  .photo-empty .small { font-style: normal; font-size: 12px; color: var(--ink-mute); margin-top: 12px; }
+  .photo-empty { padding: 56px 20px; text-align: center; color: var(--ink-mute); font-style: italic; font-size: 22px; line-height: 1.5; }
+  .photo-empty .small { font-style: normal; font-size: 17px; color: var(--ink-mute); margin-top: 12px; }
   .photo-empty .save-loc { margin-top: 18px; }
 
   /* ---------- ABOUT ---------- */
   #view-about { padding: 92px 24px 60px; }
   .about-wrap { max-width: 680px; margin: 16px auto 0; }
-  .about-wrap h1 { font-weight: 400; font-size: clamp(34px, 5vw, 54px); letter-spacing: -0.02em; line-height: 1.05; margin: 0 0 8px; }
+  .about-wrap h1 { font-weight: 400; font-size: clamp(39px, 5vw, 60px); letter-spacing: -0.02em; line-height: 1.05; margin: 0 0 8px; }
   .about-wrap h1 em { font-style: italic; color: var(--plum); }
-  .about-kicker { font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--ink-mute); margin-bottom: 20px; }
-  .about-wrap h2 { font-weight: 500; font-size: 22px; letter-spacing: -0.01em; margin: 38px 0 10px; }
-  .about-wrap p { color: var(--ink-dim); font-size: 16px; line-height: 1.65; margin: 0 0 16px; }
+  .about-kicker { font-size: 16px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--ink-mute); margin-bottom: 20px; }
+  .about-wrap h2 { font-weight: 500; font-size: 27px; letter-spacing: -0.01em; margin: 38px 0 10px; }
+  .about-wrap p { color: var(--ink-dim); font-size: 21px; line-height: 1.65; margin: 0 0 16px; }
   .about-wrap p em { color: var(--plum); font-style: italic; }
-  .about-wrap ul { color: var(--ink-dim); font-size: 16px; line-height: 1.6; padding-left: 22px; margin: 0 0 16px; }
+  .about-wrap ul { color: var(--ink-dim); font-size: 21px; line-height: 1.6; padding-left: 22px; margin: 0 0 16px; }
   .about-wrap li { margin-bottom: 8px; }
   .about-wrap a { color: var(--sage-deep); text-decoration: none; border-bottom: 1px solid var(--sage-soft); }
   .about-wrap a:hover { border-color: var(--sage); }
   .about-stack { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 20px; }
-  .about-stack .s { font-size: 12px; padding: 6px 13px; border-radius: 999px; background: var(--bg-3); border: 1px solid var(--line); color: var(--ink-dim); }
+  .about-stack .s { font-size: 17px; padding: 6px 13px; border-radius: 999px; background: var(--bg-3); border: 1px solid var(--line); color: var(--ink-dim); }
   .about-divider { height: 1px; background: var(--line); margin: 36px 0; border: 0; }
 
   /* ---------- FOLDERS / PROJECTS ---------- */
@@ -220,48 +223,48 @@
   .folder-panel { position: fixed; top: 0; right: 0; bottom: 0; width: min(440px, 92vw); background: var(--bg-2); border-left: 1px solid var(--line); z-index: 40; transform: translateX(100%); transition: transform 0.35s cubic-bezier(.2,.8,.2,1); display: flex; flex-direction: column; }
   .folder-panel.open { transform: translateX(0); }
   .folder-head { padding: 22px 24px 18px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; }
-  .folder-head h3 { font-weight: 500; font-size: 24px; letter-spacing: -0.01em; margin: 0; }
+  .folder-head h3 { font-weight: 500; font-size: 29px; letter-spacing: -0.01em; margin: 0; }
   .folder-head h3 em { font-style: italic; color: var(--plum); }
   .folder-body { flex: 1; overflow-y: auto; padding: 16px 24px 24px; }
   .folder-new { display: flex; gap: 8px; margin-bottom: 16px; }
-  .folder-new input { flex: 1; background: var(--bg); border: 1px solid var(--line-2); border-radius: 10px; padding: 10px 14px; color: var(--ink); font-family: var(--serif); font-size: 14px; }
+  .folder-new input { flex: 1; background: var(--bg); border: 1px solid var(--line-2); border-radius: 10px; padding: 10px 14px; color: var(--ink); font-family: var(--serif); font-size: 19px; }
   .folder-new input:focus { outline: none; border-color: var(--sage); }
   .folder-row { border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; transition: border-color 0.2s ease, background 0.2s ease; }
-  .folder-row .fname { font-size: 17px; font-weight: 500; margin-bottom: 4px; letter-spacing: -0.01em; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-  .folder-row .fcount { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-mute); }
-  .folder-row .fdel { font-size: 14px; color: var(--ink-mute); cursor: pointer; padding: 2px 7px; border-radius: 5px; }
+  .folder-row .fname { font-size: 22px; font-weight: 500; margin-bottom: 4px; letter-spacing: -0.01em; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .folder-row .fcount { font-size: 15px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-mute); }
+  .folder-row .fdel { font-size: 19px; color: var(--ink-mute); cursor: pointer; padding: 2px 7px; border-radius: 5px; }
   .folder-row .fdel:hover { color: var(--plum); background: var(--plum-soft); }
   .folder-contents { margin-top: 12px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
   .folder-thumb { position: relative; border-radius: 8px; overflow: hidden; aspect-ratio: 4/5; border: 1px solid var(--line); background: var(--bg-3); }
   .folder-thumb img.photo-bg { width: 100%; height: 100%; object-fit: cover; display: block; }
   .folder-thumb .bg { position: absolute; inset: 0; background: linear-gradient(150deg, var(--sage-soft), var(--plum-soft)); }
   .folder-thumb .scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(43,42,50,0) 40%, rgba(43,42,50,0.7)); }
-  .folder-thumb .label { position: absolute; left: 10px; right: 10px; bottom: 8px; font-size: 13px; font-weight: 500; color: #fff; line-height: 1.12; text-shadow: 0 1px 10px rgba(0,0,0,0.6); }
-  .folder-thumb .rm { position: absolute; top: 5px; right: 5px; width: 22px; height: 22px; border-radius: 50%; background: rgba(43,42,50,0.7); color: #fff; font-size: 13px; line-height: 22px; text-align: center; cursor: pointer; opacity: 0; transition: opacity 0.15s ease; }
+  .folder-thumb .label { position: absolute; left: 10px; right: 10px; bottom: 8px; font-size: 18px; font-weight: 500; color: #fff; line-height: 1.12; text-shadow: 0 1px 10px rgba(0,0,0,0.6); }
+  .folder-thumb .rm { position: absolute; top: 5px; right: 5px; width: 22px; height: 22px; border-radius: 50%; background: rgba(43,42,50,0.7); color: #fff; font-size: 18px; line-height: 22px; text-align: center; cursor: pointer; opacity: 0; transition: opacity 0.15s ease; }
   .folder-thumb:hover .rm { opacity: 1; }
-  .folder-empty { text-align: center; color: var(--ink-mute); font-style: italic; font-size: 16px; padding: 40px 10px; }
+  .folder-empty { text-align: center; color: var(--ink-mute); font-style: italic; font-size: 21px; padding: 40px 10px; }
 
   /* Save-to popover */
   .save-menu { position: fixed; background: var(--bg-2); border: 1px solid var(--line-2); border-radius: 12px; padding: 8px; min-width: 240px; max-height: 320px; overflow-y: auto; box-shadow: 0 20px 50px rgba(43,42,50,0.18); z-index: 60; display: none; }
   .save-menu.open { display: block; }
-  .save-menu-h { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-mute); padding: 6px 10px; }
-  .save-item { padding: 9px 10px; border-radius: 8px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 14px; }
+  .save-menu-h { font-size: 15px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-mute); padding: 6px 10px; }
+  .save-item { padding: 9px 10px; border-radius: 8px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 19px; }
   .save-item:hover { background: var(--bg-3); }
   .save-item.saved { color: var(--sage-deep); }
-  .save-item .count { font-size: 11px; color: var(--ink-mute); }
+  .save-item .count { font-size: 16px; color: var(--ink-mute); }
   .save-new-row { display: flex; gap: 6px; padding: 6px 8px 4px; border-top: 1px solid var(--line); margin-top: 4px; }
-  .save-new-row input { flex: 1; background: var(--bg); border: 1px solid var(--line-2); border-radius: 8px; padding: 7px 10px; color: var(--ink); font-size: 13px; font-family: var(--serif); }
+  .save-new-row input { flex: 1; background: var(--bg); border: 1px solid var(--line-2); border-radius: 8px; padding: 7px 10px; color: var(--ink); font-size: 18px; font-family: var(--serif); }
   .save-new-row input:focus { outline: none; border-color: var(--sage); }
-  .save-new-row button { background: var(--sage); color: #fff; border: none; border-radius: 8px; padding: 0 13px; font-size: 12px; font-weight: 500; cursor: pointer; font-family: var(--serif); }
+  .save-new-row button { background: var(--sage); color: #fff; border: none; border-radius: 8px; padding: 0 13px; font-size: 17px; font-weight: 500; cursor: pointer; font-family: var(--serif); }
 
   /* Toast */
-  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--ink); color: var(--bg); padding: 11px 19px; border-radius: 999px; font-size: 13px; z-index: 100; opacity: 0; transition: opacity 0.25s ease, transform 0.25s ease; pointer-events: none; box-shadow: 0 12px 30px rgba(43,42,50,0.25); }
+  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--ink); color: var(--bg); padding: 11px 19px; border-radius: 999px; font-size: 18px; z-index: 100; opacity: 0; transition: opacity 0.25s ease, transform 0.25s ease; pointer-events: none; box-shadow: 0 12px 30px rgba(43,42,50,0.25); }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
   .toast .accent { color: #cbb6c4; font-weight: 600; }
 
   @media (max-width: 640px) {
     header { padding: 14px 16px; }
-    .btn { padding: 9px 14px; font-size: 12px; }
+    .btn { padding: 9px 14px; font-size: 17px; }
     #view-results { padding: 86px 16px 40px; }
     .qcard { padding: 22px 18px; }
   }
@@ -286,7 +289,7 @@
   <div class="home-wrap">
     <div class="home-kicker">Portland, Oregon</div>
     <h1 class="home-h1">What location do you <em>need</em>?</h1>
-    <p class="home-lede">Tell us the kind of place, the setting, and a few details. Scout pulls real Portland locations from OpenStreetMap and finds street-level photos for each one.</p>
+    <p class="home-lede">Tell us the kind of place, the setting, and a few details. Scout pulls real Portland locations from OpenStreetMap and finds photographs of each one from Wikimedia Commons.</p>
 
     <div class="qcard">
       <!-- Step 1: location type -->
@@ -319,7 +322,7 @@
         <button class="btn primary" id="btn-search">Find locations →</button>
       </div>
     </div>
-    <div class="home-foot">Live data from OpenStreetMap · photos from Mapillary · no two searches the same</div>
+    <div class="home-foot">Live data from OpenStreetMap · photos from Wikimedia Commons · no two searches the same</div>
   </div>
 </section>
 
@@ -345,15 +348,15 @@
     <div class="about-kicker">About</div>
     <h1>Scout <em>PDX</em></h1>
     <p>Scout PDX is a location-scouting tool for Portland, Oregon. It's built for the moment you know <em>exactly</em> what you need — a mossy stairwell for an indie film, a clean modern plaza for a graduation portrait, an industrial backlot, a rose garden — but you don't know <em>where</em> it is.</p>
-    <p>Instead of a short hand-picked list, Scout queries the full map of Portland and surfaces real, specific places that match what you describe, then pulls street-level photography so you can judge a spot before you ever drive out to it.</p>
+    <p>Instead of a short hand-picked list, Scout queries the full map of Portland and surfaces real, specific places that match what you describe, then pulls photographs of each one so you can judge a spot before you ever drive out to it.</p>
 
     <h2>How it works</h2>
-    <p>You describe the location you need — a type, a setting, and a handful of keywords. Scout translates that into a live query against <a href="https://www.openstreetmap.org" target="_blank" rel="noopener">OpenStreetMap</a> via the Overpass API, retrieving real tagged places across the city. For each candidate it checks <a href="https://www.mapillary.com" target="_blank" rel="noopener">Mapillary</a> for nearby street-level imagery, so what you see are photographs of the actual place. Locations and photos you like get saved into project folders you can return to.</p>
+    <p>You describe the location you need — a type, a setting, and a handful of keywords. Scout translates that into a live query against <a href="https://www.openstreetmap.org" target="_blank" rel="noopener">OpenStreetMap</a> via the Overpass API, retrieving real tagged places across the city. For each candidate it searches <a href="https://commons.wikimedia.org" target="_blank" rel="noopener">Wikimedia Commons</a> for geotagged photographs nearby, so what you see are openly-licensed pictures of the actual place. Locations and photos you like get saved into project folders you can return to.</p>
 
     <h2>Built with</h2>
     <div class="about-stack">
       <span class="s">OpenStreetMap / Overpass API</span>
-      <span class="s">Mapillary imagery</span>
+      <span class="s">Wikimedia Commons photos</span>
       <span class="s">Vanilla JS</span>
       <span class="s">No build step</span>
       <span class="s">Local-first saves</span>
@@ -413,9 +416,9 @@
 
 <script>
 /* ==================================================================
-   MAPILLARY ACCESS TOKEN  ⚠ DEV-ONLY — rotate before public hosting.
+   PHOTO SOURCE: Wikimedia Commons geosearch — keyless, CORS-friendly,
+   real photographs of the place (not street-level drive-by imagery).
    ================================================================== */
-const MAPILLARY_TOKEN = 'MLY|35327543056860026|f34ebee56ba2ee709979cd16734e7ce7';
 
 /* ==================================================================
    QUERY VOCABULARY
@@ -620,35 +623,67 @@ function scoreLocation(loc) {
 }
 
 /* ==================================================================
-   MAPILLARY — verify & fetch photos near a coordinate
+   WIKIMEDIA COMMONS — fetch geotagged photos near a coordinate
    ================================================================== */
 const photoCache = new Map();
-async function mapillaryFetch(lat, lng, radiusDeg, limit) {
-  const bbox = [lng - radiusDeg, lat - radiusDeg, lng + radiusDeg, lat + radiusDeg].join(',');
-  const url = `https://graph.mapillary.com/images?fields=id,thumb_1024_url,thumb_256_url,captured_at,is_pano&bbox=${bbox}&limit=${limit}&access_token=${encodeURIComponent(MAPILLARY_TOKEN)}`;
-  const res = await fetch(url);
-  if (!res.ok) throw new Error('Mapillary HTTP ' + res.status);
+const COMMONS_API = 'https://commons.wikimedia.org/w/api.php';
+
+/* Query Commons for image files within `radiusM` meters of a coordinate.
+   Returns an array of { id, title } for image files only. */
+async function commonsGeosearch(lat, lng, radiusM, limit) {
+  const params = new URLSearchParams({
+    action: 'query', format: 'json', origin: '*',
+    generator: 'geosearch',
+    ggscoord: `${lat}|${lng}`,
+    ggsradius: String(radiusM),
+    ggslimit: String(limit),
+    ggsnamespace: '6',            // File: namespace only
+    prop: 'imageinfo',
+    iiprop: 'url|mediatype',
+    iiurlwidth: '1024',           // request a 1024-wide thumbnail
+  });
+  const res = await fetch(`${COMMONS_API}?${params.toString()}`);
+  if (!res.ok) throw new Error('Commons HTTP ' + res.status);
   const data = await res.json();
-  return (data.data || []).filter(p => !p.is_pano && p.thumb_1024_url);
+  const pages = (data.query && data.query.pages) ? Object.values(data.query.pages) : [];
+  const photos = [];
+  pages.forEach(p => {
+    const ii = p.imageinfo && p.imageinfo[0];
+    if (!ii) return;
+    if (ii.mediatype && ii.mediatype !== 'BITMAP') return;   // skip SVG/audio/video etc.
+    const thumb = ii.thumburl || ii.url;
+    if (!thumb) return;
+    if (!/\.(jpe?g|png)$/i.test(ii.url || '')) return;        // photos only
+    photos.push({
+      id: 'commons/' + p.pageid,
+      title: (p.title || '').replace(/^File:/, ''),
+      thumb_1024_url: thumb,
+      thumb_256_url: thumb,        // Commons thumbs scale fine; reuse for small
+      descUrl: ii.descriptionurl || ('https://commons.wikimedia.org/?curid=' + p.pageid),
+    });
+  });
+  return photos;
 }
+
 async function getTilePhoto(loc) {
   const cached = photoCache.get(loc.id) || {};
   if ('tile' in cached) return cached.tile;
   try {
-    let photos = await mapillaryFetch(loc.lat, loc.lng, 0.0015, 3);
-    if (!photos.length) photos = await mapillaryFetch(loc.lat, loc.lng, 0.004, 3);
+    let photos = await commonsGeosearch(loc.lat, loc.lng, 150, 3);
+    if (!photos.length) photos = await commonsGeosearch(loc.lat, loc.lng, 400, 3);
     const photo = photos[0] || null;
     photoCache.set(loc.id, { ...cached, tile: photo });
     return photo;
   } catch (e) { photoCache.set(loc.id, { ...cached, tile: null }); return null; }
 }
+
 async function getAllPhotos(loc) {
   const cached = photoCache.get(loc.id) || {};
   if ('all' in cached) return cached.all;
   try {
-    let photos = await mapillaryFetch(loc.lat, loc.lng, 0.003, 14);
+    let photos = await commonsGeosearch(loc.lat, loc.lng, 250, 20);
     if (photos.length < 3) {
-      const wider = await mapillaryFetch(loc.lat, loc.lng, 0.006, 14);
+      const wider = await commonsGeosearch(loc.lat, loc.lng, 500, 20);
       const seen = new Set(photos.map(p => p.id));
       wider.forEach(p => { if (!seen.has(p.id)) photos.push(p); });
     }
@@ -710,7 +745,7 @@ async function runSearch() {
   locs = locs.slice(0, 60);
   state.results = locs;
 
-  status.innerHTML = `<span class="dot"></span>Found ${locs.length} locations. Checking Mapillary for street-level photos…`;
+  status.innerHTML = `<span class="dot"></span>Found ${locs.length} locations. Searching Wikimedia Commons for photos…`;
 
   // Render tiles immediately (gradient placeholder), photos stream in.
   locs.forEach((loc, i) => grid.appendChild(buildTileEl(loc, i + 1)));
@@ -729,9 +764,9 @@ async function runSearch() {
     status.innerHTML = `<span class="dot"></span>${withPhotos} of ${done} checked have photos…`;
   });
 
-  status.innerHTML = `${withPhotos} of ${locs.length} locations have street-level photos. Tap any tile to view them.`;
+  status.innerHTML = `${withPhotos} of ${locs.length} locations have photos. Tap any tile to view them.`;
   if (withPhotos === 0) {
-    status.innerHTML += ' — Mapillary coverage is sparse here; the locations are still real and savable.';
+    status.innerHTML += ' — Commons coverage is sparse here; the locations are still real and savable.';
   }
 }
 
@@ -787,13 +822,14 @@ async function openDetail(locId) {
   document.getElementById('detail-title').textContent = loc.title;
   document.getElementById('detail-desc').textContent = loc.desc;
   document.getElementById('detail-tags').innerHTML = loc.tags.map(t => `<span class="tag">${escapeHtml(t)}</span>`).join('');
-  const gmaps = `https://www.google.com/maps/search/?api=1&query=${loc.lat},${loc.lng}`;
+  // Precise pin at exact coordinates (avoids snapping to nearby businesses).
+  const gmaps = `https://www.google.com/maps?q=${loc.lat}%2C${loc.lng}&ll=${loc.lat}%2C${loc.lng}&z=18`;
   const osm = `https://www.openstreetmap.org/${loc.id}`;
   document.getElementById('detail-meta').innerHTML =
     `<span>📍 ${loc.lat.toFixed(5)}, ${loc.lng.toFixed(5)}</span>
      <a href="${gmaps}" target="_blank" rel="noopener">Open in Google Maps ↗</a>
      <a href="${osm}" target="_blank" rel="noopener">View on OpenStreetMap ↗</a>`;
-  document.getElementById('detail-status').textContent = 'Loading street-level photos from Mapillary…';
+  document.getElementById('detail-status').textContent = 'Searching Wikimedia Commons for photos…';
   document.getElementById('detail-photos').innerHTML = '';
   document.getElementById('detail').classList.add('show');
   const photos = await getAllPhotos(loc);
@@ -806,28 +842,30 @@ function renderDetailPhotos(loc, photos) {
   if (!photos.length) {
     status.textContent = '';
     grid.innerHTML = `<div class="photo-empty" style="grid-column:1/-1;">
-      No street-level photos in Mapillary for this spot yet.
-      <div class="small">Coverage is sparse for interiors, trails, and quiet streets. You can still save the location to a project.</div>
+      No Wikimedia Commons photos geotagged at this spot yet.
+      <div class="small">Coverage is best for named landmarks; quieter places may have none. You can still save the location to a project.</div>
       <div class="save-loc"><button class="btn primary" id="save-loc-only">Save location to project</button></div>
     </div>`;
     document.getElementById('save-loc-only').addEventListener('click', (e) =>
       openSaveMenu(e.currentTarget, { locId: loc.id, photoId: null, thumbUrl: null, title: loc.title }));
     return;
   }
-  status.textContent = `${photos.length} street-level photos near ${loc.title}.`;
+  status.textContent = `${photos.length} photo${photos.length === 1 ? '' : 's'} near ${loc.title}, from Wikimedia Commons.`;
   grid.innerHTML = '';
   photos.forEach((p, i) => {
     const el = document.createElement('div');
     el.className = 'photo-tile';
     const isSaved = isPhotoSaved(loc.id, p.id);
     el.innerHTML = `
-      <img loading="lazy" src="${p.thumb_1024_url}" alt="" />
+      <img loading="lazy" src="${p.thumb_1024_url}" alt="${escapeAttr(p.title || '')}" />
       <div class="pin">#${String(i+1).padStart(2,'0')}</div>
+      <a class="src" href="${p.descUrl || '#'}" target="_blank" rel="noopener" title="View on Wikimedia Commons">↗</a>
       <div class="save ${isSaved ? 'saved' : ''}" title="Save to project">${isSaved ? '✓' : '+'}</div>`;
     el.querySelector('.save').addEventListener('click', (e) => {
       e.stopPropagation();
       openSaveMenu(e.currentTarget, { locId: loc.id, photoId: p.id, thumbUrl: p.thumb_256_url || p.thumb_1024_url, title: loc.title });
     });
+    el.querySelector('.src').addEventListener('click', (e) => e.stopPropagation());
     grid.appendChild(el);
   });
 }
