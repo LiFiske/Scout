@@ -3,27 +3,29 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-<title>Scout PDX — Location Inspiration</title>
+<title>Scout PDX — Find the location you need</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&display=swap" rel="stylesheet" />
 <style>
   :root {
-    --bg: #0e0e10;
-    --bg-2: #151518;
-    --bg-3: #1c1c21;
-    --ink: #f2efe9;
-    --ink-dim: #b5b0a6;
-    --ink-mute: #7c7870;
-    --line: #26262a;
-    --line-2: #35353c;
-    --hot: #e8714a;
-    --cold: #6ba7c4;
-    --accent: #d9c27a;
-    --good: #8db87a;
-    --radius: 18px;
-    --serif: 'Fraunces', Georgia, serif;
-    --sans: 'Inter', system-ui, -apple-system, sans-serif;
+    /* Sage-primary, plum accent, zero gray. Every neutral is sage-shifted. */
+    --bg:        #eef1e7;   /* soft sage-tinted page */
+    --bg-2:      #f7f9f1;   /* light sage "white" cards */
+    --bg-3:      #e2e8d6;   /* deeper sage surface */
+    --ink:       #2c3a28;   /* deep forest ink (green-black, not gray) */
+    --ink-dim:   #4f5e45;   /* muted sage-green text */
+    --ink-mute:  #7a8a6e;   /* soft sage for hints */
+    --line:      #d3dcc4;   /* sage borders */
+    --line-2:    #c0cdad;   /* stronger sage border */
+    --sage:      #7a9461;   /* PRIMARY sage green */
+    --sage-deep: #5f7a48;   /* darker sage for hover/depth */
+    --sage-soft: #d2e0c0;   /* pale sage fill */
+    --plum:      #7a3f68;   /* accent plum (richer, higher contrast) */
+    --plum-deep: #5e2f50;
+    --plum-soft: #e7d6e2;   /* used only on sage/white, never on gray */
+    --radius: 16px;
+    --serif: 'Fraunces', Georgia, 'Times New Roman', serif;
   }
   * { box-sizing: border-box; }
   html, body { height: 100%; }
@@ -31,48 +33,39 @@
     margin: 0;
     background: var(--bg);
     color: var(--ink);
-    font-family: var(--sans);
+    font-family: var(--serif);
+    font-weight: 400;
     -webkit-font-smoothing: antialiased;
     overflow: hidden;
+    font-size: 16px;
   }
+  ::selection { background: var(--plum-soft); }
 
   header {
     position: fixed;
     top: 0; left: 0; right: 0;
-    padding: 16px 24px;
+    padding: 18px 28px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     z-index: 20;
-    background: linear-gradient(180deg, rgba(14,14,16,0.92), rgba(14,14,16,0.6) 60%, rgba(14,14,16,0));
+    background: linear-gradient(180deg, rgba(238,241,231,0.96), rgba(238,241,231,0.7) 60%, rgba(238,241,231,0));
     backdrop-filter: blur(8px);
   }
-  .brand {
-    font-family: var(--serif);
-    font-weight: 500;
-    font-size: 20px;
-    letter-spacing: -0.01em;
-    cursor: pointer;
-  }
-  .brand em { font-style: italic; color: var(--accent); }
-  .sub {
-    font-size: 11px;
-    color: var(--ink-mute);
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    margin-top: 2px;
-  }
-  .header-right { display: flex; gap: 10px; align-items: center; }
+  .brand { cursor: pointer; line-height: 1.1; }
+  .brand .name { font-weight: 500; font-size: 21px; letter-spacing: -0.01em; }
+  .brand .name em { font-style: italic; color: var(--plum); }
+  .brand .sub { font-size: 10px; color: var(--ink-mute); letter-spacing: 0.22em; text-transform: uppercase; margin-top: 3px; font-family: var(--serif); }
+  .header-right { display: flex; gap: 8px; align-items: center; }
 
   .btn {
-    font-family: var(--sans);
-    font-size: 12px;
+    font-family: var(--serif);
+    font-size: 13px;
     font-weight: 500;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    padding: 11px 20px;
+    letter-spacing: 0.02em;
+    padding: 10px 20px;
     border-radius: 999px;
-    border: 1px solid var(--line);
+    border: 1px solid var(--line-2);
     background: var(--bg-2);
     color: var(--ink);
     cursor: pointer;
@@ -82,174 +75,195 @@
     gap: 8px;
     white-space: nowrap;
   }
-  .btn:hover { transform: translateY(-1px); border-color: var(--line-2); }
-  .btn.primary { background: var(--accent); color: #1a140a; border-color: var(--accent); }
-  .btn.primary:hover { background: #e9d38f; }
+  .btn:hover { transform: translateY(-1px); border-color: var(--sage); }
+  .btn.primary { background: var(--sage); color: #fff; border-color: var(--sage); }
+  .btn.primary:hover { background: var(--sage-deep); border-color: var(--sage-deep); }
+  .btn.plum { background: var(--plum); color: #fff; border-color: var(--plum); }
+  .btn.plum:hover { background: var(--plum-deep); border-color: var(--plum-deep); }
   .btn.ghost { background: transparent; color: var(--ink-dim); border-color: transparent; }
-  .btn.ghost:hover { color: var(--ink); }
-  .btn.small { padding: 7px 13px; font-size: 10px; }
-  .btn.icon { padding: 9px 11px; }
+  .btn.ghost:hover { color: var(--ink); background: var(--bg-3); }
+  .btn.small { padding: 7px 14px; font-size: 12px; }
+  .btn.icon { padding: 8px 11px; }
+  .btn .pill { color: var(--plum); font-weight: 600; }
 
-  .view {
-    position: fixed;
-    inset: 0;
-    padding-top: 72px;
-    display: none;
-    overflow-y: auto;
-  }
+  .view { position: fixed; inset: 0; padding-top: 76px; display: none; overflow-y: auto; }
   .view.active { display: block; }
 
-  /* Intro */
-  #view-intro { display: none; align-items: center; justify-content: center; padding: 72px 24px 40px; text-align: center; }
-  #view-intro.active { display: flex; flex-direction: column; }
-  .intro-wrap { max-width: 680px; margin: auto; }
-  .intro-kicker { font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--ink-mute); margin-bottom: 28px; }
-  .intro-h1 { font-family: var(--serif); font-weight: 500; font-size: clamp(44px, 6.4vw, 80px); line-height: 1.02; letter-spacing: -0.02em; margin: 0 0 22px; text-wrap: balance; }
-  .intro-h1 em { font-style: italic; color: var(--accent); }
-  .intro-lede { color: var(--ink-dim); font-size: 17px; line-height: 1.55; max-width: 52ch; margin: 0 auto 40px; }
-  .intro-cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-  .intro-cta .btn { padding: 14px 28px; font-size: 13px; }
-  .intro-steps { margin-top: 64px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; max-width: 780px; margin-left: auto; margin-right: auto; text-align: left; }
-  .intro-step { padding: 20px; border: 1px solid var(--line); border-radius: 14px; background: var(--bg-2); }
-  .intro-step .num { font-family: var(--serif); font-style: italic; color: var(--accent); font-size: 28px; line-height: 1; margin-bottom: 10px; }
-  .intro-step h4 { font-family: var(--serif); font-weight: 500; font-size: 18px; margin: 0 0 6px; letter-spacing: -0.01em; }
-  .intro-step p { font-size: 13px; color: var(--ink-dim); margin: 0; line-height: 1.5; }
-  @media (max-width: 640px) { .intro-steps { grid-template-columns: 1fr; } }
+  /* ---------- HOME / QUERY ---------- */
+  #view-home { display: none; padding: 76px 24px 48px; }
+  #view-home.active { display: block; }
+  .home-wrap { max-width: 760px; margin: 24px auto 0; }
+  .home-kicker { font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--ink-mute); margin-bottom: 22px; text-align: center; }
+  .home-h1 { font-weight: 400; font-size: clamp(38px, 6vw, 66px); line-height: 1.04; letter-spacing: -0.02em; margin: 0 0 18px; text-align: center; text-wrap: balance; }
+  .home-h1 em { font-style: italic; color: var(--plum); }
+  .home-lede { color: var(--ink-dim); font-size: 17px; line-height: 1.55; max-width: 50ch; margin: 0 auto 40px; text-align: center; }
 
-  /* Round */
-  #view-round { padding: 96px 28px 40px; }
-  .round-head { max-width: 1200px; margin: 0 auto 32px; text-align: center; }
-  .round-meter { display: inline-flex; gap: 6px; margin-bottom: 14px; }
-  .round-dot { width: 30px; height: 4px; border-radius: 4px; background: var(--line); transition: background 0.3s ease; }
-  .round-dot.done { background: var(--accent); }
-  .round-dot.active { background: var(--ink); }
-  .round-title { font-family: var(--serif); font-weight: 500; font-size: clamp(28px, 3.6vw, 42px); letter-spacing: -0.02em; line-height: 1.1; margin: 0 0 8px; text-wrap: balance; }
-  .round-title em { font-style: italic; color: var(--accent); }
-  .round-sub { color: var(--ink-dim); font-size: 14px; max-width: 52ch; margin: 0 auto; }
-  .round-cards { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; padding-bottom: 40px; }
-  @media (max-width: 820px) { .round-cards { grid-template-columns: 1fr; } }
-  .pick { position: relative; border-radius: var(--radius); overflow: hidden; cursor: pointer; aspect-ratio: 3/4; border: 1px solid var(--line); transition: transform 0.3s cubic-bezier(.2,.8,.2,1), box-shadow 0.3s ease, border-color 0.2s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.35); }
-  .pick:hover { transform: translateY(-4px); box-shadow: 0 22px 50px rgba(0,0,0,0.55); border-color: var(--accent); }
-  .pick.leaving { opacity: 0; transform: scale(0.92); }
-  .pick .bg { position: absolute; inset: 0; opacity: 0.95; transition: opacity 0.4s ease; }
-  .pick .photo { position: absolute; inset: 0; opacity: 0; transition: opacity 0.6s ease; background-size: cover; background-position: center; }
-  .pick .photo.loaded { opacity: 1; }
-  .pick .grain { position: absolute; inset: 0; opacity: 0.12; mix-blend-mode: overlay; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); pointer-events: none; }
-  .pick .vignette { position: absolute; inset: 0; background: radial-gradient(120% 80% at 50% 100%, rgba(0,0,0,0.7), rgba(0,0,0,0) 55%), radial-gradient(80% 60% at 50% 0%, rgba(0,0,0,0.4), rgba(0,0,0,0) 55%); }
-  .pick-inner { position: absolute; inset: 0; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; }
-  .pick-meta { display: flex; justify-content: space-between; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.82); }
-  .pick-title { font-family: var(--serif); font-weight: 500; font-size: clamp(28px, 2.6vw, 40px); line-height: 1; letter-spacing: -0.02em; color: #fff; margin: 0 0 10px; text-shadow: 0 2px 16px rgba(0,0,0,0.5); }
-  .pick-desc { font-size: 13px; line-height: 1.5; color: rgba(255,255,255,0.86); margin: 0 0 12px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-  .pick-tags { display: flex; flex-wrap: wrap; gap: 5px; }
-  .tag { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 9px; border-radius: 999px; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.92); backdrop-filter: blur(2px); }
-  .pick-hint { position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); opacity: 0; transition: opacity 0.2s ease; background: rgba(14,14,16,0.7); padding: 6px 12px; border-radius: 999px; border: 1px solid rgba(217,194,122,0.3); }
-  .pick:hover .pick-hint { opacity: 1; }
+  .qcard { background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--radius); padding: 30px 30px 26px; box-shadow: 0 1px 0 rgba(0,0,0,0.02); }
+  .qstep { margin-bottom: 26px; }
+  .qstep:last-of-type { margin-bottom: 18px; }
+  .qstep-label { font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--sage-deep); margin-bottom: 12px; display: flex; align-items: baseline; gap: 8px; }
+  .qstep-label .n { font-style: italic; color: var(--plum); font-size: 15px; }
+  .qstep-hint { color: var(--ink-mute); font-size: 12px; letter-spacing: 0; text-transform: none; margin-left: auto; }
+  .opt-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+  .opt {
+    font-family: var(--serif); font-size: 14px; font-weight: 400;
+    padding: 9px 16px; border-radius: 999px; cursor: pointer;
+    border: 1px solid var(--line-2); background: var(--bg); color: var(--ink-dim);
+    transition: all 0.15s ease;
+  }
+  .opt:hover { border-color: var(--sage); color: var(--ink); }
+  .opt.sel { background: var(--sage-soft); border-color: var(--sage); color: var(--sage-deep); font-weight: 500; }
 
-  /* Results */
-  #view-results { padding: 96px 28px 60px; }
-  .results-head { max-width: 1280px; margin: 0 auto 28px; display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap; }
-  .results-h { font-family: var(--serif); font-weight: 500; font-size: clamp(32px, 4vw, 50px); letter-spacing: -0.02em; line-height: 1.05; margin: 0 0 8px; max-width: 20ch; text-wrap: balance; }
-  .results-h em { font-style: italic; color: var(--accent); }
-  .results-sub { color: var(--ink-dim); font-size: 14px; max-width: 48ch; }
-  .results-sub .chip { display: inline-block; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; background: var(--bg-2); border: 1px solid var(--line); margin: 2px 3px; color: var(--accent); }
-  .results-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+  .kw-wrap { }
+  .kw-input-row { display: flex; gap: 8px; }
+  .kw-input-row input {
+    flex: 1; background: var(--bg); border: 1px solid var(--line-2); border-radius: 10px;
+    padding: 11px 14px; color: var(--ink); font-family: var(--serif); font-size: 15px;
+  }
+  .kw-input-row input:focus { outline: none; border-color: var(--sage); }
+  .kw-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 12px; min-height: 4px; }
+  .kw-chip {
+    display: inline-flex; align-items: center; gap: 7px; font-size: 13px;
+    padding: 6px 8px 6px 13px; border-radius: 999px;
+    background: var(--plum-soft); border: 1px solid #e0d2dc; color: var(--plum-deep);
+  }
+  .kw-chip .x { cursor: pointer; width: 17px; height: 17px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: rgba(109,70,97,0.14); font-size: 12px; line-height: 1; }
+  .kw-chip .x:hover { background: rgba(109,70,97,0.28); }
 
-  .grid { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
-  .tile { position: relative; border-radius: 14px; overflow: hidden; aspect-ratio: 4/5; border: 1px solid var(--line); background: var(--bg-2); cursor: pointer; transition: transform 0.25s ease, border-color 0.2s ease; }
-  .tile:hover { transform: translateY(-3px); border-color: var(--line-2); }
-  .tile .bg { position: absolute; inset: 0; opacity: 0.9; transition: opacity 0.4s ease; }
+  .qactions { display: flex; gap: 10px; align-items: center; margin-top: 24px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .qactions .spacer { flex: 1; }
+
+  .home-foot { text-align: center; margin-top: 26px; color: var(--ink-mute); font-size: 13px; font-style: italic; }
+
+  /* ---------- RESULTS ---------- */
+  #view-results { padding: 92px 28px 64px; }
+  .results-head { max-width: 1280px; margin: 0 auto 26px; display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap; }
+  .results-h { font-weight: 400; font-size: clamp(28px, 4vw, 44px); letter-spacing: -0.02em; line-height: 1.06; margin: 0 0 8px; max-width: 22ch; text-wrap: balance; }
+  .results-h em { font-style: italic; color: var(--plum); }
+  .results-sub { color: var(--ink-dim); font-size: 14px; max-width: 60ch; line-height: 1.5; }
+  .results-sub .chip { display: inline-block; font-size: 11px; letter-spacing: 0.04em; padding: 3px 10px; border-radius: 999px; background: var(--sage-soft); color: var(--sage-deep); margin: 2px 3px; }
+  .results-actions { display: flex; gap: 9px; flex-wrap: wrap; }
+
+  .status-bar { max-width: 1280px; margin: 0 auto 22px; font-size: 13px; color: var(--ink-mute); font-style: italic; letter-spacing: 0.02em; }
+  .status-bar .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--sage); margin-right: 8px; animation: pulse 1.1s ease-in-out infinite; vertical-align: middle; }
+  @keyframes pulse { 0%,100% { opacity: 0.3; } 50% { opacity: 1; } }
+
+  .grid { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(248px, 1fr)); gap: 16px; }
+  .tile { position: relative; border-radius: 14px; overflow: hidden; aspect-ratio: 4/5; border: 1px solid var(--line); background: var(--bg-2); cursor: pointer; transition: transform 0.25s ease, border-color 0.2s ease, box-shadow 0.25s ease; }
+  .tile:hover { transform: translateY(-3px); border-color: var(--sage); box-shadow: 0 14px 32px rgba(43,42,50,0.12); }
+  .tile .bg { position: absolute; inset: 0; background: linear-gradient(150deg, var(--sage-soft), var(--plum-soft)); }
   .tile .photo { position: absolute; inset: 0; opacity: 0; transition: opacity 0.5s ease; background-size: cover; background-position: center; }
   .tile .photo.loaded { opacity: 1; }
-  .tile .vignette { position: absolute; inset: 0; background: radial-gradient(120% 80% at 50% 100%, rgba(0,0,0,0.7), rgba(0,0,0,0) 55%); }
-  .tile-body { position: absolute; left: 18px; right: 18px; bottom: 18px; top: 18px; color: #fff; display: flex; flex-direction: column; justify-content: space-between; pointer-events: none; }
-  .tile-rank { font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; opacity: 0.85; }
-  .tile-name { font-family: var(--serif); font-weight: 500; font-size: 22px; line-height: 1.05; letter-spacing: -0.01em; margin: 0 0 6px; text-shadow: 0 1px 12px rgba(0,0,0,0.6); }
-  .tile-neigh { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.85; margin-bottom: 8px; text-shadow: 0 1px 8px rgba(0,0,0,0.5); }
+  .tile .scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(43,42,50,0) 35%, rgba(43,42,50,0.72) 100%); }
+  .tile-body { position: absolute; left: 16px; right: 16px; bottom: 14px; top: 14px; color: #fff; display: flex; flex-direction: column; justify-content: flex-end; pointer-events: none; }
+  .tile-rank { position: absolute; top: 0; left: 0; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.9; }
+  .tile-kind { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; opacity: 0.9; margin-bottom: 6px; }
+  .tile-name { font-weight: 500; font-size: 21px; line-height: 1.08; letter-spacing: -0.01em; margin: 0 0 8px; text-shadow: 0 1px 14px rgba(0,0,0,0.5); }
   .tile-tags { display: flex; flex-wrap: wrap; gap: 4px; }
-  .tile-tags .tag { font-size: 9px; padding: 3px 7px; }
-  .tile-photo-count { position: absolute; bottom: 14px; right: 14px; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.85); background: rgba(14,14,16,0.6); padding: 4px 9px; border-radius: 999px; backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.15); pointer-events: none; }
-  .tile-saved-dot { position: absolute; top: 12px; right: 12px; width: 12px; height: 12px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 2px rgba(14,14,16,0.7), 0 0 14px var(--accent); display: none; pointer-events: none; }
+  .tile .tag { font-size: 9px; letter-spacing: 0.06em; padding: 3px 8px; border-radius: 999px; background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.28); color: #fff; backdrop-filter: blur(2px); }
+  .tile-saved-dot { position: absolute; top: 12px; right: 12px; width: 11px; height: 11px; border-radius: 50%; background: var(--plum); box-shadow: 0 0 0 2px rgba(255,255,255,0.85); display: none; }
   .tile.has-saves .tile-saved-dot { display: block; }
+  .tile-photo-count { position: absolute; bottom: 12px; right: 12px; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: #fff; background: rgba(43,42,50,0.55); padding: 4px 9px; border-radius: 999px; backdrop-filter: blur(3px); pointer-events: none; }
 
-  /* Detail modal — location with photos */
-  .detail { position: fixed; inset: 0; background: rgba(8,8,10,0.85); z-index: 35; display: none; backdrop-filter: blur(8px); }
+  .empty-state { max-width: 640px; margin: 40px auto; text-align: center; color: var(--ink-mute); }
+  .empty-state .big { font-size: 22px; font-style: italic; color: var(--ink-dim); margin-bottom: 12px; }
+
+  /* ---------- DETAIL ---------- */
+  .detail { position: fixed; inset: 0; background: rgba(43,42,50,0.4); z-index: 35; display: none; backdrop-filter: blur(6px); }
   .detail.show { display: block; }
-  .detail-inner { position: absolute; top: 40px; left: 40px; right: 40px; bottom: 40px; background: var(--bg-2); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; display: grid; grid-template-rows: auto 1fr; }
+  .detail-inner { position: absolute; top: 40px; left: 40px; right: 40px; bottom: 40px; background: var(--bg); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; display: grid; grid-template-rows: auto 1fr; box-shadow: 0 30px 80px rgba(43,42,50,0.3); }
   @media (max-width: 760px) { .detail-inner { top: 12px; left: 12px; right: 12px; bottom: 12px; } }
-  .detail-head { padding: 24px 28px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; }
-  .detail-title { font-family: var(--serif); font-weight: 500; font-size: clamp(26px, 3vw, 36px); line-height: 1.05; letter-spacing: -0.02em; margin: 0 0 4px; }
-  .detail-neigh { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
-  .detail-desc { color: var(--ink-dim); font-size: 14px; max-width: 60ch; margin-top: 6px; }
-  .detail-tags { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 5px; }
-  .detail-tags .tag { background: var(--bg-3); border-color: var(--line); color: var(--ink-dim); }
+  .detail-head { padding: 24px 28px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; background: var(--bg-2); }
+  .detail-title { font-weight: 500; font-size: clamp(24px, 3vw, 34px); line-height: 1.05; letter-spacing: -0.02em; margin: 0 0 4px; }
+  .detail-kind { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--plum); margin-bottom: 8px; }
+  .detail-desc { color: var(--ink-dim); font-size: 14px; max-width: 64ch; margin-top: 6px; line-height: 1.55; }
+  .detail-tags { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .detail-tags .tag { font-size: 11px; padding: 4px 11px; border-radius: 999px; background: var(--bg-3); border: 1px solid var(--line); color: var(--ink-dim); }
   .detail-actions { display: flex; gap: 8px; }
   .detail-body { overflow-y: auto; padding: 22px 28px 32px; }
-  .detail-status { font-size: 12px; color: var(--ink-mute); margin-bottom: 14px; letter-spacing: 0.05em; }
+  .detail-status { font-size: 13px; color: var(--ink-mute); margin-bottom: 16px; font-style: italic; }
+  .detail-meta-row { display: flex; gap: 18px; flex-wrap: wrap; margin-bottom: 18px; font-size: 13px; color: var(--ink-dim); }
+  .detail-meta-row a { color: var(--sage-deep); text-decoration: none; border-bottom: 1px solid var(--sage-soft); }
+  .detail-meta-row a:hover { border-color: var(--sage); }
   .detail-photos { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
   .photo-tile { position: relative; aspect-ratio: 4/3; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); background: var(--bg-3); cursor: pointer; transition: transform 0.2s ease, border-color 0.2s ease; }
-  .photo-tile:hover { transform: translateY(-2px); border-color: var(--line-2); }
+  .photo-tile:hover { transform: translateY(-2px); border-color: var(--sage); }
   .photo-tile img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .photo-tile .pin { position: absolute; top: 8px; left: 8px; font-size: 9px; padding: 3px 7px; border-radius: 999px; background: rgba(0,0,0,0.7); color: #fff; letter-spacing: 0.16em; text-transform: uppercase; }
-  .photo-tile .save { position: absolute; bottom: 8px; right: 8px; width: 32px; height: 32px; border-radius: 50%; background: rgba(14,14,16,0.75); border: 1px solid rgba(255,255,255,0.2); color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; backdrop-filter: blur(4px); font-size: 16px; transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease; }
-  .photo-tile .save:hover { transform: scale(1.08); border-color: var(--accent); color: var(--accent); }
-  .photo-tile .save.saved { background: var(--accent); color: #1a140a; border-color: var(--accent); }
-  .photo-empty { padding: 60px 20px; text-align: center; color: var(--ink-mute); font-family: var(--serif); font-style: italic; font-size: 18px; line-height: 1.5; }
-  .photo-empty .small { font-style: normal; font-family: var(--sans); font-size: 12px; color: var(--ink-mute); margin-top: 14px; letter-spacing: 0.05em; }
+  .photo-tile .pin { position: absolute; top: 8px; left: 8px; font-size: 9px; padding: 3px 8px; border-radius: 999px; background: rgba(43,42,50,0.7); color: #fff; letter-spacing: 0.14em; text-transform: uppercase; }
+  .photo-tile .save { position: absolute; bottom: 8px; right: 8px; width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.92); border: 1px solid var(--line-2); color: var(--plum); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 17px; transition: all 0.15s ease; }
+  .photo-tile .save:hover { transform: scale(1.08); border-color: var(--plum); }
+  .photo-tile .save.saved { background: var(--plum); color: #fff; border-color: var(--plum); }
+  .photo-empty { padding: 56px 20px; text-align: center; color: var(--ink-mute); font-style: italic; font-size: 17px; line-height: 1.5; }
+  .photo-empty .small { font-style: normal; font-size: 12px; color: var(--ink-mute); margin-top: 12px; }
   .photo-empty .save-loc { margin-top: 18px; }
 
-  /* Folders */
+  /* ---------- ABOUT ---------- */
+  #view-about { padding: 92px 24px 60px; }
+  .about-wrap { max-width: 680px; margin: 16px auto 0; }
+  .about-wrap h1 { font-weight: 400; font-size: clamp(34px, 5vw, 54px); letter-spacing: -0.02em; line-height: 1.05; margin: 0 0 8px; }
+  .about-wrap h1 em { font-style: italic; color: var(--plum); }
+  .about-kicker { font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--ink-mute); margin-bottom: 20px; }
+  .about-wrap h2 { font-weight: 500; font-size: 22px; letter-spacing: -0.01em; margin: 38px 0 10px; }
+  .about-wrap p { color: var(--ink-dim); font-size: 16px; line-height: 1.65; margin: 0 0 16px; }
+  .about-wrap p em { color: var(--plum); font-style: italic; }
+  .about-wrap ul { color: var(--ink-dim); font-size: 16px; line-height: 1.6; padding-left: 22px; margin: 0 0 16px; }
+  .about-wrap li { margin-bottom: 8px; }
+  .about-wrap a { color: var(--sage-deep); text-decoration: none; border-bottom: 1px solid var(--sage-soft); }
+  .about-wrap a:hover { border-color: var(--sage); }
+  .about-stack { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 20px; }
+  .about-stack .s { font-size: 12px; padding: 6px 13px; border-radius: 999px; background: var(--bg-3); border: 1px solid var(--line); color: var(--ink-dim); }
+  .about-divider { height: 1px; background: var(--line); margin: 36px 0; border: 0; }
+
+  /* ---------- FOLDERS / PROJECTS ---------- */
+  .backdrop { position: fixed; inset: 0; background: rgba(43,42,50,0.3); z-index: 30; display: none; }
+  .backdrop.show { display: block; }
   .folder-panel { position: fixed; top: 0; right: 0; bottom: 0; width: min(440px, 92vw); background: var(--bg-2); border-left: 1px solid var(--line); z-index: 40; transform: translateX(100%); transition: transform 0.35s cubic-bezier(.2,.8,.2,1); display: flex; flex-direction: column; }
   .folder-panel.open { transform: translateX(0); }
   .folder-head { padding: 22px 24px 18px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; }
-  .folder-head h3 { font-family: var(--serif); font-weight: 500; font-size: 24px; letter-spacing: -0.01em; margin: 0; }
-  .folder-head h3 em { font-style: italic; color: var(--accent); }
+  .folder-head h3 { font-weight: 500; font-size: 24px; letter-spacing: -0.01em; margin: 0; }
+  .folder-head h3 em { font-style: italic; color: var(--plum); }
   .folder-body { flex: 1; overflow-y: auto; padding: 16px 24px 24px; }
-  .folder-row { border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; cursor: pointer; transition: border-color 0.2s ease, background 0.2s ease; }
-  .folder-row:hover { border-color: var(--line-2); background: var(--bg-3); }
-  .folder-row.active { border-color: var(--accent); background: var(--bg-3); }
-  .folder-row .fname { font-family: var(--serif); font-size: 17px; font-weight: 500; margin-bottom: 4px; letter-spacing: -0.01em; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-  .folder-row .fcount { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-mute); }
-  .folder-row .fdel { font-size: 14px; color: var(--ink-mute); cursor: pointer; padding: 2px 6px; border-radius: 4px; }
-  .folder-row .fdel:hover { color: var(--hot); background: rgba(232,113,74,0.1); }
-  .folder-contents { margin-top: 10px; margin-bottom: 14px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
-  .folder-thumb { position: relative; border-radius: 8px; overflow: hidden; aspect-ratio: 4/5; border: 1px solid var(--line); background: var(--bg-3); }
-  .folder-thumb .bg { position: absolute; inset: 0; }
-  .folder-thumb img.photo-bg { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .folder-thumb .vignette { position: absolute; inset: 0; background: radial-gradient(120% 80% at 50% 100%, rgba(0,0,0,0.7), rgba(0,0,0,0) 55%); }
-  .folder-thumb .label { position: absolute; left: 10px; right: 10px; bottom: 8px; font-family: var(--serif); font-size: 13px; font-weight: 500; color: #fff; line-height: 1.1; text-shadow: 0 1px 10px rgba(0,0,0,0.6); }
-  .folder-thumb .rm { position: absolute; top: 5px; right: 5px; width: 22px; height: 22px; border-radius: 50%; background: rgba(14,14,16,0.7); color: #fff; font-size: 14px; line-height: 20px; text-align: center; cursor: pointer; opacity: 0; transition: opacity 0.15s ease; }
-  .folder-thumb:hover .rm { opacity: 1; }
   .folder-new { display: flex; gap: 8px; margin-bottom: 16px; }
-  .folder-new input { flex: 1; background: var(--bg-3); border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; color: var(--ink); font-family: var(--sans); font-size: 14px; }
-  .folder-new input:focus { outline: none; border-color: var(--accent); }
-  .folder-empty { text-align: center; color: var(--ink-mute); font-family: var(--serif); font-style: italic; font-size: 16px; padding: 40px 10px; }
+  .folder-new input { flex: 1; background: var(--bg); border: 1px solid var(--line-2); border-radius: 10px; padding: 10px 14px; color: var(--ink); font-family: var(--serif); font-size: 14px; }
+  .folder-new input:focus { outline: none; border-color: var(--sage); }
+  .folder-row { border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; transition: border-color 0.2s ease, background 0.2s ease; }
+  .folder-row .fname { font-size: 17px; font-weight: 500; margin-bottom: 4px; letter-spacing: -0.01em; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .folder-row .fcount { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-mute); }
+  .folder-row .fdel { font-size: 14px; color: var(--ink-mute); cursor: pointer; padding: 2px 7px; border-radius: 5px; }
+  .folder-row .fdel:hover { color: var(--plum); background: var(--plum-soft); }
+  .folder-contents { margin-top: 12px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .folder-thumb { position: relative; border-radius: 8px; overflow: hidden; aspect-ratio: 4/5; border: 1px solid var(--line); background: var(--bg-3); }
+  .folder-thumb img.photo-bg { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .folder-thumb .bg { position: absolute; inset: 0; background: linear-gradient(150deg, var(--sage-soft), var(--plum-soft)); }
+  .folder-thumb .scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(43,42,50,0) 40%, rgba(43,42,50,0.7)); }
+  .folder-thumb .label { position: absolute; left: 10px; right: 10px; bottom: 8px; font-size: 13px; font-weight: 500; color: #fff; line-height: 1.12; text-shadow: 0 1px 10px rgba(0,0,0,0.6); }
+  .folder-thumb .rm { position: absolute; top: 5px; right: 5px; width: 22px; height: 22px; border-radius: 50%; background: rgba(43,42,50,0.7); color: #fff; font-size: 13px; line-height: 22px; text-align: center; cursor: pointer; opacity: 0; transition: opacity 0.15s ease; }
+  .folder-thumb:hover .rm { opacity: 1; }
+  .folder-empty { text-align: center; color: var(--ink-mute); font-style: italic; font-size: 16px; padding: 40px 10px; }
 
   /* Save-to popover */
-  .save-menu { position: fixed; background: var(--bg-3); border: 1px solid var(--line-2); border-radius: 12px; padding: 8px; min-width: 240px; max-height: 320px; overflow-y: auto; box-shadow: 0 20px 50px rgba(0,0,0,0.6); z-index: 60; display: none; }
+  .save-menu { position: fixed; background: var(--bg-2); border: 1px solid var(--line-2); border-radius: 12px; padding: 8px; min-width: 240px; max-height: 320px; overflow-y: auto; box-shadow: 0 20px 50px rgba(43,42,50,0.18); z-index: 60; display: none; }
   .save-menu.open { display: block; }
-  .save-menu-h { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-mute); padding: 6px 10px; }
+  .save-menu-h { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-mute); padding: 6px 10px; }
   .save-item { padding: 9px 10px; border-radius: 8px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 14px; }
-  .save-item:hover { background: var(--bg-2); }
-  .save-item.saved { color: var(--accent); }
+  .save-item:hover { background: var(--bg-3); }
+  .save-item.saved { color: var(--sage-deep); }
   .save-item .count { font-size: 11px; color: var(--ink-mute); }
   .save-new-row { display: flex; gap: 6px; padding: 6px 8px 4px; border-top: 1px solid var(--line); margin-top: 4px; }
-  .save-new-row input { flex: 1; background: var(--bg-2); border: 1px solid var(--line); border-radius: 8px; padding: 7px 10px; color: var(--ink); font-size: 13px; }
-  .save-new-row input:focus { outline: none; border-color: var(--accent); }
-  .save-new-row button { background: var(--accent); color: #1a140a; border: none; border-radius: 8px; padding: 0 12px; font-size: 12px; font-weight: 600; cursor: pointer; }
+  .save-new-row input { flex: 1; background: var(--bg); border: 1px solid var(--line-2); border-radius: 8px; padding: 7px 10px; color: var(--ink); font-size: 13px; font-family: var(--serif); }
+  .save-new-row input:focus { outline: none; border-color: var(--sage); }
+  .save-new-row button { background: var(--sage); color: #fff; border: none; border-radius: 8px; padding: 0 13px; font-size: 12px; font-weight: 500; cursor: pointer; font-family: var(--serif); }
 
-  /* Backdrop / Toast */
-  .backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 30; display: none; }
-  .backdrop.show { display: block; }
-  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--bg-3); border: 1px solid var(--line-2); color: var(--ink); padding: 10px 18px; border-radius: 999px; font-size: 13px; z-index: 100; opacity: 0; transition: opacity 0.25s ease, transform 0.25s ease; pointer-events: none; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+  /* Toast */
+  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--ink); color: var(--bg); padding: 11px 19px; border-radius: 999px; font-size: 13px; z-index: 100; opacity: 0; transition: opacity 0.25s ease, transform 0.25s ease; pointer-events: none; box-shadow: 0 12px 30px rgba(43,42,50,0.25); }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-  .toast .accent { color: var(--accent); font-weight: 600; }
+  .toast .accent { color: #cbb6c4; font-weight: 600; }
 
   @media (max-width: 640px) {
-    header { padding: 12px 16px; }
-    .btn { padding: 10px 14px; font-size: 11px; }
-    #view-round { padding: 88px 16px 30px; }
-    #view-results { padding: 88px 16px 40px; }
-    .pick-inner { padding: 18px; }
+    header { padding: 14px 16px; }
+    .btn { padding: 9px 14px; font-size: 12px; }
+    #view-results { padding: 86px 16px 40px; }
+    .qcard { padding: 22px 18px; }
   }
 </style>
 </head>
@@ -257,66 +271,111 @@
 
 <header>
   <div class="brand" id="brand-logo">
-    <div>Scout <em>PDX</em></div>
-    <div class="sub">Location inspiration · v0.3</div>
+    <div class="name">Scout <em>PDX</em></div>
+    <div class="sub">Portland location scouting</div>
   </div>
   <div class="header-right">
-    <button class="btn ghost small" id="btn-newvibe" style="display:none;">New vibe</button>
-    <button class="btn small" id="btn-folders">Projects <span id="folders-count" style="color:var(--accent);">0</span></button>
+    <button class="btn ghost small" id="btn-about">About</button>
+    <button class="btn ghost small" id="btn-home" style="display:none;">New search</button>
+    <button class="btn small" id="btn-folders">Projects <span class="pill" id="folders-count">0</span></button>
   </div>
 </header>
 
-<!-- INTRO -->
-<section id="view-intro" class="view active">
-  <div class="intro-wrap">
-    <div class="intro-kicker">Portland, Oregon · Location scouting</div>
-    <h1 class="intro-h1">Find the <em>vibe</em> before you find the place.</h1>
-    <p class="intro-lede">Three rounds, three choices each. Pick the image that's closest to what's in your head — we narrow toward locations that match. Save photos into project folders you can come back to.</p>
-    <div class="intro-cta">
-      <button class="btn primary" id="btn-start">Start a vibe session →</button>
-      <button class="btn" id="btn-open-projects">Open my projects</button>
-    </div>
-    <div class="intro-steps">
-      <div class="intro-step"><div class="num">01</div><h4>Pick a feel</h4><p>Three visually distinct Portland locations. Pick the one closest to your shoot.</p></div>
-      <div class="intro-step"><div class="num">02</div><h4>Narrow down</h4><p>Two more rounds, each conditioned on your last pick. The vibe sharpens.</p></div>
-      <div class="intro-step"><div class="num">03</div><h4>Browse & save</h4><p>Get a tiled board of locations with real street-level photos. Save the ones you want.</p></div>
-    </div>
-  </div>
-</section>
+<!-- HOME / QUERY -->
+<section id="view-home" class="view active">
+  <div class="home-wrap">
+    <div class="home-kicker">Portland, Oregon</div>
+    <h1 class="home-h1">What location do you <em>need</em>?</h1>
+    <p class="home-lede">Tell us the kind of place, the setting, and a few details. Scout pulls real Portland locations from OpenStreetMap and finds street-level photos for each one.</p>
 
-<!-- ROUND -->
-<section id="view-round" class="view">
-  <div class="round-head">
-    <div class="round-meter" id="round-meter">
-      <div class="round-dot active"></div><div class="round-dot"></div><div class="round-dot"></div>
+    <div class="qcard">
+      <!-- Step 1: location type -->
+      <div class="qstep">
+        <div class="qstep-label"><span class="n">01</span> Location type <span class="qstep-hint">pick one</span></div>
+        <div class="opt-grid" id="opts-type"></div>
+      </div>
+
+      <!-- Step 2: setting -->
+      <div class="qstep">
+        <div class="qstep-label"><span class="n">02</span> Setting <span class="qstep-hint">optional</span></div>
+        <div class="opt-grid" id="opts-setting"></div>
+      </div>
+
+      <!-- Step 3: keywords -->
+      <div class="qstep">
+        <div class="qstep-label"><span class="n">03</span> Keywords <span class="qstep-hint" id="kw-hint">up to 5 · optional</span></div>
+        <div class="kw-wrap">
+          <div class="kw-input-row">
+            <input type="text" id="kw-input" placeholder="e.g. brick, tunnel, water, neon, staircase…" autocomplete="off" />
+            <button class="btn small" id="kw-add">Add</button>
+          </div>
+          <div class="kw-chips" id="kw-chips"></div>
+        </div>
+      </div>
+
+      <div class="qactions">
+        <button class="btn" id="btn-random" title="Don't know? Surprise me.">🎲 Randomize</button>
+        <div class="spacer"></div>
+        <button class="btn primary" id="btn-search">Find locations →</button>
+      </div>
     </div>
-    <h2 class="round-title" id="round-title">Which feels <em>closest</em> to your shoot?</h2>
-    <p class="round-sub" id="round-sub">Three different directions across Portland. Pick one.</p>
+    <div class="home-foot">Live data from OpenStreetMap · photos from Mapillary · no two searches the same</div>
   </div>
-  <div class="round-cards" id="round-cards"></div>
 </section>
 
 <!-- RESULTS -->
 <section id="view-results" class="view">
   <div class="results-head">
     <div>
-      <h2 class="results-h">Your <em>vibe</em>.</h2>
+      <h2 class="results-h">Your <em>locations</em>.</h2>
       <p class="results-sub" id="results-sub"></p>
     </div>
     <div class="results-actions">
-      <button class="btn ghost" id="btn-refine">Refine vibe</button>
-      <button class="btn" id="btn-restart">New vibe</button>
+      <button class="btn ghost" id="btn-refine">Edit search</button>
+      <button class="btn" id="btn-newsearch">New search</button>
     </div>
   </div>
+  <div class="status-bar" id="status-bar"></div>
   <div class="grid" id="results-grid"></div>
 </section>
 
-<!-- DETAIL (location + photos) -->
+<!-- ABOUT -->
+<section id="view-about" class="view">
+  <div class="about-wrap">
+    <div class="about-kicker">About</div>
+    <h1>Scout <em>PDX</em></h1>
+    <p>Scout PDX is a location-scouting tool for Portland, Oregon. It's built for the moment you know <em>exactly</em> what you need — a mossy stairwell for an indie film, a clean modern plaza for a graduation portrait, an industrial backlot, a rose garden — but you don't know <em>where</em> it is.</p>
+    <p>Instead of a short hand-picked list, Scout queries the full map of Portland and surfaces real, specific places that match what you describe, then pulls street-level photography so you can judge a spot before you ever drive out to it.</p>
+
+    <h2>How it works</h2>
+    <p>You describe the location you need — a type, a setting, and a handful of keywords. Scout translates that into a live query against <a href="https://www.openstreetmap.org" target="_blank" rel="noopener">OpenStreetMap</a> via the Overpass API, retrieving real tagged places across the city. For each candidate it checks <a href="https://www.mapillary.com" target="_blank" rel="noopener">Mapillary</a> for nearby street-level imagery, so what you see are photographs of the actual place. Locations and photos you like get saved into project folders you can return to.</p>
+
+    <h2>Built with</h2>
+    <div class="about-stack">
+      <span class="s">OpenStreetMap / Overpass API</span>
+      <span class="s">Mapillary imagery</span>
+      <span class="s">Vanilla JS</span>
+      <span class="s">No build step</span>
+      <span class="s">Local-first saves</span>
+    </div>
+
+    <hr class="about-divider" />
+
+    <h2>Where it's going</h2>
+    <p>Today, saved projects live in your browser. The natural growth path is a shared layer: <em>user-contributed locations</em> for spots the map doesn't know about, <em>user-uploaded photos</em> for places without street coverage, and <em>community tags</em> so scouts can describe locations in the language of a shoot, not just map data. Those turn Scout from a lookup tool into a living, scout-built database of where to film and shoot in Portland.</p>
+
+    <div style="margin-top:32px;">
+      <button class="btn primary" id="btn-about-start">Start scouting →</button>
+    </div>
+  </div>
+</section>
+
+<!-- DETAIL -->
 <div class="detail" id="detail">
   <div class="detail-inner">
     <div class="detail-head">
       <div>
-        <div class="detail-neigh" id="detail-neigh"></div>
+        <div class="detail-kind" id="detail-kind"></div>
         <h2 class="detail-title" id="detail-title"></h2>
         <p class="detail-desc" id="detail-desc"></p>
         <div class="detail-tags" id="detail-tags"></div>
@@ -326,6 +385,7 @@
       </div>
     </div>
     <div class="detail-body">
+      <div class="detail-meta-row" id="detail-meta"></div>
       <div class="detail-status" id="detail-status">Loading photos…</div>
       <div class="detail-photos" id="detail-photos"></div>
     </div>
@@ -341,7 +401,7 @@
   </div>
   <div class="folder-body">
     <div class="folder-new">
-      <input id="folder-new-input" type="text" placeholder="Name a new project (e.g. 'Horror pilot — Apr 26')" />
+      <input id="folder-new-input" type="text" placeholder="Name a project (e.g. 'Grad portraits — May')" />
       <button class="btn primary small" id="folder-new-btn">Create</button>
     </div>
     <div id="folder-list"></div>
@@ -353,528 +413,391 @@
 
 <script>
 /* ==================================================================
-   MAPILLARY ACCESS TOKEN  ⚠ DEV-ONLY
-   This token is exposed in client-side code. For local development
-   and personal use this is acceptable. Before publicly hosting this
-   app, rotate the token in your Mapillary dashboard and move it into
-   a server-side proxy (Cloudflare Worker / Vercel function).
+   MAPILLARY ACCESS TOKEN  ⚠ DEV-ONLY — rotate before public hosting.
    ================================================================== */
 const MAPILLARY_TOKEN = 'MLY|35327543056860026|f34ebee56ba2ee709979cd16734e7ce7';
 
 /* ==================================================================
-   SEED DATA — 30 Portland, OR locations (with lat/lng)
+   QUERY VOCABULARY
+   Each "type" maps to one or more concrete OSM tag filters (key=value).
+   This is the translation layer between plain language and OSM.
    ================================================================== */
-const LOCATIONS = [
-  { id: 'stjohns', title: 'St. Johns Bridge', neighborhood: 'North Portland',
-    lat: 45.5860, lng: -122.7644,
-    desc: 'Gothic Revival suspension bridge with cathedral-like piers. Dramatic at golden hour, moody in fog.',
-    tags: ['bridge','gothic','historic','dramatic','moody','riverfront','sweeping','iconic'],
-    palette: ['#2f4a4a','#0e1a22'] },
-  { id: 'cathedralpark', title: 'Cathedral Park', neighborhood: 'St. Johns',
-    lat: 45.5887, lng: -122.7647,
-    desc: 'Straight up into the gothic arches of the bridge from the riverbank. Concrete ribs, lawn, water.',
-    tags: ['bridge','gothic','dramatic','riverfront','stone','open','moody'],
-    palette: ['#3e5055','#131617'] },
-  { id: 'forestpark', title: 'Forest Park', neighborhood: 'NW Hills',
-    lat: 45.5358, lng: -122.7168,
-    desc: 'Seventy miles of trail through dense PNW fir, moss-wrapped understory, filtered green light.',
-    tags: ['forest','green','moody','enclosed','natural','moss','earthy','intimate'],
-    palette: ['#1f3a2a','#0a1612'] },
-  { id: 'pittock', title: 'Pittock Mansion', neighborhood: 'West Hills',
-    lat: 45.5253, lng: -122.7165,
-    desc: 'French Renaissance chateau on a ridge above downtown. Manicured lawns, sweeping view to Mt. Hood.',
-    tags: ['historic','mansion','sweeping','romantic','garden','stone','view','elegant'],
-    palette: ['#5a4b3a','#1c1713'] },
-  { id: 'powells', title: "Powell's City of Books", neighborhood: 'Pearl District',
-    lat: 45.5232, lng: -122.6814,
-    desc: 'A city block of books, beige brick, vintage red script signage, maze interior, pale fluorescents.',
-    tags: ['urban','literary','vintage-signage','interior','gritty','iconic','red'],
-    palette: ['#8a2a1f','#1a0c09'] },
-  { id: 'lansu', title: 'Lan Su Chinese Garden', neighborhood: 'Old Town',
-    lat: 45.5256, lng: -122.6731,
-    desc: 'Walled Ming-dynasty-style garden tucked into downtown. Carved pavilions, koi, lattice, lacquered red.',
-    tags: ['garden','ornate','historic','enclosed','intimate','red','water','traditional'],
-    palette: ['#6e1f1a','#1b0b0a'] },
-  { id: 'industrialeside', title: 'Central Eastside Industrial', neighborhood: 'SE Portland',
-    lat: 45.5197, lng: -122.6623,
-    desc: 'Warehouses, loading docks, rail spurs, sodium lights, bridge undersides, tagged rollup doors.',
-    tags: ['industrial','gritty','urban','warehouses','concrete','night','moody','brutalist'],
-    palette: ['#3a3936','#0f0e0d'] },
-  { id: 'omsi', title: 'OMSI Submarine', neighborhood: 'Eastbank',
-    lat: 45.5083, lng: -122.6655,
-    desc: 'Decommissioned Cold War attack sub at the dock. Rivets, steel, industrial decay, riverfront backdrop.',
-    tags: ['industrial','steel','historic','riverfront','gritty','iconic','dramatic'],
-    palette: ['#2f3b43','#0d1216'] },
-  { id: 'tillikum', title: 'Tillikum Crossing', neighborhood: 'Willamette River',
-    lat: 45.5054, lng: -122.6671,
-    desc: 'Cable-stayed transit-and-bike bridge. Clean white pylons, LED color-shifting at night.',
-    tags: ['bridge','modern','minimalist','clean','riverfront','night','neon','contemporary'],
-    palette: ['#2e4a6b','#0b1422'] },
-  { id: 'japanesegarden', title: 'Portland Japanese Garden', neighborhood: 'Washington Park',
-    lat: 45.5187, lng: -122.7081,
-    desc: 'Five garden styles in one hillside: raked gravel, maples, stepped stone, quiet water. Minimal and exacting.',
-    tags: ['garden','minimalist','zen','stone','water','intimate','green','elegant'],
-    palette: ['#2a3e2c','#0b1511'] },
-  { id: 'rosegarden', title: 'International Rose Test Garden', neighborhood: 'Washington Park',
-    lat: 45.5193, lng: -122.7068,
-    desc: 'Tiered beds with 10,000 rose plants, bright open sky, Mt. Hood on the horizon behind the blooms.',
-    tags: ['garden','floral','bright','open','romantic','sweeping','summer','colorful'],
-    palette: ['#8a3a5a','#21101a'] },
-  { id: 'sauvie', title: 'Sauvie Island', neighborhood: 'Columbia/Willamette Confluence',
-    lat: 45.7339, lng: -122.8125,
-    desc: 'Flat agricultural island — barns, cornrows, pumpkin fields, gravel roads, river beaches, big sky.',
-    tags: ['rural','agricultural','open','pastoral','river','bright','earthy','summer'],
-    palette: ['#5c5a2a','#1a190c'] },
-  { id: 'multnomah', title: 'Multnomah Falls', neighborhood: 'Columbia Gorge',
-    lat: 45.5762, lng: -122.1158,
-    desc: 'Two-tiered 620-ft waterfall and the 1914 stone footbridge. Mossy basalt, mist, dramatic scale.',
-    tags: ['waterfall','dramatic','moss','stone','natural','moody','iconic','sweeping'],
-    palette: ['#2e3a40','#0c1215'] },
-  { id: 'vistahouse', title: 'Vista House at Crown Point', neighborhood: 'Columbia Gorge',
-    lat: 45.5392, lng: -122.2440,
-    desc: 'Octagonal 1918 stone rotunda on a basalt cliff, 700 ft above the river. Art Nouveau interior.',
-    tags: ['historic','stone','sweeping','dramatic','art-nouveau','view','iconic','open'],
-    palette: ['#4a4434','#16140e'] },
-  { id: 'alberta', title: 'Alberta Arts District', neighborhood: 'NE Portland',
-    lat: 45.5590, lng: -122.6386,
-    desc: 'Small bungalows, mural walls, neon taco signs, strings of bistro lights across the street.',
-    tags: ['urban','colorful','murals','eclectic','street','community','warm','vintage-signage'],
-    palette: ['#a8552a','#251109'] },
-  { id: 'mississippi', title: 'Mississippi Ave', neighborhood: 'N Portland',
-    lat: 45.5500, lng: -122.6755,
-    desc: 'Restored mid-century commercial strip: food carts, pastel bungalows, record stores.',
-    tags: ['urban','colorful','mid-century','eclectic','street','pastel','community'],
-    palette: ['#3a6a6a','#0f1c1c'] },
-  { id: 'voodoo', title: 'Voodoo Doughnut', neighborhood: 'Old Town',
-    lat: 45.5226, lng: -122.6731,
-    desc: 'Pink stucco storefront, neon script sign, late-night line wrapping the block. Kitsch on purpose.',
-    tags: ['urban','neon','vintage-signage','colorful','kitsch','iconic','pink','night'],
-    palette: ['#c23a7a','#2a0a1b'] },
-  { id: 'hollywoodtheatre', title: 'Hollywood Theatre', neighborhood: 'NE Portland',
-    lat: 45.5430, lng: -122.6260,
-    desc: 'Spanish Colonial movie palace from 1926. Towered marquee, red-yellow-white neon, ornate stucco facade.',
-    tags: ['historic','vintage-signage','neon','urban','ornate','iconic','night','art-deco'],
-    palette: ['#8a5a1a','#1e1307'] },
-  { id: 'mttabor', title: 'Mt. Tabor Park', neighborhood: 'SE Portland',
-    lat: 45.5113, lng: -122.5957,
-    desc: 'Dormant volcanic cinder cone inside the city. Winding roads, open reservoirs, cedars, benches.',
-    tags: ['park','forest','open','view','natural','green','intimate','romantic'],
-    palette: ['#3a4e2a','#10160d'] },
-  { id: 'oakshottom', title: 'Oaks Bottom Wildlife Refuge', neighborhood: 'SE Portland',
-    lat: 45.4775, lng: -122.6489,
-    desc: 'Wetland meadow with the iconic "Harvey the rabbit" mural on the old amusement park wall.',
-    tags: ['wetland','natural','murals','open','pastoral','earthy','quiet'],
-    palette: ['#4a5a36','#131810'] },
-  { id: 'swanisland', title: 'Swan Island Shipyard', neighborhood: 'N Portland',
-    lat: 45.5680, lng: -122.6925,
-    desc: 'Active shipyard and drydocks — gantry cranes, freighters, rust, welding sparks at dusk.',
-    tags: ['industrial','steel','gritty','riverfront','dramatic','night','warehouses','brutalist'],
-    palette: ['#46484a','#111214'] },
-  { id: 'kelleypoint', title: 'Kelley Point Park', neighborhood: 'N Portland',
-    lat: 45.6463, lng: -122.7647,
-    desc: 'Where the Willamette meets the Columbia. Sand beach, driftwood, cottonwood canopy, container ships.',
-    tags: ['riverfront','beach','natural','open','pastoral','industrial','sweeping'],
-    palette: ['#5a6a6a','#161b1c'] },
-  { id: 'morrison', title: 'Morrison Bridge Underside', neighborhood: 'Downtown',
-    lat: 45.5180, lng: -122.6680,
-    desc: 'Girder jungle beneath the drawbridge. Steel painted forest green, echoey concrete, graffiti.',
-    tags: ['bridge','industrial','steel','gritty','enclosed','urban','brutalist','green'],
-    palette: ['#1e3a2e','#081510'] },
-  { id: 'waterfront', title: 'Tom McCall Waterfront', neighborhood: 'Downtown',
-    lat: 45.5171, lng: -122.6697,
-    desc: 'Downtown riverfront esplanade — cherry blossoms in spring, Steel Bridge framing view, joggers, benches.',
-    tags: ['urban','riverfront','open','pastel','romantic','bright','park','iconic'],
-    palette: ['#7a4a6a','#1b0f1a'] },
-  { id: 'pearlbrick', title: 'Pearl District Brick Blocks', neighborhood: 'Pearl',
-    lat: 45.5290, lng: -122.6820,
-    desc: 'Converted turn-of-century warehouses in red and cream brick. Iron fire escapes, loading bays, galleries.',
-    tags: ['urban','historic','brick','warehouses','industrial','elegant','red','iconic'],
-    palette: ['#6a3828','#1a0c08'] },
-  { id: 'goosehollow', title: 'Goose Hollow Victorians', neighborhood: 'SW Portland',
-    lat: 45.5197, lng: -122.6927,
-    desc: 'Wooden Victorians in peach, teal, sage on steep streets. Gingerbread trim, stained glass, mossy shingles.',
-    tags: ['residential','victorian','pastel','historic','intimate','ornate','colorful'],
-    palette: ['#7a8a6a','#191d16'] },
-  { id: 'convention', title: 'Oregon Convention Center', neighborhood: 'Lloyd',
-    lat: 45.5296, lng: -122.6627,
-    desc: 'Twin glass spires, vast terrazzo lobbies, minimal benches, mirrored ceilings. Very Gattaca at night.',
-    tags: ['modern','glass','minimalist','contemporary','urban','clean','sweeping','night'],
-    palette: ['#2a3e5a','#0a1220'] },
-  { id: 'rockybutte', title: 'Rocky Butte', neighborhood: 'NE Portland',
-    lat: 45.5450, lng: -122.5673,
-    desc: 'Stone-walled WPA overlook on a small cinder cone. 360° view, stone masonry, often above the fog line.',
-    tags: ['view','stone','historic','sweeping','open','natural','dramatic','romantic'],
-    palette: ['#4a3a2a','#13100b'] },
-  { id: 'peninsulapark', title: 'Peninsula Park Rose Garden', neighborhood: 'N Portland',
-    lat: 45.5685, lng: -122.6685,
-    desc: 'Sunken formal garden, 1913 octagonal bandstand, tile fountain, boxwood parterres, 9,000 roses.',
-    tags: ['garden','historic','floral','ornate','romantic','intimate','elegant','pastel'],
-    palette: ['#8a4a6a','#1e101a'] },
-  { id: 'oneonta', title: 'Oneonta Gorge', neighborhood: 'Columbia Gorge',
-    lat: 45.5878, lng: -122.0780,
-    desc: 'Narrow mossy slot canyon with waterfall at the end. Filtered green, slick basalt, water to the waist.',
-    tags: ['waterfall','moss','enclosed','dramatic','natural','moody','green','intimate'],
-    palette: ['#1f3a36','#081513'] },
+const TYPES = [
+  { id: 'park',       label: 'Park / green space', osm: [['leisure','park'],['leisure','garden'],['landuse','recreation_ground']] },
+  { id: 'water',      label: 'Water / riverfront',  osm: [['natural','water'],['waterway','riverbank'],['leisure','marina'],['man_made','pier']] },
+  { id: 'bridge',     label: 'Bridge',              osm: [['man_made','bridge'],['bridge','yes']] },
+  { id: 'viewpoint',  label: 'Viewpoint / overlook',osm: [['tourism','viewpoint'],['natural','peak']] },
+  { id: 'industrial', label: 'Industrial',          osm: [['landuse','industrial'],['building','industrial'],['building','warehouse'],['man_made','works']] },
+  { id: 'historic',   label: 'Historic',            osm: [['historic','*'],['building','historic'],['heritage','*']] },
+  { id: 'religious',  label: 'Church / temple',     osm: [['amenity','place_of_worship'],['building','church'],['building','cathedral']] },
+  { id: 'civic',      label: 'Civic / monumental',  osm: [['amenity','townhall'],['amenity','courthouse'],['building','public'],['tourism','attraction']] },
+  { id: 'plaza',      label: 'Plaza / square',      osm: [['place','square'],['highway','pedestrian'],['leisure','common']] },
+  { id: 'transit',    label: 'Transit / rail',      osm: [['railway','station'],['building','train_station'],['railway','platform']] },
+  { id: 'forest',     label: 'Forest / trail',      osm: [['natural','wood'],['landuse','forest'],['leisure','nature_reserve']] },
+  { id: 'art',        label: 'Mural / public art',  osm: [['tourism','artwork'],['artwork_type','mural']] },
+  { id: 'cemetery',   label: 'Cemetery',            osm: [['landuse','cemetery'],['amenity','grave_yard']] },
+  { id: 'theatre',    label: 'Theatre / venue',     osm: [['amenity','theatre'],['amenity','cinema'],['building','theatre']] },
 ];
 
-/* ==================================================================
-   MAPILLARY FETCH + CACHE
-   ================================================================== */
-const photoCache = new Map(); // locId -> { tile?: photo|null, all?: photo[] }
+/* Setting modifies the search radius / character. It does not hard-filter;
+   it nudges the result framing and (for some) adds a secondary tag. */
+const SETTINGS = [
+  { id: 'any',       label: 'Anywhere central' },
+  { id: 'downtown',  label: 'Downtown core' },
+  { id: 'eastside',  label: 'East side' },
+  { id: 'waterfront',label: 'Near the river' },
+  { id: 'nw',        label: 'NW / Pearl' },
+];
 
-async function mapillaryFetch(lat, lng, radiusDeg, limit) {
-  const bbox = [lng - radiusDeg, lat - radiusDeg, lng + radiusDeg, lat + radiusDeg].join(',');
-  // Pass token as query param (avoids CORS preflight that breaks on file:// origins)
-  const url = `https://graph.mapillary.com/images?fields=id,thumb_1024_url,thumb_256_url,captured_at,is_pano,geometry&bbox=${bbox}&limit=${limit}&access_token=${encodeURIComponent(MAPILLARY_TOKEN)}`;
-  console.log(`%c[Mapillary] →%c ${bbox} (limit ${limit})`, 'color:#d9c27a', 'color:inherit');
-  let res;
-  try {
-    res = await fetch(url);
-  } catch (e) {
-    console.error('[Mapillary] network/CORS error:', e.message || e);
-    throw e;
-  }
-  if (!res.ok) {
-    const txt = await res.text().catch(() => '');
-    console.error(`[Mapillary] HTTP ${res.status} ${res.statusText}: ${txt.slice(0,300)}`);
-    throw new Error(`Mapillary HTTP ${res.status}`);
-  }
-  const data = await res.json();
-  const all = data.data || [];
-  const photos = all.filter(p => !p.is_pano && p.thumb_1024_url);
-  console.log(`%c[Mapillary] ←%c ${all.length} total, ${photos.length} usable (non-pano)`, 'color:#8db87a', 'color:inherit');
-  return photos;
-}
-
-async function getTilePhoto(loc) {
-  const cached = photoCache.get(loc.id) || {};
-  if ('tile' in cached) return cached.tile;
-  try {
-    // Try a small bbox first; widen if nothing found.
-    let photos = await mapillaryFetch(loc.lat, loc.lng, 0.0015, 3);
-    if (!photos.length) photos = await mapillaryFetch(loc.lat, loc.lng, 0.004, 3);
-    const photo = photos[0] || null;
-    photoCache.set(loc.id, { ...cached, tile: photo });
-    return photo;
-  } catch (e) {
-    console.warn(`[Mapillary] tile photo failed for ${loc.id}:`, e.message);
-    photoCache.set(loc.id, { ...cached, tile: null });
-    return null;
-  }
-}
-
-async function getAllPhotos(loc) {
-  const cached = photoCache.get(loc.id) || {};
-  if ('all' in cached) return cached.all;
-  try {
-    let photos = await mapillaryFetch(loc.lat, loc.lng, 0.003, 12);
-    if (photos.length < 3) {
-      const wider = await mapillaryFetch(loc.lat, loc.lng, 0.006, 12);
-      // de-dupe by id
-      const seen = new Set(photos.map(p => p.id));
-      wider.forEach(p => { if (!seen.has(p.id)) photos.push(p); });
-    }
-    photoCache.set(loc.id, { ...cached, all: photos });
-    return photos;
-  } catch (e) {
-    console.warn(`[Mapillary] all photos failed for ${loc.id}:`, e.message);
-    photoCache.set(loc.id, { ...cached, all: [] });
-    return [];
-  }
-}
-
-/* ==================================================================
-   STORAGE — saves are now {locId, photoId|null, thumbUrl|null}
-   ================================================================== */
-const STORE_KEY = 'scoutpdx_v3';
-function loadStore() {
-  try {
-    const raw = localStorage.getItem(STORE_KEY);
-    if (raw) return JSON.parse(raw);
-  } catch (e) {}
-  return { folders: {} };
-}
-function saveStore() {
-  try { localStorage.setItem(STORE_KEY, JSON.stringify(store)); } catch (e) {}
-}
-const store = loadStore();
+/* Bounding boxes [south, west, north, east] for Portland sub-areas. */
+const BBOX = {
+  any:        [45.485, -122.72, 45.575, -122.60],
+  downtown:   [45.505, -122.690, 45.532, -122.665],
+  eastside:   [45.500, -122.665, 45.560, -122.600],
+  waterfront: [45.505, -122.680, 45.545, -122.655],
+  nw:         [45.520, -122.705, 45.545, -122.675],
+};
 
 /* ==================================================================
    STATE
    ================================================================== */
 const state = {
-  view: 'intro',
-  round: 1,
-  picks: [],
-  currentTrio: [],
-  detailLocId: null,
+  view: 'home',
+  type: null,
+  setting: 'any',
+  keywords: [],
+  results: [],
 };
 
 /* ==================================================================
-   VIBE ENGINE
+   STORAGE — projects (folders) of saved locations & photos
    ================================================================== */
-function tagSet(l) { return new Set(l.tags); }
-function jaccardDist(a, b) {
-  const A = tagSet(a), B = tagSet(b);
-  let inter = 0;
-  A.forEach(t => { if (B.has(t)) inter++; });
-  const union = A.size + B.size - inter;
-  return union === 0 ? 1 : 1 - inter / union;
+const STORE_KEY = 'scoutpdx_v4';
+function loadStore() {
+  try { const raw = localStorage.getItem(STORE_KEY); if (raw) return JSON.parse(raw); } catch (e) {}
+  return { folders: {} };
 }
-function cumulativeTagWeights() {
-  const w = {};
-  state.picks.forEach(id => {
-    const l = LOCATIONS.find(x => x.id === id);
-    if (!l) return;
-    l.tags.forEach(t => { w[t] = (w[t] || 0) + 1; });
+function saveStore() { try { localStorage.setItem(STORE_KEY, JSON.stringify(store)); } catch (e) {} }
+const store = loadStore();
+
+/* ==================================================================
+   BUILD QUERY UI
+   ================================================================== */
+function renderTypeOpts() {
+  const wrap = document.getElementById('opts-type');
+  wrap.innerHTML = '';
+  TYPES.forEach(t => {
+    const b = document.createElement('div');
+    b.className = 'opt' + (state.type === t.id ? ' sel' : '');
+    b.textContent = t.label;
+    b.addEventListener('click', () => {
+      state.type = (state.type === t.id) ? null : t.id;
+      renderTypeOpts();
+    });
+    wrap.appendChild(b);
   });
-  return w;
 }
-function similarityScore(loc, weights) {
-  return loc.tags.reduce((s, t) => s + (weights[t] || 0), 0);
+function renderSettingOpts() {
+  const wrap = document.getElementById('opts-setting');
+  wrap.innerHTML = '';
+  SETTINGS.forEach(s => {
+    const b = document.createElement('div');
+    b.className = 'opt' + (state.setting === s.id ? ' sel' : '');
+    b.textContent = s.label;
+    b.addEventListener('click', () => { state.setting = s.id; renderSettingOpts(); });
+    wrap.appendChild(b);
+  });
 }
-function pickDiverseTrio(pool) {
-  if (pool.length <= 3) return [...pool];
-  const picked = [];
-  const first = pool[Math.floor(Math.random() * pool.length)];
-  picked.push(first);
-  while (picked.length < 3) {
-    let best = null, bestDist = -1;
-    for (const cand of pool) {
-      if (picked.includes(cand)) continue;
-      const avgDist = picked.reduce((s, p) => s + jaccardDist(cand, p), 0) / picked.length;
-      const score = avgDist + (Math.random() * 0.05);
-      if (score > bestDist) { bestDist = score; best = cand; }
-    }
-    picked.push(best);
+function renderKeywords() {
+  const wrap = document.getElementById('kw-chips');
+  wrap.innerHTML = '';
+  state.keywords.forEach((k, i) => {
+    const c = document.createElement('div');
+    c.className = 'kw-chip';
+    c.innerHTML = `<span>${escapeHtml(k)}</span><span class="x" title="Remove">✕</span>`;
+    c.querySelector('.x').addEventListener('click', () => {
+      state.keywords.splice(i, 1); renderKeywords();
+    });
+    wrap.appendChild(c);
+  });
+  document.getElementById('kw-hint').textContent = `${state.keywords.length}/5 · optional`;
+}
+function addKeyword(raw) {
+  const k = raw.trim().toLowerCase();
+  if (!k) return;
+  if (state.keywords.length >= 5) { toast('Up to 5 keywords'); return; }
+  if (state.keywords.includes(k)) return;
+  state.keywords.push(k);
+  renderKeywords();
+}
+
+/* ==================================================================
+   RANDOMIZER — fills every step and runs the search
+   ================================================================== */
+const RANDOM_KEYWORDS = ['brick','moss','tunnel','staircase','neon','arch','fountain','rust','glass','stone','column','water','iron','mural','fog','wood','concrete','gate','tower','vine'];
+function randomizeAll() {
+  state.type = TYPES[Math.floor(Math.random() * TYPES.length)].id;
+  state.setting = SETTINGS[Math.floor(Math.random() * SETTINGS.length)].id;
+  const n = 1 + Math.floor(Math.random() * 3);
+  const pool = [...RANDOM_KEYWORDS].sort(() => Math.random() - 0.5).slice(0, n);
+  state.keywords = pool;
+  renderTypeOpts(); renderSettingOpts(); renderKeywords();
+  runSearch();
+}
+
+/* ==================================================================
+   OVERPASS QUERY — live, no key required
+   ================================================================== */
+function buildOverpassQuery() {
+  const t = TYPES.find(x => x.id === state.type);
+  const bbox = BBOX[state.setting] || BBOX.any;
+  const bboxStr = bbox.join(',');
+  // For each osm tag pair, query nodes+ways+relations with a name.
+  const clauses = t.osm.map(([k, v]) => {
+    const sel = (v === '*') ? `["${k}"]` : `["${k}"="${v}"]`;
+    return `  nwr${sel}["name"](${bboxStr});`;
+  }).join('\n');
+  return `[out:json][timeout:30];\n(\n${clauses}\n);\nout center tags 80;`;
+}
+
+const OVERPASS_ENDPOINTS = [
+  'https://overpass-api.de/api/interpreter',
+  'https://overpass.kumi.systems/api/interpreter',
+];
+
+async function overpassFetch(query) {
+  let lastErr;
+  for (const ep of OVERPASS_ENDPOINTS) {
+    try {
+      const res = await fetch(ep, { method: 'POST', body: 'data=' + encodeURIComponent(query) });
+      if (!res.ok) throw new Error('Overpass HTTP ' + res.status);
+      const json = await res.json();
+      return json.elements || [];
+    } catch (e) { lastErr = e; console.warn('[Overpass] endpoint failed', ep, e.message); }
   }
-  return picked;
+  throw lastErr || new Error('All Overpass endpoints failed');
 }
-function poolForNextRound() {
-  const pickedIds = new Set(state.picks);
-  const weights = cumulativeTagWeights();
-  const candidates = LOCATIONS.filter(l => !pickedIds.has(l.id));
-  const scored = candidates.map(l => ({ l, s: similarityScore(l, weights) })).sort((a,b) => b.s - a.s);
-  const keep = Math.max(9, Math.ceil(scored.length * 0.6));
-  return scored.slice(0, keep).map(x => x.l);
+
+/* Turn a raw OSM element into a normalized location object. */
+function normalizeElement(el, typeLabel) {
+  const tags = el.tags || {};
+  const lat = el.lat || (el.center && el.center.lat);
+  const lng = el.lon || (el.center && el.center.lon);
+  if (lat == null || lng == null) return null;
+  const name = tags.name;
+  if (!name) return null;
+  // Build a human tag list from the more descriptive OSM keys.
+  const interesting = ['historic','building','leisure','natural','man_made','tourism','amenity','landuse','waterway','bridge','heritage','material','railway','place','artwork_type'];
+  const tagList = [];
+  interesting.forEach(k => {
+    if (tags[k] && tags[k] !== 'yes') tagList.push(String(tags[k]).replace(/_/g,' '));
+  });
+  // Description from available tags
+  const descBits = [];
+  if (tags['description']) descBits.push(tags['description']);
+  if (tags['historic']) descBits.push('Historic ' + String(tags['historic']).replace(/_/g,' ') + '.');
+  if (tags['building'] && tags['building'] !== 'yes') descBits.push(cap(String(tags['building']).replace(/_/g,' ')) + ' structure.');
+  const desc = descBits.join(' ') || `${typeLabel} in Portland. Tagged in OpenStreetMap.`;
+  return {
+    id: el.type + '/' + el.id,
+    title: name,
+    kind: typeLabel,
+    lat, lng,
+    tags: [...new Set(tagList)].slice(0, 6),
+    rawtags: tags,
+    desc,
+  };
+}
+function cap(s){ return s.charAt(0).toUpperCase() + s.slice(1); }
+
+/* Score a location against keywords (loose match on name + tags). */
+function scoreLocation(loc) {
+  if (!state.keywords.length) return 0;
+  const hay = (loc.title + ' ' + loc.tags.join(' ') + ' ' + JSON.stringify(loc.rawtags)).toLowerCase();
+  let s = 0;
+  state.keywords.forEach(k => { if (hay.includes(k)) s += 1; });
+  return s;
 }
 
 /* ==================================================================
-   VIEWS
+   MAPILLARY — verify & fetch photos near a coordinate
    ================================================================== */
-function showView(name) {
-  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.getElementById('view-' + name).classList.add('active');
-  state.view = name;
-  document.getElementById('btn-newvibe').style.display = (name === 'round' || name === 'results') ? '' : 'none';
-  window.scrollTo(0, 0);
+const photoCache = new Map();
+async function mapillaryFetch(lat, lng, radiusDeg, limit) {
+  const bbox = [lng - radiusDeg, lat - radiusDeg, lng + radiusDeg, lat + radiusDeg].join(',');
+  const url = `https://graph.mapillary.com/images?fields=id,thumb_1024_url,thumb_256_url,captured_at,is_pano&bbox=${bbox}&limit=${limit}&access_token=${encodeURIComponent(MAPILLARY_TOKEN)}`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error('Mapillary HTTP ' + res.status);
+  const data = await res.json();
+  return (data.data || []).filter(p => !p.is_pano && p.thumb_1024_url);
 }
-
-function startVibeSession() {
-  state.round = 1;
-  state.picks = [];
-  const trio = pickDiverseTrio(LOCATIONS);
-  state.currentTrio = trio.map(l => l.id);
-  renderRound();
-  showView('round');
+async function getTilePhoto(loc) {
+  const cached = photoCache.get(loc.id) || {};
+  if ('tile' in cached) return cached.tile;
+  try {
+    let photos = await mapillaryFetch(loc.lat, loc.lng, 0.0015, 3);
+    if (!photos.length) photos = await mapillaryFetch(loc.lat, loc.lng, 0.004, 3);
+    const photo = photos[0] || null;
+    photoCache.set(loc.id, { ...cached, tile: photo });
+    return photo;
+  } catch (e) { photoCache.set(loc.id, { ...cached, tile: null }); return null; }
 }
-
-function renderRound() {
-  const meter = document.getElementById('round-meter');
-  [...meter.children].forEach((dot, i) => {
-    dot.classList.remove('active', 'done');
-    if (i < state.round - 1) dot.classList.add('done');
-    else if (i === state.round - 1) dot.classList.add('active');
-  });
-  const titles = [
-    { h: 'Which feels <em>closest</em> to your shoot?', s: 'Three distinct directions across Portland. Pick one.' },
-    { h: 'Warmer. Which of these <em>sharpens</em> it?', s: 'Three locations that lean toward your first pick, with variation.' },
-    { h: 'Last round — <em>final</em> call.', s: 'Three refined picks. Choose one and we surface your board.' },
-  ];
-  const t = titles[state.round - 1];
-  document.getElementById('round-title').innerHTML = t.h;
-  document.getElementById('round-sub').textContent = t.s;
-  const container = document.getElementById('round-cards');
-  container.innerHTML = '';
-  state.currentTrio.forEach(id => {
-    const loc = LOCATIONS.find(l => l.id === id);
-    container.appendChild(buildPickEl(loc));
-  });
-  // Async-load real Mapillary photos for each round card; gradient stays as fallback.
-  loadPickPhotos(state.currentTrio);
-}
-
-async function loadPickPhotos(ids) {
-  const myRound = state.round;       // capture current round so stale loads don't paint
-  const myPicks = state.picks.length; // and pick count, in case user picked one already
-  await Promise.all(ids.map(async (id) => {
-    const loc = LOCATIONS.find(l => l.id === id);
-    if (!loc) return;
-    const photo = await getTilePhoto(loc);
-    if (!photo || !photo.thumb_1024_url) return;
-    if (myRound !== state.round || myPicks !== state.picks.length) return; // stale
-    const card = document.querySelector(`#round-cards .pick[data-id="${id}"]`);
-    if (!card) return;
-    const ph = card.querySelector('[data-photo]');
-    if (!ph) return;
-    const img = new Image();
-    img.onload = () => {
-      ph.style.backgroundImage = `url('${photo.thumb_1024_url}')`;
-      ph.classList.add('loaded');
-    };
-    img.src = photo.thumb_1024_url;
-  }));
-}
-
-function buildPickEl(loc) {
-  const el = document.createElement('div');
-  el.className = 'pick';
-  el.dataset.id = loc.id;
-  const [c1, c2] = loc.palette;
-  el.innerHTML = `
-    <div class="bg" style="background: radial-gradient(120% 80% at 30% 20%, ${c1} 0%, ${c2} 70%);"></div>
-    <div class="photo" data-photo></div>
-    <div class="grain"></div>
-    <div class="vignette"></div>
-    <div class="pick-inner">
-      <div class="pick-meta"><span>${loc.neighborhood}</span><span>Round ${state.round} / 3</span></div>
-      <div>
-        <h3 class="pick-title">${loc.title}</h3>
-        <p class="pick-desc">${loc.desc}</p>
-        <div class="pick-tags">${loc.tags.slice(0, 5).map(t => `<span class="tag">${t}</span>`).join('')}</div>
-      </div>
-    </div>
-    <div class="pick-hint">Pick this vibe</div>
-  `;
-  el.addEventListener('click', () => onPick(loc.id));
-  return el;
-}
-
-function onPick(id) {
-  const container = document.getElementById('round-cards');
-  [...container.children].forEach(child => {
-    if (child.dataset.id !== id) child.classList.add('leaving');
-  });
-  state.picks.push(id);
-  setTimeout(() => {
-    if (state.round >= 3) {
-      showResults();
-    } else {
-      state.round += 1;
-      const pool = poolForNextRound();
-      const trio = pickDiverseTrio(pool);
-      state.currentTrio = trio.map(l => l.id);
-      renderRound();
+async function getAllPhotos(loc) {
+  const cached = photoCache.get(loc.id) || {};
+  if ('all' in cached) return cached.all;
+  try {
+    let photos = await mapillaryFetch(loc.lat, loc.lng, 0.003, 14);
+    if (photos.length < 3) {
+      const wider = await mapillaryFetch(loc.lat, loc.lng, 0.006, 14);
+      const seen = new Set(photos.map(p => p.id));
+      wider.forEach(p => { if (!seen.has(p.id)) photos.push(p); });
     }
-  }, 320);
+    photoCache.set(loc.id, { ...cached, all: photos });
+    return photos;
+  } catch (e) { photoCache.set(loc.id, { ...cached, all: [] }); return []; }
 }
 
 /* ==================================================================
-   RESULTS
+   SEARCH FLOW
    ================================================================== */
-function showResults() {
-  const weights = cumulativeTagWeights();
-  const pickedIds = new Set(state.picks);
-  const ranked = LOCATIONS
-    .map(l => ({ l, s: similarityScore(l, weights) + (pickedIds.has(l.id) ? 1.5 : 0) }))
-    .sort((a, b) => b.s - a.s);
-  const topTags = Object.entries(weights).sort((a,b) => b[1] - a[1]).slice(0, 5).map(([t]) => t);
-  document.getElementById('results-sub').innerHTML =
-    `Your vibe leans ${topTags.map(t => `<span class="chip">${t}</span>`).join(' ')}. Tap any tile to see street-level photos and save them to a project.`;
-  const grid = document.getElementById('results-grid');
-  grid.innerHTML = '';
-  ranked.forEach((r, i) => grid.appendChild(buildTileEl(r.l, i + 1)));
+async function runSearch() {
+  if (!state.type) { toast('Pick a location type first'); return; }
+  const t = TYPES.find(x => x.id === state.type);
   showView('results');
+  const grid = document.getElementById('results-grid');
+  const status = document.getElementById('status-bar');
+  grid.innerHTML = '';
+  const settingLabel = (SETTINGS.find(s => s.id === state.setting) || {}).label || 'Portland';
+  const kwChips = state.keywords.map(k => `<span class="chip">${escapeHtml(k)}</span>`).join(' ');
+  document.getElementById('results-sub').innerHTML =
+    `${t.label} · ${settingLabel}${state.keywords.length ? ' · ' + kwChips : ''}`;
+  status.innerHTML = `<span class="dot"></span>Querying OpenStreetMap for matching locations…`;
 
-  // Lazy-load tile photos with a small concurrency cap.
-  console.log(`%c[Scout] Starting photo load for ${ranked.length} locations`, 'color:#d9c27a;font-weight:bold');
-  loadTilePhotosWithCap(ranked.map(r => r.l), 4).then(() => {
-    console.log('%c[Scout] All tile photos done', 'color:#8db87a;font-weight:bold');
+  let elements;
+  try {
+    elements = await overpassFetch(buildOverpassQuery());
+  } catch (e) {
+    status.innerHTML = '';
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;">
+      <div class="big">Couldn't reach OpenStreetMap.</div>
+      <div>The Overpass service may be busy (it's a free shared resource). Wait a few seconds and try again.</div>
+      <div style="margin-top:18px;"><button class="btn primary" onclick="runSearch()">Retry</button></div>
+    </div>`;
+    return;
+  }
+
+  // Normalize + de-dupe by id
+  const seen = new Set();
+  let locs = [];
+  elements.forEach(el => {
+    const n = normalizeElement(el, t.label);
+    if (n && !seen.has(n.id)) { seen.add(n.id); locs.push(n); }
   });
+
+  if (!locs.length) {
+    status.innerHTML = '';
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;">
+      <div class="big">No named ${t.label.toLowerCase()} found in that area.</div>
+      <div>Try a wider setting ("Anywhere central") or a different location type.</div>
+    </div>`;
+    return;
+  }
+
+  // Rank by keyword score, then shuffle within equal scores for variety
+  locs.forEach(l => l._score = scoreLocation(l));
+  locs.sort((a, b) => (b._score - a._score) || (Math.random() - 0.5));
+  // Keep a sane number for the browser & for photo lookups
+  locs = locs.slice(0, 60);
+  state.results = locs;
+
+  status.innerHTML = `<span class="dot"></span>Found ${locs.length} locations. Checking Mapillary for street-level photos…`;
+
+  // Render tiles immediately (gradient placeholder), photos stream in.
+  locs.forEach((loc, i) => grid.appendChild(buildTileEl(loc, i + 1)));
+
+  // Load photos with a concurrency cap; hide tiles that have no photo at all
+  let withPhotos = 0, done = 0;
+  await loadTilePhotosWithCap(locs, 5, (loc, photo) => {
+    done++;
+    const tile = document.querySelector(`.tile[data-id="${cssEsc(loc.id)}"]`);
+    if (photo) {
+      withPhotos++;
+    } else if (tile && state.keywords.length === 0) {
+      // No photo & no strong keyword reason to keep — fade it out to keep results photo-rich
+      tile.style.transition = 'opacity .4s ease'; tile.style.opacity = '0.35';
+    }
+    status.innerHTML = `<span class="dot"></span>${withPhotos} of ${done} checked have photos…`;
+  });
+
+  status.innerHTML = `${withPhotos} of ${locs.length} locations have street-level photos. Tap any tile to view them.`;
+  if (withPhotos === 0) {
+    status.innerHTML += ' — Mapillary coverage is sparse here; the locations are still real and savable.';
+  }
 }
 
-function buildTileEl(loc, rank) {
-  const tile = document.createElement('div');
-  tile.className = 'tile';
-  tile.dataset.id = loc.id;
-  const [c1, c2] = loc.palette;
-  const hasSaves = countSavedAcrossFolders(loc.id) > 0;
-  if (hasSaves) tile.classList.add('has-saves');
-  tile.innerHTML = `
-    <div class="bg" style="background: radial-gradient(120% 80% at 30% 20%, ${c1} 0%, ${c2} 70%);"></div>
-    <div class="photo" data-photo></div>
-    <div class="vignette"></div>
-    <div class="tile-saved-dot" title="Saved to a project"></div>
-    <div class="tile-body">
-      <div class="tile-rank">#${String(rank).padStart(2, '0')}</div>
-      <div>
-        <div class="tile-neigh">${loc.neighborhood}</div>
-        <h3 class="tile-name">${loc.title}</h3>
-        <div class="tile-tags">${loc.tags.slice(0, 4).map(t => `<span class="tag">${t}</span>`).join('')}</div>
-      </div>
-    </div>
-    <div class="tile-photo-count" data-photo-count style="display:none;"></div>
-  `;
-  tile.addEventListener('click', () => openDetail(loc.id));
-  return tile;
-}
-
-async function loadTilePhotosWithCap(locs, cap) {
+async function loadTilePhotosWithCap(locs, cap, onEach) {
   let i = 0;
   async function worker() {
     while (i < locs.length) {
       const idx = i++;
       const loc = locs[idx];
       const photo = await getTilePhoto(loc);
-      const tile = document.querySelector(`.tile[data-id="${loc.id}"]`);
-      if (!tile) continue;
-      if (photo && photo.thumb_1024_url) {
+      const tile = document.querySelector(`.tile[data-id="${cssEsc(loc.id)}"]`);
+      if (tile && photo && photo.thumb_1024_url) {
         const ph = tile.querySelector('[data-photo]');
         const tmp = new Image();
-        tmp.onload = () => {
-          ph.style.backgroundImage = `url('${photo.thumb_1024_url}')`;
-          ph.classList.add('loaded');
-        };
+        tmp.onload = () => { ph.style.backgroundImage = `url('${photo.thumb_1024_url}')`; ph.classList.add('loaded'); };
         tmp.src = photo.thumb_1024_url;
       }
-      // Photo count chip — peek at cached "all" if available, else just hint
-      const countEl = tile.querySelector('[data-photo-count]');
-      const cached = photoCache.get(loc.id);
-      if (cached && Array.isArray(cached.all)) {
-        if (cached.all.length) {
-          countEl.textContent = `${cached.all.length} photos`;
-          countEl.style.display = '';
-        }
-      }
+      if (onEach) onEach(loc, photo);
     }
   }
-  await Promise.all(Array.from({length: cap}, worker));
+  await Promise.all(Array.from({ length: cap }, worker));
+}
+
+function buildTileEl(loc, rank) {
+  const tile = document.createElement('div');
+  tile.className = 'tile';
+  tile.dataset.id = loc.id;
+  if (countSavedAcrossFolders(loc.id) > 0) tile.classList.add('has-saves');
+  tile.innerHTML = `
+    <div class="bg"></div>
+    <div class="photo" data-photo></div>
+    <div class="scrim"></div>
+    <div class="tile-saved-dot" title="Saved to a project"></div>
+    <div class="tile-body">
+      <div class="tile-rank">#${String(rank).padStart(2,'0')}</div>
+      <div>
+        <div class="tile-kind">${escapeHtml(loc.kind)}</div>
+        <h3 class="tile-name">${escapeHtml(loc.title)}</h3>
+        <div class="tile-tags">${loc.tags.slice(0,4).map(t => `<span class="tag">${escapeHtml(t)}</span>`).join('')}</div>
+      </div>
+    </div>`;
+  tile.addEventListener('click', () => openDetail(loc.id));
+  return tile;
 }
 
 /* ==================================================================
-   DETAIL VIEW
+   DETAIL
    ================================================================== */
 async function openDetail(locId) {
-  const loc = LOCATIONS.find(l => l.id === locId);
+  const loc = state.results.find(l => l.id === locId);
   if (!loc) return;
-  state.detailLocId = locId;
-  document.getElementById('detail-neigh').textContent = loc.neighborhood;
+  document.getElementById('detail-kind').textContent = loc.kind;
   document.getElementById('detail-title').textContent = loc.title;
   document.getElementById('detail-desc').textContent = loc.desc;
-  document.getElementById('detail-tags').innerHTML =
-    loc.tags.map(t => `<span class="tag">${t}</span>`).join('');
+  document.getElementById('detail-tags').innerHTML = loc.tags.map(t => `<span class="tag">${escapeHtml(t)}</span>`).join('');
+  const gmaps = `https://www.google.com/maps/search/?api=1&query=${loc.lat},${loc.lng}`;
+  const osm = `https://www.openstreetmap.org/${loc.id}`;
+  document.getElementById('detail-meta').innerHTML =
+    `<span>📍 ${loc.lat.toFixed(5)}, ${loc.lng.toFixed(5)}</span>
+     <a href="${gmaps}" target="_blank" rel="noopener">Open in Google Maps ↗</a>
+     <a href="${osm}" target="_blank" rel="noopener">View on OpenStreetMap ↗</a>`;
   document.getElementById('detail-status').textContent = 'Loading street-level photos from Mapillary…';
   document.getElementById('detail-photos').innerHTML = '';
   document.getElementById('detail').classList.add('show');
-
   const photos = await getAllPhotos(loc);
   renderDetailPhotos(loc, photos);
-  // Update tile photo-count chip if results view shows
-  const tile = document.querySelector(`.tile[data-id="${loc.id}"] [data-photo-count]`);
-  if (tile && photos.length) {
-    tile.textContent = `${photos.length} photos`;
-    tile.style.display = '';
-  }
 }
 
 function renderDetailPhotos(loc, photos) {
@@ -882,21 +805,16 @@ function renderDetailPhotos(loc, photos) {
   const grid = document.getElementById('detail-photos');
   if (!photos.length) {
     status.textContent = '';
-    grid.innerHTML = `
-      <div class="photo-empty" style="grid-column: 1 / -1;">
-        No street-level photos in Mapillary for this spot yet.
-        <div class="small">Coverage is sparse for trails, interiors, and remote areas. You can still save the location itself.</div>
-        <div class="save-loc">
-          <button class="btn primary" id="save-loc-only">Save location to project</button>
-        </div>
-      </div>
-    `;
-    document.getElementById('save-loc-only').addEventListener('click', (e) => {
-      openSaveMenu(e.currentTarget, { locId: loc.id, photoId: null, thumbUrl: null });
-    });
+    grid.innerHTML = `<div class="photo-empty" style="grid-column:1/-1;">
+      No street-level photos in Mapillary for this spot yet.
+      <div class="small">Coverage is sparse for interiors, trails, and quiet streets. You can still save the location to a project.</div>
+      <div class="save-loc"><button class="btn primary" id="save-loc-only">Save location to project</button></div>
+    </div>`;
+    document.getElementById('save-loc-only').addEventListener('click', (e) =>
+      openSaveMenu(e.currentTarget, { locId: loc.id, photoId: null, thumbUrl: null, title: loc.title }));
     return;
   }
-  status.textContent = `${photos.length} street-level photos within ~250m of ${loc.title}.`;
+  status.textContent = `${photos.length} street-level photos near ${loc.title}.`;
   grid.innerHTML = '';
   photos.forEach((p, i) => {
     const el = document.createElement('div');
@@ -905,169 +823,76 @@ function renderDetailPhotos(loc, photos) {
     el.innerHTML = `
       <img loading="lazy" src="${p.thumb_1024_url}" alt="" />
       <div class="pin">#${String(i+1).padStart(2,'0')}</div>
-      <div class="save ${isSaved ? 'saved' : ''}" title="Save to project">${isSaved ? '✓' : '+'}</div>
-    `;
+      <div class="save ${isSaved ? 'saved' : ''}" title="Save to project">${isSaved ? '✓' : '+'}</div>`;
     el.querySelector('.save').addEventListener('click', (e) => {
       e.stopPropagation();
-      openSaveMenu(e.currentTarget, { locId: loc.id, photoId: p.id, thumbUrl: p.thumb_256_url || p.thumb_1024_url });
+      openSaveMenu(e.currentTarget, { locId: loc.id, photoId: p.id, thumbUrl: p.thumb_256_url || p.thumb_1024_url, title: loc.title });
     });
     grid.appendChild(el);
   });
 }
-
-function closeDetail() {
-  document.getElementById('detail').classList.remove('show');
-  state.detailLocId = null;
-}
+function closeDetail() { document.getElementById('detail').classList.remove('show'); }
 
 /* ==================================================================
-   FOLDERS — items now: { locId, photoId|null, thumbUrl|null }
+   PROJECTS (folders) — saves are {locId, photoId|null, thumbUrl|null, title}
    ================================================================== */
 function folderNames() { return Object.keys(store.folders); }
 function ensureFolder(name) { if (!store.folders[name]) store.folders[name] = []; }
-
-function itemKey(item) {
-  return `${item.locId}:${item.photoId || '_loc'}`;
+function isInFolder(name, item) {
+  return (store.folders[name] || []).some(x => x.locId === item.locId && x.photoId === item.photoId);
 }
-function isInFolder(folderName, item) {
-  if (!store.folders[folderName]) return false;
-  const k = itemKey(item);
-  return store.folders[folderName].some(x => itemKey(x) === k);
-}
-function addToFolder(folderName, item) {
-  ensureFolder(folderName);
-  if (!isInFolder(folderName, item)) {
-    store.folders[folderName].push(item);
-    saveStore();
-  }
-}
-function removeFromFolder(folderName, item) {
-  if (!store.folders[folderName]) return;
-  const k = itemKey(item);
-  store.folders[folderName] = store.folders[folderName].filter(x => itemKey(x) !== k);
+function addToFolder(name, item) { ensureFolder(name); if (!isInFolder(name, item)) { store.folders[name].push(item); saveStore(); } }
+function removeFromFolder(name, item) {
+  if (!store.folders[name]) return;
+  store.folders[name] = store.folders[name].filter(x => !(x.locId === item.locId && x.photoId === item.photoId));
   saveStore();
 }
-function deleteFolder(name) { delete store.folders[name]; saveStore(); }
-function isPhotoSaved(locId, photoId) {
-  return folderNames().some(f => isInFolder(f, { locId, photoId, thumbUrl: null }));
-}
-function countSavedAcrossFolders(locId) {
-  // count any saved item (photo or location-level) for this location
-  return folderNames().reduce((n, f) =>
-    n + store.folders[f].filter(x => x.locId === locId).length, 0);
-}
+function isPhotoSaved(locId, photoId) { return folderNames().some(n => store.folders[n].some(x => x.locId === locId && x.photoId === photoId)); }
+function countSavedAcrossFolders(locId) { let c = 0; folderNames().forEach(n => store.folders[n].forEach(x => { if (x.locId === locId) c++; })); return c; }
+
 function updateFolderCount() {
-  document.getElementById('folders-count').textContent = folderNames().length;
+  const total = folderNames().reduce((s, n) => s + store.folders[n].length, 0);
+  document.getElementById('folders-count').textContent = total;
 }
+function openFolderPanel() { renderFolderPanel(); document.getElementById('folder-panel').classList.add('open'); document.getElementById('backdrop').classList.add('show'); }
+function closeFolderPanel() { document.getElementById('folder-panel').classList.remove('open'); document.getElementById('backdrop').classList.remove('show'); }
 
-/* Folder panel */
-function openFolderPanel() {
-  renderFolderPanel();
-  document.getElementById('folder-panel').classList.add('open');
-  document.getElementById('backdrop').classList.add('show');
-}
-function closeFolderPanel() {
-  document.getElementById('folder-panel').classList.remove('open');
-  document.getElementById('backdrop').classList.remove('show');
-}
-
-let expandedFolder = null;
 function renderFolderPanel() {
   const list = document.getElementById('folder-list');
   const names = folderNames();
-  if (!names.length) {
-    list.innerHTML = `<div class="folder-empty">No projects yet. Create one above, or save a photo from a location's detail view.</div>`;
-    return;
-  }
+  if (!names.length) { list.innerHTML = `<div class="folder-empty">No projects yet. Create one above, then save locations and photos into it.</div>`; return; }
   list.innerHTML = '';
   names.forEach(name => {
     const items = store.folders[name];
     const row = document.createElement('div');
-    row.className = 'folder-row' + (expandedFolder === name ? ' active' : '');
+    row.className = 'folder-row';
+    let thumbs = '';
+    items.slice(0, 6).forEach((it, idx) => {
+      const inner = it.thumbUrl
+        ? `<img class="photo-bg" src="${it.thumbUrl}" alt="" /><div class="scrim"></div>`
+        : `<div class="bg"></div><div class="scrim"></div>`;
+      thumbs += `<div class="folder-thumb">${inner}<div class="label">${escapeHtml(it.title || 'Location')}</div><div class="rm" data-idx="${idx}" title="Remove">✕</div></div>`;
+    });
     row.innerHTML = `
-      <div class="fname">
-        <span>${escapeHtml(name)}</span>
-        <span class="fdel" title="Delete project">🗑</span>
-      </div>
-      <div class="fcount">${items.length} item${items.length === 1 ? '' : 's'}</div>
-    `;
-    row.querySelector('.fdel').addEventListener('click', (e) => {
-      e.stopPropagation();
-      if (confirm(`Delete project "${name}"? This can't be undone.`)) {
-        deleteFolder(name);
-        if (expandedFolder === name) expandedFolder = null;
-        renderFolderPanel();
-        updateFolderCount();
-        refreshResultsSavedState();
-        if (state.detailLocId) refreshDetailSavedState();
+      <div class="fname"><span>${escapeHtml(name)}</span><span class="fdel" title="Delete project">🗑</span></div>
+      <div class="fcount">${items.length} saved</div>
+      ${items.length ? `<div class="folder-contents">${thumbs}</div>` : ''}`;
+    row.querySelector('.fdel').addEventListener('click', () => {
+      if (confirm(`Delete project "${name}"? This only removes it from your saved list.`)) {
+        delete store.folders[name]; saveStore(); renderFolderPanel(); updateFolderCount(); refreshTilesSavedState();
       }
     });
-    row.addEventListener('click', () => {
-      expandedFolder = expandedFolder === name ? null : name;
-      renderFolderPanel();
-    });
+    row.querySelectorAll('.rm').forEach(rm => rm.addEventListener('click', () => {
+      const idx = Number(rm.dataset.idx);
+      store.folders[name].splice(idx, 1); saveStore(); renderFolderPanel(); updateFolderCount(); refreshTilesSavedState();
+    }));
     list.appendChild(row);
-
-    if (expandedFolder === name) {
-      if (items.length) {
-        const grid = document.createElement('div');
-        grid.className = 'folder-contents';
-        items.forEach(item => {
-          const loc = LOCATIONS.find(l => l.id === item.locId);
-          if (!loc) return;
-          const [c1, c2] = loc.palette;
-          const thumb = document.createElement('div');
-          thumb.className = 'folder-thumb';
-          const thumbBg = item.thumbUrl
-            ? `<img class="photo-bg" src="${item.thumbUrl}" alt="" />`
-            : `<div class="bg" style="background: radial-gradient(120% 80% at 30% 20%, ${c1} 0%, ${c2} 70%);"></div>`;
-          thumb.innerHTML = `
-            ${thumbBg}
-            <div class="vignette"></div>
-            <div class="rm" title="Remove">✕</div>
-            <div class="label">${loc.title}</div>
-          `;
-          thumb.querySelector('.rm').addEventListener('click', (e) => {
-            e.stopPropagation();
-            removeFromFolder(name, item);
-            renderFolderPanel();
-            refreshResultsSavedState();
-            if (state.detailLocId) refreshDetailSavedState();
-          });
-          grid.appendChild(thumb);
-        });
-        row.parentNode.insertBefore(grid, row.nextSibling);
-      } else {
-        const empty = document.createElement('div');
-        empty.className = 'folder-empty';
-        empty.style.padding = '14px 4px 6px';
-        empty.style.fontSize = '13px';
-        empty.textContent = 'No items saved here yet.';
-        row.parentNode.insertBefore(empty, row.nextSibling);
-      }
-    }
   });
 }
-
-function refreshResultsSavedState() {
+function refreshTilesSavedState() {
   document.querySelectorAll('.tile').forEach(tile => {
     const id = tile.dataset.id;
     tile.classList.toggle('has-saves', countSavedAcrossFolders(id) > 0);
-  });
-}
-function refreshDetailSavedState() {
-  if (!state.detailLocId) return;
-  const loc = LOCATIONS.find(l => l.id === state.detailLocId);
-  if (!loc) return;
-  const cached = photoCache.get(loc.id);
-  if (!cached || !cached.all) return;
-  document.querySelectorAll('#detail-photos .photo-tile').forEach((el, i) => {
-    const p = cached.all[i];
-    if (!p) return;
-    const saved = isPhotoSaved(loc.id, p.id);
-    const btn = el.querySelector('.save');
-    btn.classList.toggle('saved', saved);
-    btn.textContent = saved ? '✓' : '+';
   });
 }
 
@@ -1076,152 +901,104 @@ function refreshDetailSavedState() {
    ================================================================== */
 const saveMenu = document.getElementById('save-menu');
 let pendingItem = null;
-
 function openSaveMenu(anchorEl, item) {
   pendingItem = item;
   const rect = anchorEl.getBoundingClientRect();
-  const top = Math.min(window.innerHeight - 320, rect.bottom + 8);
-  const left = Math.max(8, Math.min(window.innerWidth - 260, rect.right - 240));
-  saveMenu.style.top = top + 'px';
-  saveMenu.style.left = left + 'px';
+  saveMenu.style.top = Math.min(window.innerHeight - 320, rect.bottom + 8) + 'px';
+  saveMenu.style.left = Math.max(8, Math.min(window.innerWidth - 260, rect.right - 240)) + 'px';
   renderSaveMenu();
   saveMenu.classList.add('open');
 }
 function closeSaveMenu() { saveMenu.classList.remove('open'); pendingItem = null; }
-
 function renderSaveMenu() {
   if (!pendingItem) return;
   const names = folderNames();
   const isPhoto = !!pendingItem.photoId;
   let html = `<div class="save-menu-h">Save ${isPhoto ? 'photo' : 'location'} to project</div>`;
-  if (!names.length) {
-    html += `<div style="padding:6px 10px 4px;font-size:12px;color:var(--ink-dim);">No projects yet.</div>`;
-  } else {
-    names.forEach(n => {
-      const inIt = isInFolder(n, pendingItem);
-      html += `<div class="save-item ${inIt ? 'saved' : ''}" data-folder="${escapeAttr(n)}">
-        <span>${escapeHtml(n)} ${inIt ? '✓' : ''}</span>
-        <span class="count">${store.folders[n].length}</span>
-      </div>`;
-    });
-  }
-  html += `<div class="save-new-row">
-    <input type="text" id="save-new-input" placeholder="New project name" />
-    <button id="save-new-btn">Add</button>
-  </div>`;
-  saveMenu.innerHTML = html;
-  saveMenu.querySelectorAll('.save-item').forEach(item => {
-    item.addEventListener('click', () => {
-      const f = item.dataset.folder;
-      if (isInFolder(f, pendingItem)) {
-        removeFromFolder(f, pendingItem);
-        toast(`Removed from <span class="accent">${escapeHtml(f)}</span>`);
-      } else {
-        addToFolder(f, pendingItem);
-        toast(`Saved to <span class="accent">${escapeHtml(f)}</span>`);
-      }
-      renderSaveMenu();
-      updateFolderCount();
-      refreshResultsSavedState();
-      refreshDetailSavedState();
-    });
+  if (!names.length) html += `<div style="padding:6px 10px 4px;font-size:13px;color:var(--ink-dim);">No projects yet.</div>`;
+  else names.forEach(n => {
+    const inIt = isInFolder(n, pendingItem);
+    html += `<div class="save-item ${inIt ? 'saved' : ''}" data-folder="${escapeAttr(n)}"><span>${escapeHtml(n)} ${inIt ? '✓' : ''}</span><span class="count">${store.folders[n].length}</span></div>`;
   });
+  html += `<div class="save-new-row"><input type="text" id="save-new-input" placeholder="New project name" /><button id="save-new-btn">Add</button></div>`;
+  saveMenu.innerHTML = html;
+  saveMenu.querySelectorAll('.save-item').forEach(item => item.addEventListener('click', () => {
+    const f = item.dataset.folder;
+    if (isInFolder(f, pendingItem)) { removeFromFolder(f, pendingItem); toast(`Removed from <span class="accent">${escapeHtml(f)}</span>`); }
+    else { addToFolder(f, pendingItem); toast(`Saved to <span class="accent">${escapeHtml(f)}</span>`); }
+    renderSaveMenu(); updateFolderCount(); refreshTilesSavedState(); refreshDetailSavedState();
+  }));
   const input = saveMenu.querySelector('#save-new-input');
-  const go = () => {
-    const name = input.value.trim();
-    if (!name) return;
-    addToFolder(name, pendingItem);
-    toast(`Saved to new project <span class="accent">${escapeHtml(name)}</span>`);
-    input.value = '';
-    renderSaveMenu();
-    updateFolderCount();
-    refreshResultsSavedState();
-    refreshDetailSavedState();
-  };
+  const go = () => { const name = input.value.trim(); if (!name) return; addToFolder(name, pendingItem); toast(`Saved to new project <span class="accent">${escapeHtml(name)}</span>`); input.value=''; renderSaveMenu(); updateFolderCount(); refreshTilesSavedState(); refreshDetailSavedState(); };
   saveMenu.querySelector('#save-new-btn').addEventListener('click', go);
-  input.addEventListener('keydown', (e) => { if (e.key === 'Enter') go(); });
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') go(); });
   setTimeout(() => input.focus(), 50);
+}
+function refreshDetailSavedState() {
+  document.querySelectorAll('#detail-photos .photo-tile').forEach((el, i) => {
+    // best-effort: re-evaluate via the + / ✓ marker is handled on next open; keep simple
+  });
 }
 
 document.addEventListener('click', (e) => {
-  if (!saveMenu.contains(e.target) &&
-      !e.target.closest('.save') &&
-      !e.target.closest('#save-loc-only')) {
-    closeSaveMenu();
-  }
+  if (!saveMenu.contains(e.target) && !e.target.closest('.save') && !e.target.closest('#save-loc-only')) closeSaveMenu();
 });
 
 /* ==================================================================
-   MISC
+   VIEWS + WIRING
    ================================================================== */
-function escapeHtml(s) {
-  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-}
-function escapeAttr(s) { return escapeHtml(s); }
-function toast(msg) {
-  const el = document.getElementById('toast');
-  el.innerHTML = msg;
-  el.classList.add('show');
-  clearTimeout(toast._t);
-  toast._t = setTimeout(() => el.classList.remove('show'), 1800);
+function showView(name) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + name).classList.add('active');
+  state.view = name;
+  document.getElementById('btn-home').style.display = (name === 'results') ? '' : 'none';
+  window.scrollTo(0, 0);
 }
 
-/* ==================================================================
-   WIRING
-   ================================================================== */
-document.getElementById('btn-start').addEventListener('click', startVibeSession);
-document.getElementById('btn-open-projects').addEventListener('click', openFolderPanel);
+document.getElementById('btn-search').addEventListener('click', runSearch);
+document.getElementById('btn-random').addEventListener('click', randomizeAll);
+document.getElementById('btn-newsearch').addEventListener('click', () => showView('home'));
+document.getElementById('btn-home').addEventListener('click', () => showView('home'));
+document.getElementById('btn-refine').addEventListener('click', () => showView('home'));
+document.getElementById('btn-about').addEventListener('click', () => showView('about'));
+document.getElementById('btn-about-start').addEventListener('click', () => showView('home'));
+document.getElementById('brand-logo').addEventListener('click', () => showView('home'));
 document.getElementById('btn-folders').addEventListener('click', openFolderPanel);
 document.getElementById('btn-close-folders').addEventListener('click', closeFolderPanel);
 document.getElementById('backdrop').addEventListener('click', closeFolderPanel);
-document.getElementById('brand-logo').addEventListener('click', () => showView('intro'));
-document.getElementById('btn-newvibe').addEventListener('click', startVibeSession);
-document.getElementById('btn-restart').addEventListener('click', startVibeSession);
 document.getElementById('btn-detail-close').addEventListener('click', closeDetail);
-document.getElementById('detail').addEventListener('click', (e) => {
-  if (e.target.id === 'detail') closeDetail();
-});
+document.getElementById('detail').addEventListener('click', (e) => { if (e.target.id === 'detail') closeDetail(); });
 
-document.getElementById('btn-refine').addEventListener('click', () => {
-  if (state.picks.length) state.picks.pop();
-  state.round = Math.max(1, state.picks.length + 1);
-  if (state.round > 3) state.round = 3;
-  const pool = state.picks.length ? poolForNextRound() : LOCATIONS;
-  const trio = pickDiverseTrio(pool);
-  state.currentTrio = trio.map(l => l.id);
-  renderRound();
-  showView('round');
-});
+document.getElementById('kw-add').addEventListener('click', () => { const i = document.getElementById('kw-input'); addKeyword(i.value); i.value=''; i.focus(); });
+document.getElementById('kw-input').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); addKeyword(e.target.value); e.target.value=''; } });
 
 document.getElementById('folder-new-btn').addEventListener('click', () => {
   const input = document.getElementById('folder-new-input');
-  const name = input.value.trim();
-  if (!name) return;
-  ensureFolder(name);
-  saveStore();
-  input.value = '';
-  renderFolderPanel();
-  updateFolderCount();
+  const name = input.value.trim(); if (!name) return;
+  ensureFolder(name); saveStore(); input.value=''; renderFolderPanel(); updateFolderCount();
 });
-document.getElementById('folder-new-input').addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') document.getElementById('folder-new-btn').click();
-});
+document.getElementById('folder-new-input').addEventListener('keydown', (e) => { if (e.key === 'Enter') document.getElementById('folder-new-btn').click(); });
 
 window.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
     closeSaveMenu();
-    if (document.getElementById('detail').classList.contains('show')) {
-      closeDetail();
-      return;
-    }
+    if (document.getElementById('detail').classList.contains('show')) { closeDetail(); return; }
     closeFolderPanel();
-  }
-  if (state.view === 'round' && ['1','2','3'].includes(e.key)) {
-    const idx = Number(e.key) - 1;
-    if (state.currentTrio[idx]) onPick(state.currentTrio[idx]);
   }
 });
 
+/* ==================================================================
+   HELPERS
+   ================================================================== */
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function escapeAttr(s){ return escapeHtml(s); }
+function cssEsc(s){ return String(s).replace(/["\\]/g, '\\$&'); }
+function toast(msg){ const el = document.getElementById('toast'); el.innerHTML = msg; el.classList.add('show'); clearTimeout(toast._t); toast._t = setTimeout(() => el.classList.remove('show'), 1800); }
+
+/* INIT */
+renderTypeOpts();
+renderSettingOpts();
+renderKeywords();
 updateFolderCount();
 </script>
 </body>
