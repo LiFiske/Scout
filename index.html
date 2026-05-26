@@ -149,6 +149,15 @@
   .status-bar .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--sage); margin-right: 8px; animation: pulse 1.1s ease-in-out infinite; vertical-align: middle; }
   @keyframes pulse { 0%,100% { opacity: 0.3; } 50% { opacity: 1; } }
 
+  .filter-pills { max-width: 1280px; margin: 0 auto 22px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .filter-pills .filter-label { font-size: 13px; color: var(--ink-mute); font-style: italic; margin-right: 4px; }
+  .filter-pill { font-size: 14px; padding: 6px 14px; border-radius: 999px; cursor: pointer; border: 1px solid var(--line-2); background: var(--bg-2); color: var(--ink-dim); transition: all 0.15s ease; text-transform: capitalize; }
+  .filter-pill:hover { border-color: var(--sage); color: var(--ink); }
+  .filter-pill.on { background: var(--sage); border-color: var(--sage); color: #fff; }
+
+  .load-more-row { max-width: 1280px; margin: 28px auto 0; display: flex; justify-content: center; }
+  .load-more-done { font-size: 14px; color: var(--ink-mute); font-style: italic; }
+
   .grid { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(248px, 1fr)); gap: 16px; }
   .tile { position: relative; border-radius: 14px; overflow: hidden; aspect-ratio: 4/5; border: 1px solid var(--line); background: var(--bg-2); cursor: pointer; transition: transform 0.25s ease, border-color 0.2s ease, box-shadow 0.25s ease; }
   .tile:hover { transform: translateY(-3px); border-color: var(--sage); box-shadow: 0 14px 32px rgba(43,42,50,0.12); }
@@ -340,7 +349,9 @@
     </div>
   </div>
   <div class="status-bar" id="status-bar"></div>
+  <div class="filter-pills" id="filter-pills"></div>
   <div class="grid" id="results-grid"></div>
+  <div class="load-more-row" id="load-more-row"></div>
 </section>
 
 <!-- ABOUT -->
@@ -429,8 +440,8 @@
 const TYPES = [
   { id: 'park',       label: 'Park / green space', osm: [['leisure','park'],['leisure','garden'],['landuse','recreation_ground']] },
   { id: 'water',      label: 'Water / riverfront',  osm: [['natural','water'],['waterway','riverbank'],['leisure','marina'],['man_made','pier']] },
-  { id: 'bridge',     label: 'Bridge',              osm: [['man_made','bridge'],['bridge','yes']] },
-  { id: 'viewpoint',  label: 'Viewpoint / overlook',osm: [['tourism','viewpoint'],['natural','peak']] },
+  { id: 'bridge',     label: 'Bridge',              osm: [['man_made','bridge']] },
+  { id: 'viewpoint',  label: 'Viewpoint / overlook',osm: [['tourism','viewpoint'],['natural','peak'],['natural','saddle']] },
   { id: 'industrial', label: 'Industrial',          osm: [['landuse','industrial'],['building','industrial'],['building','warehouse'],['man_made','works']] },
   { id: 'historic',   label: 'Historic',            osm: [['historic','*'],['building','historic'],['heritage','*']] },
   { id: 'religious',  label: 'Church / temple',     osm: [['amenity','place_of_worship'],['building','church'],['building','cathedral']] },
@@ -446,16 +457,19 @@ const TYPES = [
 /* Setting modifies the search radius / character. It does not hard-filter;
    it nudges the result framing and (for some) adds a secondary tag. */
 const SETTINGS = [
-  { id: 'any',       label: 'Anywhere central' },
+  { id: 'any',       label: 'Anywhere in metro' },
   { id: 'downtown',  label: 'Downtown core' },
   { id: 'eastside',  label: 'East side' },
   { id: 'waterfront',label: 'Near the river' },
   { id: 'nw',        label: 'NW / Pearl' },
 ];
 
-/* Bounding boxes [south, west, north, east] for Portland sub-areas. */
+/* Bounding boxes [south, west, north, east].
+   `any` now spans the practical Portland metro: Beaverton/Hillsboro edge
+   in the west to Gresham/Troutdale in the east, Vancouver waterfront north
+   to Lake Oswego / Oregon City south. */
 const BBOX = {
-  any:        [45.485, -122.72, 45.575, -122.60],
+  any:        [45.40, -122.85, 45.62, -122.40],
   downtown:   [45.505, -122.690, 45.532, -122.665],
   eastside:   [45.500, -122.665, 45.560, -122.600],
   waterfront: [45.505, -122.680, 45.545, -122.655],
@@ -470,7 +484,9 @@ const state = {
   type: null,
   setting: 'any',
   keywords: [],
-  results: [],
+  allResults: [],
+  activeFilters: null,
+  shownCount: 0,
 };
 
 /* ==================================================================
@@ -696,6 +712,8 @@ async function getAllPhotos(loc) {
 /* ==================================================================
    SEARCH FLOW
    ================================================================== */
+const PAGE_SIZE = 60;
+
 async function runSearch() {
   if (!state.type) { toast('Pick a location type first'); return; }
   const t = TYPES.find(x => x.id === state.type);
@@ -703,11 +721,14 @@ async function runSearch() {
   const grid = document.getElementById('results-grid');
   const status = document.getElementById('status-bar');
   grid.innerHTML = '';
+  document.getElementById('filter-pills').innerHTML = '';
+  state.activeFilters = new Set();
+  state.shownCount = 0;
   const settingLabel = (SETTINGS.find(s => s.id === state.setting) || {}).label || 'Portland';
   const kwChips = state.keywords.map(k => `<span class="chip">${escapeHtml(k)}</span>`).join(' ');
   document.getElementById('results-sub').innerHTML =
     `${t.label} · ${settingLabel}${state.keywords.length ? ' · ' + kwChips : ''}`;
-  status.innerHTML = `<span class="dot"></span>Querying OpenStreetMap for matching locations…`;
+  status.innerHTML = `<span class="dot"></span>Querying OpenStreetMap across the metro… (broad searches can take a few seconds)`;
 
   let elements;
   try {
@@ -734,7 +755,7 @@ async function runSearch() {
     status.innerHTML = '';
     grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;">
       <div class="big">No named ${t.label.toLowerCase()} found in that area.</div>
-      <div>Try a wider setting ("Anywhere central") or a different location type.</div>
+      <div>Try the "Anywhere in metro" setting or a different location type.</div>
     </div>`;
     return;
   }
@@ -742,32 +763,90 @@ async function runSearch() {
   // Rank by keyword score, then shuffle within equal scores for variety
   locs.forEach(l => l._score = scoreLocation(l));
   locs.sort((a, b) => (b._score - a._score) || (Math.random() - 0.5));
-  // Keep a sane number for the browser & for photo lookups
-  locs = locs.slice(0, 60);
-  state.results = locs;
 
-  status.innerHTML = `<span class="dot"></span>Found ${locs.length} locations. Searching Wikimedia Commons for photos…`;
+  // Keep the FULL set; pagination + filters work against this.
+  state.allResults = locs;
+  buildFilterPills(locs);
+  renderResultsPage(true);
+}
 
-  // Render tiles immediately (gradient placeholder), photos stream in.
-  locs.forEach((loc, i) => grid.appendChild(buildTileEl(loc, i + 1)));
+/* Collect the most common OSM tags across results and show them as
+   toggleable filter pills. Filtering is instant (no re-query). */
+function buildFilterPills(locs) {
+  const counts = {};
+  locs.forEach(l => l.tags.forEach(tag => { counts[tag] = (counts[tag] || 0) + 1; }));
+  // Only offer tags that meaningfully partition the set (appear >1, not on everything)
+  const tags = Object.entries(counts)
+    .filter(([tag, c]) => c > 1 && c < locs.length)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 12)
+    .map(([tag]) => tag);
+  const wrap = document.getElementById('filter-pills');
+  if (!tags.length) { wrap.innerHTML = ''; return; }
+  wrap.innerHTML = `<span class="filter-label">Narrow by feature:</span>`;
+  tags.forEach(tag => {
+    const pill = document.createElement('span');
+    pill.className = 'filter-pill';
+    pill.textContent = tag;
+    pill.addEventListener('click', () => {
+      pill.classList.toggle('on');
+      if (state.activeFilters.has(tag)) state.activeFilters.delete(tag);
+      else state.activeFilters.add(tag);
+      renderResultsPage(true);
+    });
+    wrap.appendChild(pill);
+  });
+}
 
-  // Load photos with a concurrency cap; hide tiles that have no photo at all
+/* Apply active filters to the full result set. */
+function filteredResults() {
+  if (!state.activeFilters || !state.activeFilters.size) return state.allResults;
+  return state.allResults.filter(l => {
+    for (const f of state.activeFilters) if (l.tags.includes(f)) return true;
+    return false;
+  });
+}
+
+/* Render the next page of results. reset=true clears and starts fresh. */
+async function renderResultsPage(reset) {
+  const grid = document.getElementById('results-grid');
+  const status = document.getElementById('status-bar');
+  const all = filteredResults();
+  if (reset) { grid.innerHTML = ''; state.shownCount = 0; document.getElementById('load-more-row').innerHTML = ''; }
+
+  const start = state.shownCount;
+  const batch = all.slice(start, start + PAGE_SIZE);
+  state.shownCount += batch.length;
+
+  if (!all.length) {
+    status.innerHTML = `No results match those filters. Tap a pill again to clear it.`;
+    document.getElementById('load-more-row').innerHTML = '';
+    return;
+  }
+
+  batch.forEach((loc, i) => grid.appendChild(buildTileEl(loc, start + i + 1)));
+
+  status.innerHTML = `<span class="dot"></span>Showing ${state.shownCount} of ${all.length}. Searching Wikimedia Commons for photos…`;
+
+  // Photos for just this batch
   let withPhotos = 0, done = 0;
-  await loadTilePhotosWithCap(locs, 5, (loc, photo) => {
+  await loadTilePhotosWithCap(batch, 5, (loc, photo) => {
     done++;
     const tile = document.querySelector(`.tile[data-id="${cssEsc(loc.id)}"]`);
-    if (photo) {
-      withPhotos++;
-    } else if (tile && state.keywords.length === 0) {
-      // No photo & no strong keyword reason to keep — fade it out to keep results photo-rich
-      tile.style.transition = 'opacity .4s ease'; tile.style.opacity = '0.35';
+    if (photo) withPhotos++;
+    else if (tile && (!state.activeFilters || !state.activeFilters.size) && state.keywords.length === 0) {
+      tile.style.transition = 'opacity .4s ease'; tile.style.opacity = '0.4';
     }
-    status.innerHTML = `<span class="dot"></span>${withPhotos} of ${done} checked have photos…`;
   });
 
-  status.innerHTML = `${withPhotos} of ${locs.length} locations have photos. Tap any tile to view them.`;
-  if (withPhotos === 0) {
-    status.innerHTML += ' — Commons coverage is sparse here; the locations are still real and savable.';
+  const remaining = all.length - state.shownCount;
+  status.innerHTML = `Showing ${state.shownCount} of ${all.length} location${all.length === 1 ? '' : 's'}. Tap any tile for photos.`;
+  const lm = document.getElementById('load-more-row');
+  if (remaining > 0) {
+    lm.innerHTML = `<button class="btn primary" id="load-more-btn">Load ${Math.min(PAGE_SIZE, remaining)} more · ${remaining} remaining</button>`;
+    document.getElementById('load-more-btn').addEventListener('click', () => renderResultsPage(false));
+  } else {
+    lm.innerHTML = `<div class="load-more-done">That's all ${all.length}.</div>`;
   }
 }
 
@@ -817,7 +896,7 @@ function buildTileEl(loc, rank) {
    DETAIL
    ================================================================== */
 async function openDetail(locId) {
-  const loc = state.results.find(l => l.id === locId);
+  const loc = state.allResults.find(l => l.id === locId);
   if (!loc) return;
   document.getElementById('detail-kind').textContent = loc.kind;
   document.getElementById('detail-title').textContent = loc.title;
