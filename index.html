@@ -398,9 +398,8 @@
       <!-- Step 2: setting -->
       <div class="qstep">
         <div class="qstep-label"><span class="n">02</span> Area <span class="qstep-hint">optional</span></div>
-        <div class="opt-grid" id="opts-setting"></div>
         <div class="nbhd-wrap">
-          <input type="text" id="nbhd-input" class="nbhd-input" placeholder="Or type a neighborhood (e.g. Hawthorne, Pearl, St. Johns…)" autocomplete="off" />
+          <input type="text" id="nbhd-input" class="nbhd-input" placeholder="Type a neighborhood (e.g. Hawthorne, Pearl, St. Johns…)" autocomplete="off" />
           <div class="nbhd-dropdown" id="nbhd-dropdown"></div>
           <div class="nbhd-chosen" id="nbhd-chosen"></div>
         </div>
@@ -434,7 +433,7 @@
     </div>
     <div class="home-foot">Live data from OpenStreetMap · photos from Wikimedia Commons · no two searches the same</div>
     <div class="home-note">
-      <sup>*</sup> Pet-friendly results come from places where someone has explicitly tagged dogs as allowed in OpenStreetMap, plus all dog parks. Many parks that allow dogs aren't tagged either way and won't appear in this filter — but they may still be fine to visit.
+      <sup>*</sup> Pet-friendly results come from places where someone has explicitly tagged dogs as allowed, plus all dog parks. Many parks that allow dogs aren't tagged either way and won't appear in this filter — but they may still be fine to visit.
     </div>
   </div>
 </section>
@@ -702,17 +701,6 @@ function renderTypeOpts() {
     wrap.appendChild(b);
   });
 }
-function renderSettingOpts() {
-  const wrap = document.getElementById('opts-setting');
-  wrap.innerHTML = '';
-  SETTINGS.forEach(s => {
-    const b = document.createElement('div');
-    b.className = 'opt' + (state.setting === s.id ? ' sel' : '');
-    b.textContent = s.label;
-    b.addEventListener('click', () => { state.setting = s.id; renderSettingOpts(); });
-    wrap.appendChild(b);
-  });
-}
 function renderKeywords() {
   const wrap = document.getElementById('kw-chips');
   wrap.innerHTML = '';
@@ -846,11 +834,11 @@ function activeBBox() {
 const RANDOM_KEYWORDS = ['brick','moss','tunnel','staircase','neon','arch','fountain','rust','glass','stone','column','water','iron','mural','fog','wood','concrete','gate','tower','vine'];
 function randomizeAll() {
   state.type = TYPES[Math.floor(Math.random() * TYPES.length)].id;
-  state.setting = SETTINGS[Math.floor(Math.random() * SETTINGS.length)].id;
+  state.setting = 'any';  // bubble UI removed; always metro-wide unless a neighborhood is chosen
   const n = 1 + Math.floor(Math.random() * 3);
   const pool = [...RANDOM_KEYWORDS].sort(() => Math.random() - 0.5).slice(0, n);
   state.keywords = pool;
-  renderTypeOpts(); renderSettingOpts(); renderKeywords();
+  renderTypeOpts(); renderKeywords();
   runSearch();
 }
 
@@ -1606,7 +1594,6 @@ function toast(msg){ const el = document.getElementById('toast'); el.innerHTML =
 
 /* INIT */
 renderTypeOpts();
-renderSettingOpts();
 renderKeywords();
 updateFolderCount();
 initGoldenHour();
