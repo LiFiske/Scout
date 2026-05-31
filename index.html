@@ -135,6 +135,31 @@
   .qactions .spacer { flex: 1; }
 
   .home-foot { text-align: center; margin-top: 26px; color: var(--ink-mute); font-size: 18px; font-style: italic; }
+  .home-note { max-width: 60ch; margin: 14px auto 0; text-align: center; color: var(--ink-mute); font-size: 13px; line-height: 1.55; font-style: italic; }
+  .home-note sup { font-style: normal; color: var(--plum); font-weight: 500; }
+
+  /* Neighborhood searchable dropdown */
+  .nbhd-wrap { position: relative; margin-top: 12px; }
+  .nbhd-input { width: 100%; background: var(--bg); border: 1px solid var(--line-2); border-radius: 10px; padding: 11px 14px; color: var(--ink); font-family: var(--serif); font-size: 15px; }
+  .nbhd-input:focus { outline: none; border-color: var(--sage); }
+  .nbhd-dropdown { position: absolute; top: calc(100% + 4px); left: 0; right: 0; max-height: 260px; overflow-y: auto; background: var(--bg-2); border: 1px solid var(--line-2); border-radius: 10px; box-shadow: 0 12px 30px rgba(28,32,24,0.1); z-index: 14; display: none; }
+  .nbhd-dropdown.open { display: block; }
+  .nbhd-opt { padding: 9px 14px; font-size: 14px; cursor: pointer; color: var(--ink-dim); }
+  .nbhd-opt:hover, .nbhd-opt.active { background: var(--bg-3); color: var(--ink); }
+  .nbhd-opt .pdx-q { font-size: 11px; color: var(--ink-mute); margin-left: 6px; letter-spacing: 0.06em; text-transform: uppercase; }
+  .nbhd-chosen { margin-top: 10px; font-size: 13px; color: var(--sage-deep); font-style: italic; min-height: 18px; }
+  .nbhd-chosen .clear { color: var(--plum); cursor: pointer; margin-left: 8px; border-bottom: 1px dotted var(--plum-soft); }
+  .nbhd-chosen .clear:hover { color: var(--plum-deep); }
+
+  /* Pet-friendly toggle */
+  .pet-row { margin-top: 18px; padding-top: 18px; border-top: 1px dashed var(--line); }
+  .pet-toggle { display: inline-flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; }
+  .pet-toggle input { display: none; }
+  .pet-box { width: 22px; height: 22px; border-radius: 6px; border: 1px solid var(--line-2); background: var(--bg); display: inline-flex; align-items: center; justify-content: center; transition: all 0.15s ease; }
+  .pet-toggle input:checked + .pet-box { background: var(--sage); border-color: var(--sage); }
+  .pet-toggle input:checked + .pet-box::after { content: '✓'; color: #fff; font-size: 14px; line-height: 1; }
+  .pet-label { font-size: 15px; color: var(--ink-dim); }
+  .pet-label sup { color: var(--plum); font-weight: 500; }
 
   /* ---------- RESULTS ---------- */
   #view-results { padding: 92px 28px 64px; }
@@ -157,6 +182,24 @@
 
   .load-more-row { max-width: 1280px; margin: 28px auto 0; display: flex; justify-content: center; }
   .load-more-done { font-size: 14px; color: var(--ink-mute); font-style: italic; }
+
+  /* ---------- GOLDEN HOUR PANEL ---------- */
+  .gh-panel { position: fixed; top: 96px; right: 24px; width: 280px; background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px 22px 18px; z-index: 15; box-shadow: 0 1px 0 rgba(0,0,0,0.02); }
+  .gh-sun { display: flex; justify-content: center; margin-bottom: 4px; }
+  .gh-sun svg { display: block; }
+  .gh-title { font-size: 12px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--sage-deep); text-align: center; margin-bottom: 12px; }
+  .gh-date { width: 100%; background: var(--bg); border: 1px solid var(--line-2); border-radius: 10px; padding: 9px 12px; color: var(--ink); font-family: var(--serif); font-size: 14px; text-align: center; margin-bottom: 14px; }
+  .gh-date:focus { outline: none; border-color: var(--sage); }
+  .gh-divider { height: 1px; background: var(--line); margin: 14px 0; }
+  .gh-period { margin-bottom: 14px; }
+  .gh-period:last-child { margin-bottom: 0; }
+  .gh-period-label { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--plum); margin-bottom: 3px; font-style: italic; }
+  .gh-period-time { font-size: 18px; color: var(--ink); letter-spacing: -0.01em; }
+  .gh-footer { display: flex; justify-content: space-between; gap: 12px; font-size: 12px; color: var(--ink-mute); margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
+  .gh-footer span:first-child { font-style: italic; }
+  @media (max-width: 1180px) {
+    .gh-panel { position: static; width: auto; max-width: 420px; margin: 0 auto 32px; }
+  }
 
   .grid { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 18px; }
   .tile { position: relative; border-radius: 14px; overflow: hidden; aspect-ratio: 4/5; border: 1px solid var(--line); background: var(--bg-2); cursor: pointer; transition: transform 0.25s ease, border-color 0.2s ease, box-shadow 0.25s ease; }
@@ -306,6 +349,40 @@
 
 <!-- HOME / QUERY -->
 <section id="view-home" class="view active">
+  <aside class="gh-panel" id="gh-panel">
+    <div class="gh-sun" aria-hidden="true">
+      <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#7a3f68" stroke-width="1.4" stroke-linecap="round">
+        <!-- Rays -->
+        <line x1="24" y1="3" x2="24" y2="8"/>
+        <line x1="24" y1="40" x2="24" y2="45"/>
+        <line x1="3" y1="24" x2="8" y2="24"/>
+        <line x1="40" y1="24" x2="45" y2="24"/>
+        <line x1="9.1" y1="9.1" x2="12.7" y2="12.7"/>
+        <line x1="35.3" y1="35.3" x2="38.9" y2="38.9"/>
+        <line x1="38.9" y1="9.1" x2="35.3" y2="12.7"/>
+        <line x1="12.7" y1="35.3" x2="9.1" y2="38.9"/>
+        <!-- Outer circle -->
+        <circle cx="24" cy="24" r="11"/>
+        <!-- Center dot (alchemical sun ⊙) -->
+        <circle cx="24" cy="24" r="2" fill="#7a3f68" stroke="none"/>
+      </svg>
+    </div>
+    <div class="gh-title">Golden Hour</div>
+    <input type="date" id="gh-date" class="gh-date" />
+    <div class="gh-divider"></div>
+    <div class="gh-period">
+      <div class="gh-period-label">Morning</div>
+      <div class="gh-period-time" id="gh-morning">—</div>
+    </div>
+    <div class="gh-period">
+      <div class="gh-period-label">Evening</div>
+      <div class="gh-period-time" id="gh-evening">—</div>
+    </div>
+    <div class="gh-footer">
+      <span>Sunrise <span id="gh-sunrise">—</span></span>
+      <span>Sunset <span id="gh-sunset">—</span></span>
+    </div>
+  </aside>
   <div class="home-wrap">
     <div class="home-kicker">Portland, Oregon</div>
     <h1 class="home-h1">What location do you <em>need</em>?</h1>
@@ -320,8 +397,13 @@
 
       <!-- Step 2: setting -->
       <div class="qstep">
-        <div class="qstep-label"><span class="n">02</span> Setting <span class="qstep-hint">optional</span></div>
+        <div class="qstep-label"><span class="n">02</span> Area <span class="qstep-hint">optional</span></div>
         <div class="opt-grid" id="opts-setting"></div>
+        <div class="nbhd-wrap">
+          <input type="text" id="nbhd-input" class="nbhd-input" placeholder="Or type a neighborhood (e.g. Hawthorne, Pearl, St. Johns…)" autocomplete="off" />
+          <div class="nbhd-dropdown" id="nbhd-dropdown"></div>
+          <div class="nbhd-chosen" id="nbhd-chosen"></div>
+        </div>
       </div>
 
       <!-- Step 3: keywords -->
@@ -336,6 +418,14 @@
         </div>
       </div>
 
+      <div class="pet-row">
+        <label class="pet-toggle">
+          <input type="checkbox" id="pet-check" />
+          <span class="pet-box"></span>
+          <span class="pet-label">Pet-friendly only<sup>*</sup></span>
+        </label>
+      </div>
+
       <div class="qactions">
         <button class="btn" id="btn-random" title="Don't know? Surprise me.">🎲 Randomize</button>
         <div class="spacer"></div>
@@ -343,6 +433,9 @@
       </div>
     </div>
     <div class="home-foot">Live data from OpenStreetMap · photos from Wikimedia Commons · no two searches the same</div>
+    <div class="home-note">
+      <sup>*</sup> Pet-friendly results come from places where someone has explicitly tagged dogs as allowed in OpenStreetMap, plus all dog parks. Many parks that allow dogs aren't tagged either way and won't appear in this filter — but they may still be fine to visit.
+    </div>
   </div>
 </section>
 
@@ -448,6 +541,80 @@
    ================================================================== */
 
 /* ==================================================================
+   GOLDEN HOUR — astronomical sunrise/sunset and golden hour boundaries.
+   No API, no key, no network. Browser Date handles PST/PDT for display.
+   Fixed to Portland (golden hour is identical city-wide at this scale).
+   ================================================================== */
+const PDX_LAT = 45.5152, PDX_LNG = -122.6784;
+
+function getSunTimes(date, lat, lng) {
+  const rad = Math.PI / 180, dayMs = 86400000, J1970 = 2440588, J2000 = 2451545;
+  const toJulian = d => d.valueOf() / dayMs - 0.5 + J1970;
+  const fromJulian = j => new Date((j + 0.5 - J1970) * dayMs);
+  const toDays = d => toJulian(d) - J2000;
+  const e = rad * 23.4397;
+  const solarMeanAnomaly = d => rad * (357.5291 + 0.98560028 * d);
+  const eclipticLongitude = M => {
+    const C = rad * (1.9148 * Math.sin(M) + 0.02 * Math.sin(2*M) + 0.0003 * Math.sin(3*M));
+    return M + C + rad * 102.9372 + Math.PI;
+  };
+  const declination = L => Math.asin(Math.sin(L) * Math.sin(e));
+  const julianCycle = (d, lw) => Math.round(d - 0.0009 - lw / (2 * Math.PI));
+  const approxTransit = (Ht, lw, n) => 0.0009 + (Ht + lw) / (2 * Math.PI) + n;
+  const solarTransitJ = (ds, M, L) => J2000 + ds + 0.0053 * Math.sin(M) - 0.0069 * Math.sin(2 * L);
+  const hourAngle = (h, phi, d) => Math.acos((Math.sin(h) - Math.sin(phi) * Math.sin(d)) / (Math.cos(phi) * Math.cos(d)));
+  const getSetJ = (h, lw, phi, dec, n, M, L) => solarTransitJ(approxTransit(hourAngle(h, phi, dec), lw, n), M, L);
+  const lw = rad * -lng, phi = rad * lat, d = toDays(date), n = julianCycle(d, lw);
+  const ds = approxTransit(0, lw, n);
+  const M = solarMeanAnomaly(ds);
+  const L = eclipticLongitude(M);
+  const dec = declination(L);
+  const Jnoon = solarTransitJ(ds, M, L);
+  const Jset = getSetJ(rad * -0.833, lw, phi, dec, n, M, L);
+  const Jrise = Jnoon - (Jset - Jnoon);
+  const JgoldEnd = getSetJ(rad * 6, lw, phi, dec, n, M, L);
+  const JgoldStart = Jnoon - (JgoldEnd - Jnoon);
+  return {
+    sunrise:            fromJulian(Jrise),
+    sunset:             fromJulian(Jset),
+    morningGoldenEnd:   fromJulian(JgoldStart),
+    eveningGoldenStart: fromJulian(JgoldEnd),
+  };
+}
+
+function fmtTime(d) {
+  return d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+}
+
+function renderGoldenHour(dateStr) {
+  // Parse YYYY-MM-DD as a local-time date (avoid the UTC-midnight pitfall)
+  let date;
+  if (dateStr) {
+    const [y, m, d] = dateStr.split('-').map(Number);
+    date = new Date(y, m - 1, d, 12, 0, 0);  // noon local, so the day boundary is clean
+  } else {
+    date = new Date();
+  }
+  const t = getSunTimes(date, PDX_LAT, PDX_LNG);
+  document.getElementById('gh-morning').textContent = `${fmtTime(t.sunrise)} – ${fmtTime(t.morningGoldenEnd)}`;
+  document.getElementById('gh-evening').textContent = `${fmtTime(t.eveningGoldenStart)} – ${fmtTime(t.sunset)}`;
+  document.getElementById('gh-sunrise').textContent = fmtTime(t.sunrise);
+  document.getElementById('gh-sunset').textContent = fmtTime(t.sunset);
+}
+
+function initGoldenHour() {
+  const input = document.getElementById('gh-date');
+  // Default = today in the user's local timezone
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, '0');
+  const dd = String(today.getDate()).padStart(2, '0');
+  input.value = `${yyyy}-${mm}-${dd}`;
+  renderGoldenHour(input.value);
+  input.addEventListener('change', () => renderGoldenHour(input.value));
+}
+
+/* ==================================================================
    QUERY VOCABULARY
    Each "type" maps to one or more concrete OSM tag filters (key=value).
    This is the translation layer between plain language and OSM.
@@ -502,6 +669,9 @@ const state = {
   allResults: [],
   activeFilters: null,
   shownCount: 0,
+  neighborhood: null,     // {name, lat, lng, quad} when chosen
+  neighborhoods: [],      // full list loaded once from OSM
+  petOnly: false,
 };
 
 /* ==================================================================
@@ -567,6 +737,110 @@ function addKeyword(raw) {
 }
 
 /* ==================================================================
+   NEIGHBORHOODS — load once from OSM, populate a searchable dropdown.
+   Selecting a neighborhood overrides the bbox used by the search.
+   ================================================================== */
+async function loadNeighborhoods() {
+  const cached = sessionStorage.getItem('scoutpdx_nbhds');
+  if (cached) {
+    try { state.neighborhoods = JSON.parse(cached); wireNeighborhoodUI(); return; } catch (e) {}
+  }
+  const q = `[out:json][timeout:25];
+(
+  node["place"="neighbourhood"]["name"](45.40,-122.85,45.62,-122.40);
+  node["place"="suburb"]["name"](45.40,-122.85,45.62,-122.40);
+);
+out;`;
+  try {
+    const elements = await overpassFetch(q);
+    const seen = new Set();
+    const list = [];
+    elements.forEach(el => {
+      const name = el.tags && el.tags.name;
+      if (!name || seen.has(name)) return;
+      seen.add(name);
+      list.push({ name, lat: el.lat, lng: el.lon });
+    });
+    list.sort((a, b) => a.name.localeCompare(b.name));
+    state.neighborhoods = list;
+    sessionStorage.setItem('scoutpdx_nbhds', JSON.stringify(list));
+  } catch (e) {
+    // Network may be unavailable; leave list empty, the input still works (just no suggestions).
+    state.neighborhoods = [];
+  }
+  wireNeighborhoodUI();
+}
+
+function wireNeighborhoodUI() {
+  const input = document.getElementById('nbhd-input');
+  const drop = document.getElementById('nbhd-dropdown');
+  const chosen = document.getElementById('nbhd-chosen');
+
+  function renderDrop(filter) {
+    const q = (filter || '').trim().toLowerCase();
+    const matches = !state.neighborhoods.length
+      ? []
+      : state.neighborhoods
+          .filter(n => !q || n.name.toLowerCase().includes(q))
+          .slice(0, 40);
+    if (!matches.length) {
+      drop.innerHTML = state.neighborhoods.length
+        ? `<div class="nbhd-opt" style="cursor:default;">No matches</div>`
+        : `<div class="nbhd-opt" style="cursor:default;">Loading Portland neighborhoods…</div>`;
+    } else {
+      drop.innerHTML = matches.map(n =>
+        `<div class="nbhd-opt" data-name="${escapeAttr(n.name)}">${escapeHtml(n.name)}</div>`
+      ).join('');
+      drop.querySelectorAll('.nbhd-opt[data-name]').forEach(el => {
+        el.addEventListener('mousedown', (ev) => {
+          ev.preventDefault();
+          const nb = state.neighborhoods.find(x => x.name === el.dataset.name);
+          if (nb) selectNeighborhood(nb);
+        });
+      });
+    }
+    drop.classList.add('open');
+  }
+
+  function selectNeighborhood(nb) {
+    state.neighborhood = nb;
+    input.value = nb.name;
+    drop.classList.remove('open');
+    chosen.innerHTML = `Searching within <strong>${escapeHtml(nb.name)}</strong> <span class="clear" id="nbhd-clear">clear</span>`;
+    document.getElementById('nbhd-clear').addEventListener('click', clearNeighborhood);
+  }
+  function clearNeighborhood() {
+    state.neighborhood = null;
+    input.value = '';
+    chosen.innerHTML = '';
+  }
+
+  input.addEventListener('focus', () => renderDrop(input.value));
+  input.addEventListener('input', () => {
+    // Typing invalidates a previously chosen neighborhood
+    if (state.neighborhood && input.value !== state.neighborhood.name) clearNeighborhood();
+    renderDrop(input.value);
+  });
+  document.addEventListener('mousedown', (e) => {
+    if (!drop.contains(e.target) && e.target !== input) drop.classList.remove('open');
+  });
+}
+
+/* Build the bbox used for the current search:
+   neighborhood (if chosen) → ~2.2km square around its point;
+   otherwise the SETTINGS bbox. */
+function activeBBox() {
+  if (state.neighborhood) {
+    const { lat, lng } = state.neighborhood;
+    // ~0.015 deg lat ≈ 1.7km; lng adjusted by cos(lat) for true east-west km.
+    const dLat = 0.015;
+    const dLng = 0.015 / Math.cos(lat * Math.PI / 180);
+    return [lat - dLat, lng - dLng, lat + dLat, lng + dLng];
+  }
+  return BBOX[state.setting] || BBOX.any;
+}
+
+/* ==================================================================
    RANDOMIZER — fills every step and runs the search
    ================================================================== */
 const RANDOM_KEYWORDS = ['brick','moss','tunnel','staircase','neon','arch','fountain','rust','glass','stone','column','water','iron','mural','fog','wood','concrete','gate','tower','vine'];
@@ -585,7 +859,7 @@ function randomizeAll() {
    ================================================================== */
 function buildOverpassQuery() {
   const t = TYPES.find(x => x.id === state.type);
-  const bbox = BBOX[state.setting] || BBOX.any;
+  const bbox = activeBBox();
   const bboxStr = bbox.join(',');
   // For each osm tag pair, query nodes+ways+relations with a name.
   const clauses = t.osm.map(([k, v]) => {
@@ -622,7 +896,7 @@ function normalizeElement(el, typeLabel) {
   const name = tags.name;
   if (!name) return null;
   // Build a human tag list from the more descriptive OSM keys.
-  const interesting = ['religion','denomination','historic','building','leisure','natural','man_made','tourism','amenity','landuse','waterway','bridge','heritage','material','railway','place','artwork_type'];
+  const interesting = ['religion','denomination','historic','building','leisure','natural','man_made','tourism','amenity','landuse','waterway','bridge','heritage','material','railway','place','artwork_type','dog','pets_allowed'];
   const REDUNDANT = new Set(['place of worship','yes','building','attraction']);
   const tagList = [];
   interesting.forEach(k => {
@@ -744,11 +1018,14 @@ async function runSearch() {
   document.getElementById('filter-pills').innerHTML = '';
   state.activeFilters = new Set();
   state.shownCount = 0;
-  const settingLabel = (SETTINGS.find(s => s.id === state.setting) || {}).label || 'Portland';
+  const areaLabel = state.neighborhood
+    ? state.neighborhood.name
+    : (SETTINGS.find(s => s.id === state.setting) || {}).label || 'Portland';
   const kwChips = state.keywords.map(k => `<span class="chip">${escapeHtml(k)}</span>`).join(' ');
+  const petBadge = state.petOnly ? ` · <span class="chip">pet-friendly</span>` : '';
   document.getElementById('results-sub').innerHTML =
-    `${t.label} · ${settingLabel}${state.keywords.length ? ' · ' + kwChips : ''}`;
-  status.innerHTML = `<span class="dot"></span>Querying OpenStreetMap across the metro… (broad searches can take a few seconds)`;
+    `${t.label} · ${areaLabel}${state.keywords.length ? ' · ' + kwChips : ''}${petBadge}`;
+  status.innerHTML = `<span class="dot"></span>Querying OpenStreetMap${state.neighborhood ? ' within ' + escapeHtml(state.neighborhood.name) : ' across the metro'}…`;
 
   let elements;
   try {
@@ -771,11 +1048,26 @@ async function runSearch() {
     if (n && !seen.has(n.id)) { seen.add(n.id); locs.push(n); }
   });
 
+  // Pet-friendly post-filter (when the toggle is on)
+  if (state.petOnly) {
+    const ALLOWED_DOG = new Set(['yes','leashed','unleashed','designated','permissive']);
+    locs = locs.filter(l => {
+      const r = l.rawtags || {};
+      if (r['dog'] && ALLOWED_DOG.has(r['dog'])) return true;
+      if (r['pets_allowed'] === 'yes') return true;
+      if (r['leisure'] === 'dog_park') return true;
+      return false;
+    });
+  }
+
   if (!locs.length) {
     status.innerHTML = '';
+    const petNote = state.petOnly
+      ? ` (the pet-friendly filter is on — most OSM places aren't tagged for dogs, so this filter is strict)`
+      : '';
     grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;">
-      <div class="big">No named ${t.label.toLowerCase()} found in that area.</div>
-      <div>Try the "Anywhere in metro" setting or a different location type.</div>
+      <div class="big">No named ${t.label.toLowerCase()} found in that area.${petNote}</div>
+      <div>Try "Anywhere in metro", clear the pet-friendly filter, or pick a different location type.</div>
     </div>`;
     return;
   }
@@ -1286,6 +1578,7 @@ document.getElementById('lightbox').addEventListener('click', (e) => { if (e.tar
 
 document.getElementById('kw-add').addEventListener('click', () => { const i = document.getElementById('kw-input'); addKeyword(i.value); i.value=''; i.focus(); });
 document.getElementById('kw-input').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); addKeyword(e.target.value); e.target.value=''; } });
+document.getElementById('pet-check').addEventListener('change', (e) => { state.petOnly = e.target.checked; });
 
 document.getElementById('folder-new-btn').addEventListener('click', () => {
   const input = document.getElementById('folder-new-input');
@@ -1316,6 +1609,8 @@ renderTypeOpts();
 renderSettingOpts();
 renderKeywords();
 updateFolderCount();
+initGoldenHour();
+loadNeighborhoods();
 </script>
 </body>
 </html>
