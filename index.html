@@ -7,6 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
   :root {
@@ -138,6 +140,15 @@
   .home-note { max-width: 60ch; margin: 14px auto 0; text-align: center; color: var(--ink-mute); font-size: 13px; line-height: 1.55; font-style: italic; }
   .home-note sup { font-style: normal; color: var(--plum); font-weight: 500; }
 
+  /* Search history */
+  .history { max-width: 760px; margin: 0 auto 22px; }
+  .history-label { font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--ink-mute); margin-bottom: 10px; }
+  .history-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .history-chip { font-size: 13px; padding: 7px 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--bg-2); color: var(--ink-dim); cursor: pointer; transition: all 0.15s ease; display: inline-flex; align-items: center; gap: 8px; }
+  .history-chip:hover { border-color: var(--sage); color: var(--ink); }
+  .history-chip .x { color: var(--ink-mute); font-size: 11px; cursor: pointer; padding: 0 3px; }
+  .history-chip .x:hover { color: var(--plum); }
+
   /* Neighborhood searchable dropdown */
   .nbhd-wrap { position: relative; margin-top: 12px; }
   .nbhd-input { width: 100%; background: var(--bg); border: 1px solid var(--line-2); border-radius: 10px; padding: 11px 14px; color: var(--ink); font-family: var(--serif); font-size: 15px; }
@@ -152,7 +163,7 @@
   .nbhd-chosen .clear:hover { color: var(--plum-deep); }
 
   /* Pet-friendly toggle */
-  .pet-row { margin-top: 18px; padding-top: 18px; border-top: 1px dashed var(--line); }
+  .pet-row { margin-top: 18px; padding-top: 18px; border-top: 1px dashed var(--line); display: flex; flex-wrap: wrap; gap: 22px; }
   .pet-toggle { display: inline-flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; }
   .pet-toggle input { display: none; }
   .pet-box { width: 22px; height: 22px; border-radius: 6px; border: 1px solid var(--line-2); background: var(--bg); display: inline-flex; align-items: center; justify-content: center; transition: all 0.15s ease; }
@@ -183,6 +194,28 @@
   .load-more-row { max-width: 1280px; margin: 28px auto 0; display: flex; justify-content: center; }
   .load-more-done { font-size: 14px; color: var(--ink-mute); font-style: italic; }
 
+  /* Results split (map | grid) */
+  .results-split { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: minmax(360px, 460px) 1fr; gap: 22px; align-items: start; }
+  .results-map-col { position: sticky; top: 96px; }
+  .results-map { width: 100%; height: calc(100vh - 132px); min-height: 480px; border-radius: 14px; overflow: hidden; border: 1px solid var(--line); background: var(--bg-3); }
+  /* Leaflet style overrides to stay on-palette */
+  .leaflet-container { font-family: var(--serif); }
+  .scout-pin { background: var(--plum); width: 14px; height: 14px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(28,32,24,0.45); cursor: pointer; }
+  .scout-pin.no-photo { background: var(--sage); opacity: 0.7; }
+  .scout-pin.active { transform: scale(1.4); }
+  .leaflet-popup-content { font-family: var(--serif); margin: 10px 12px; font-size: 13px; line-height: 1.4; }
+  .leaflet-popup-content .pop-title { font-weight: 500; font-size: 15px; color: var(--ink); display: block; margin-bottom: 3px; }
+  .leaflet-popup-content .pop-kind { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--plum); }
+  .leaflet-popup-content .pop-link { display: inline-block; margin-top: 6px; color: var(--sage-deep); cursor: pointer; border-bottom: 1px solid var(--sage-soft); }
+  .results-map.hidden { display: none; }
+  .results-split.no-map { grid-template-columns: 1fr; }
+  .results-split.no-map .results-map-col { display: none; }
+  @media (max-width: 980px) {
+    .results-split { grid-template-columns: 1fr; }
+    .results-map-col { position: static; }
+    .results-map { height: 320px; min-height: 0; }
+  }
+
   /* ---------- GOLDEN HOUR PANEL ---------- */
   .gh-panel { position: fixed; top: 96px; right: 24px; width: 280px; background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px 22px 18px; z-index: 15; box-shadow: 0 1px 0 rgba(0,0,0,0.02); }
   .gh-sun { display: flex; justify-content: center; margin-bottom: 4px; }
@@ -195,6 +228,7 @@
   .gh-period:last-child { margin-bottom: 0; }
   .gh-period-label { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--plum); margin-bottom: 3px; font-style: italic; }
   .gh-period-time { font-size: 18px; color: var(--ink); letter-spacing: -0.01em; }
+  .gh-cloud { font-size: 12px; color: var(--ink-mute); margin-top: 2px; font-style: italic; min-height: 16px; }
   .gh-footer { display: flex; justify-content: space-between; gap: 12px; font-size: 12px; color: var(--ink-mute); margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
   .gh-footer span:first-child { font-style: italic; }
   @media (max-width: 1180px) {
@@ -241,6 +275,21 @@
   .detail-meta-row a { color: var(--sage-deep); text-decoration: none; border-bottom: 1px solid var(--sage-soft); }
   .detail-meta-row a:hover { border-color: var(--sage); }
   .detail-photos { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+
+  /* Sun direction panel (detail view) */
+  .sun-panel { display: flex; align-items: stretch; gap: 22px; margin: 0 0 18px; padding: 16px 18px; background: var(--bg-3); border: 1px solid var(--line); border-radius: 12px; }
+  .sun-compass { flex: 0 0 auto; width: 96px; }
+  .sun-compass svg { width: 96px; height: 96px; }
+  .sun-info { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 8px; font-size: 14px; }
+  .sun-info .sun-line { display: flex; align-items: baseline; gap: 8px; color: var(--ink-dim); }
+  .sun-info .sun-line .lbl { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--plum); min-width: 70px; }
+  .sun-info .sun-line .val { font-size: 14px; }
+  .sun-info .sun-line .compass { color: var(--sage-deep); font-style: italic; }
+  .sun-info .sun-note { font-size: 12px; color: var(--ink-mute); font-style: italic; margin-top: 4px; }
+  @media (max-width: 600px) {
+    .sun-panel { flex-direction: column; align-items: center; }
+    .sun-info { width: 100%; }
+  }
   .photo-tile { position: relative; aspect-ratio: 4/3; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); background: var(--bg-3); cursor: pointer; transition: transform 0.2s ease, border-color 0.2s ease; }
   .photo-tile:hover { transform: translateY(-2px); border-color: var(--sage); }
   .photo-tile img { width: 100%; height: 100%; object-fit: cover; display: block; cursor: zoom-in; }
@@ -299,6 +348,29 @@
   .folder-thumb:hover .rm { opacity: 1; }
   .folder-empty { text-align: center; color: var(--ink-mute); font-style: italic; font-size: 21px; padding: 40px 10px; }
 
+  .folder-toolbar { display: flex; justify-content: flex-end; margin-bottom: 14px; }
+  .loc-group { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
+  .loc-group:first-of-type { margin-top: 10px; padding-top: 10px; }
+  .loc-group-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; gap: 10px; }
+  .loc-group-title { font-size: 16px; font-weight: 500; letter-spacing: -0.01em; }
+  .loc-group-count { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-mute); }
+  .loc-notes { width: 100%; margin-top: 9px; background: var(--bg); border: 1px solid var(--line-2); border-radius: 8px; padding: 8px 11px; color: var(--ink); font-family: var(--serif); font-size: 14px; min-height: 56px; resize: vertical; }
+  .loc-notes:focus { outline: none; border-color: var(--sage); }
+
+  /* Combine projects dialog */
+  .combine-dialog { position: fixed; inset: 0; background: rgba(28,32,24,0.5); z-index: 110; display: flex; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(4px); }
+  .combine-inner { width: min(520px, 100%); background: var(--bg-2); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; box-shadow: 0 30px 80px rgba(28,32,24,0.3); }
+  .combine-head { display: flex; justify-content: space-between; align-items: center; padding: 18px 22px; border-bottom: 1px solid var(--line); }
+  .combine-head h3 { font-weight: 500; font-size: 22px; margin: 0; letter-spacing: -0.01em; }
+  .combine-body { padding: 18px 22px 22px; }
+  .combine-hint { font-size: 14px; color: var(--ink-dim); margin-bottom: 14px; font-style: italic; }
+  .combine-list { margin-bottom: 16px; max-height: 320px; overflow-y: auto; }
+  .combine-row { display: flex; align-items: center; gap: 10px; padding: 9px 4px; border-bottom: 1px solid var(--line); cursor: pointer; font-size: 15px; }
+  .combine-row:last-child { border-bottom: 0; }
+  .combine-row .combine-count { margin-left: auto; font-size: 12px; color: var(--ink-mute); }
+  .combine-name { width: 100%; background: var(--bg); border: 1px solid var(--line-2); border-radius: 10px; padding: 10px 14px; color: var(--ink); font-family: var(--serif); font-size: 15px; margin-bottom: 14px; }
+  .combine-name:focus { outline: none; border-color: var(--sage); }
+
   /* Save-to popover */
   .save-menu { position: fixed; background: var(--bg-2); border: 1px solid var(--line-2); border-radius: 12px; padding: 8px; min-width: 240px; max-height: 320px; overflow-y: auto; box-shadow: 0 20px 50px rgba(43,42,50,0.18); z-index: 60; display: none; }
   .save-menu.open { display: block; }
@@ -324,6 +396,18 @@
   .lightbox-close:hover { background: rgba(255,255,255,0.24); }
   .lightbox-src { color: #d9c6d3; font-size: 14px; text-decoration: none; border-bottom: 1px solid rgba(217,198,211,0.4); }
   .lightbox-src:hover { color: #fff; }
+
+  /* Coachmark — one-time tip overlay */
+  .coachmark { position: fixed; bottom: 32px; right: 32px; max-width: 320px; background: var(--bg-2); border: 1px solid var(--sage); border-radius: 14px; padding: 16px 18px 16px 20px; box-shadow: 0 16px 40px rgba(28,32,24,0.18); z-index: 130; display: none; }
+  .coachmark.show { display: block; animation: fade-up .35s ease both; }
+  @keyframes fade-up { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  .coachmark-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+  .coachmark-head .label { font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--plum); font-style: italic; }
+  .coachmark-head .x { font-size: 14px; cursor: pointer; color: var(--ink-mute); padding: 2px 6px; border-radius: 6px; }
+  .coachmark-head .x:hover { color: var(--ink); background: var(--bg-3); }
+  .coachmark-body { font-size: 14px; line-height: 1.5; color: var(--ink-dim); }
+  .coachmark-body strong { color: var(--ink); font-weight: 500; }
+  @media (max-width: 600px) { .coachmark { left: 16px; right: 16px; bottom: 16px; max-width: none; } }
 
   @media (max-width: 640px) {
     header { padding: 14px 16px; }
@@ -373,10 +457,12 @@
     <div class="gh-period">
       <div class="gh-period-label">Morning</div>
       <div class="gh-period-time" id="gh-morning">—</div>
+      <div class="gh-cloud" id="gh-morning-cloud"></div>
     </div>
     <div class="gh-period">
       <div class="gh-period-label">Evening</div>
       <div class="gh-period-time" id="gh-evening">—</div>
+      <div class="gh-cloud" id="gh-evening-cloud"></div>
     </div>
     <div class="gh-footer">
       <span>Sunrise <span id="gh-sunrise">—</span></span>
@@ -387,6 +473,11 @@
     <div class="home-kicker">Portland, Oregon</div>
     <h1 class="home-h1">What location do you <em>need</em>?</h1>
     <p class="home-lede">Tell us the kind of place, the setting, and a few details. Scout pulls real Portland locations from OpenStreetMap and finds photographs of each one from Wikimedia Commons.</p>
+
+    <div class="history" id="history" style="display:none;">
+      <div class="history-label">Recent searches</div>
+      <div class="history-chips" id="history-chips"></div>
+    </div>
 
     <div class="qcard">
       <!-- Step 1: location type -->
@@ -423,6 +514,11 @@
           <span class="pet-box"></span>
           <span class="pet-label">Pet-friendly only<sup>*</sup></span>
         </label>
+        <label class="pet-toggle">
+          <input type="checkbox" id="access-check" />
+          <span class="pet-box"></span>
+          <span class="pet-label">Wheelchair accessible only<sup>*</sup></span>
+        </label>
       </div>
 
       <div class="qactions">
@@ -433,7 +529,7 @@
     </div>
     <div class="home-foot">Live data from OpenStreetMap · photos from Wikimedia Commons · no two searches the same</div>
     <div class="home-note">
-      <sup>*</sup> Pet-friendly results come from places where someone has explicitly tagged dogs as allowed, plus all dog parks. Many parks that allow dogs aren't tagged either way and won't appear in this filter — but they may still be fine to visit.
+      <sup>*</sup> These filters surface only places that have been explicitly tagged for dogs or wheelchair access, plus all dog parks. Many spots that allow dogs or are accessible aren't tagged either way — they won't appear in these filters, but may still be fine to visit.
     </div>
   </div>
 </section>
@@ -446,14 +542,22 @@
       <p class="results-sub" id="results-sub"></p>
     </div>
     <div class="results-actions">
+      <button class="btn ghost" id="btn-toggle-map" title="Toggle map">🗺 Map</button>
       <button class="btn ghost" id="btn-refine">Edit search</button>
       <button class="btn" id="btn-newsearch">New search</button>
     </div>
   </div>
   <div class="status-bar" id="status-bar"></div>
   <div class="filter-pills" id="filter-pills"></div>
-  <div class="grid" id="results-grid"></div>
-  <div class="load-more-row" id="load-more-row"></div>
+  <div class="results-split">
+    <aside class="results-map-col" id="results-map-col">
+      <div class="results-map" id="results-map"></div>
+    </aside>
+    <div class="results-grid-col">
+      <div class="grid" id="results-grid"></div>
+      <div class="load-more-row" id="load-more-row"></div>
+    </div>
+  </div>
 </section>
 
 <!-- ABOUT -->
@@ -503,6 +607,7 @@
     </div>
     <div class="detail-body">
       <div class="detail-meta-row" id="detail-meta"></div>
+      <div class="sun-panel" id="sun-panel"></div>
       <div class="detail-status" id="detail-status">Loading photos…</div>
       <div class="detail-photos" id="detail-photos"></div>
     </div>
@@ -531,6 +636,12 @@
   <img id="lightbox-img" src="" alt="" />
   <a class="lightbox-src" id="lightbox-src" href="#" target="_blank" rel="noopener">View on Wikimedia Commons ↗</a>
 </div>
+<div class="coachmark" id="coachmark">
+  <div class="coachmark-head"><span class="label">Tip</span><span class="x" id="coachmark-close">✕</span></div>
+  <div class="coachmark-body">
+    Tap the <strong>+</strong> on any photo to save it to a <strong>project</strong>. Saved projects live in the top-right corner and can be exported as PDF lookbooks.
+  </div>
+</div>
 <div class="toast" id="toast"></div>
 
 <script>
@@ -558,6 +669,8 @@ function getSunTimes(date, lat, lng) {
     return M + C + rad * 102.9372 + Math.PI;
   };
   const declination = L => Math.asin(Math.sin(L) * Math.sin(e));
+  const rightAscension = L => Math.atan2(Math.sin(L) * Math.cos(e), Math.cos(L));
+  const siderealTime = (d, lw) => rad * (280.16 + 360.9856235 * d) - lw;
   const julianCycle = (d, lw) => Math.round(d - 0.0009 - lw / (2 * Math.PI));
   const approxTransit = (Ht, lw, n) => 0.0009 + (Ht + lw) / (2 * Math.PI) + n;
   const solarTransitJ = (ds, M, L) => J2000 + ds + 0.0053 * Math.sin(M) - 0.0069 * Math.sin(2 * L);
@@ -573,12 +686,38 @@ function getSunTimes(date, lat, lng) {
   const Jrise = Jnoon - (Jset - Jnoon);
   const JgoldEnd = getSetJ(rad * 6, lw, phi, dec, n, M, L);
   const JgoldStart = Jnoon - (JgoldEnd - Jnoon);
+
+  /* Azimuth at an arbitrary moment, in degrees from North (clockwise).
+     0 = N, 90 = E, 180 = S, 270 = W. */
+  function azimuthAt(when) {
+    const dd = toDays(when);
+    const M2 = solarMeanAnomaly(dd);
+    const L2 = eclipticLongitude(M2);
+    const dec2 = declination(L2);
+    const ra = rightAscension(L2);
+    const H = siderealTime(dd, lw) - ra;       // local hour angle
+    // azimuth measured from south in standard form; convert to from-north clockwise
+    const az = Math.atan2(Math.sin(H), Math.cos(H) * Math.sin(phi) - Math.tan(dec2) * Math.cos(phi));
+    let deg = (az * 180 / Math.PI) + 180;       // 0..360 from north clockwise
+    if (deg < 0) deg += 360; if (deg >= 360) deg -= 360;
+    return deg;
+  }
+
+  const morningEnd = fromJulian(JgoldStart);
+  const eveningStart = fromJulian(JgoldEnd);
   return {
     sunrise:            fromJulian(Jrise),
     sunset:             fromJulian(Jset),
-    morningGoldenEnd:   fromJulian(JgoldStart),
-    eveningGoldenStart: fromJulian(JgoldEnd),
+    morningGoldenEnd:   morningEnd,
+    eveningGoldenStart: eveningStart,
+    morningAzimuth: azimuthAt(morningEnd),     // sun direction at AM golden hour peak
+    eveningAzimuth: azimuthAt(eveningStart),   // sun direction at PM golden hour peak
   };
+}
+
+function compassLabel(deg) {
+  const dirs = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'];
+  return dirs[Math.round(deg / 22.5) % 16];
 }
 
 function fmtTime(d) {
@@ -599,6 +738,58 @@ function renderGoldenHour(dateStr) {
   document.getElementById('gh-evening').textContent = `${fmtTime(t.eveningGoldenStart)} – ${fmtTime(t.sunset)}`;
   document.getElementById('gh-sunrise').textContent = fmtTime(t.sunrise);
   document.getElementById('gh-sunset').textContent = fmtTime(t.sunset);
+  // Fire weather lookup (non-blocking)
+  fetchWeatherCloud(dateStr, t.morningGoldenEnd, t.eveningGoldenStart);
+}
+
+/* ==================================================================
+   WEATHER — Open-Meteo, free, keyless. Returns hourly cloudcover for
+   the chosen date; we read the hour closest to each golden hour.
+   ================================================================== */
+const weatherCache = new Map();   // dateStr -> { hourly_cloud }
+
+async function fetchWeatherCloud(dateStr, amDate, pmDate) {
+  const cellAM = document.getElementById('gh-morning-cloud');
+  const cellPM = document.getElementById('gh-evening-cloud');
+  if (!cellAM || !cellPM) return;
+  cellAM.textContent = ''; cellPM.textContent = '';
+
+  let data;
+  if (weatherCache.has(dateStr)) data = weatherCache.get(dateStr);
+  else {
+    try {
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${PDX_LAT}&longitude=${PDX_LNG}&hourly=cloudcover&timezone=America/Los_Angeles&start_date=${dateStr}&end_date=${dateStr}`;
+      const res = await fetch(url);
+      if (!res.ok) throw new Error('weather ' + res.status);
+      const json = await res.json();
+      data = json.hourly || null;
+      weatherCache.set(dateStr, data);
+    } catch (e) {
+      // Open-Meteo provides forecasts ~16 days out, historical via a different endpoint.
+      // Just silently skip when unavailable (past dates or network issues).
+      weatherCache.set(dateStr, null);
+      return;
+    }
+  }
+  if (!data || !data.time || !data.cloudcover) return;
+
+  function cloudAt(when) {
+    // Match the hour string ("2026-05-30T20:00") in Open-Meteo's time array.
+    const targetHour = when.getHours();
+    const dayPart = dateStr;
+    const idx = data.time.findIndex(s => s.startsWith(dayPart) && Number(s.slice(11,13)) === targetHour);
+    if (idx === -1) return null;
+    return data.cloudcover[idx];
+  }
+  function descCloud(pct) {
+    if (pct == null) return '';
+    if (pct < 15) return `${pct}% clouds · clear ☀`;
+    if (pct < 40) return `${pct}% clouds · fair ⛅`;
+    if (pct < 75) return `${pct}% clouds · cloudy ☁`;
+    return `${pct}% clouds · overcast ☁`;
+  }
+  cellAM.textContent = descCloud(cloudAt(amDate));
+  cellPM.textContent = descCloud(cloudAt(pmDate));
 }
 
 function initGoldenHour() {
@@ -668,9 +859,10 @@ const state = {
   allResults: [],
   activeFilters: null,
   shownCount: 0,
-  neighborhood: null,     // {name, lat, lng, quad} when chosen
-  neighborhoods: [],      // full list loaded once from OSM
+  neighborhood: null,
+  neighborhoods: [],
   petOnly: false,
+  accessibleOnly: false,
 };
 
 /* ==================================================================
@@ -884,7 +1076,7 @@ function normalizeElement(el, typeLabel) {
   const name = tags.name;
   if (!name) return null;
   // Build a human tag list from the more descriptive OSM keys.
-  const interesting = ['religion','denomination','historic','building','leisure','natural','man_made','tourism','amenity','landuse','waterway','bridge','heritage','material','railway','place','artwork_type','dog','pets_allowed'];
+  const interesting = ['religion','denomination','historic','building','leisure','natural','man_made','tourism','amenity','landuse','waterway','bridge','heritage','material','railway','place','artwork_type','dog','pets_allowed','wheelchair'];
   const REDUNDANT = new Set(['place of worship','yes','building','attraction']);
   const tagList = [];
   interesting.forEach(k => {
@@ -912,13 +1104,64 @@ function normalizeElement(el, typeLabel) {
 }
 function cap(s){ return s.charAt(0).toUpperCase() + s.slice(1); }
 
-/* Score a location against keywords (loose match on name + tags). */
+/* ==================================================================
+   REFINED KEYWORD SEARCH
+   - Word-boundary matching (so "art" doesn't fire on "depart")
+   - Title matches score higher than tag matches
+   - Small synonym dictionary covers common scouting terms
+   - Loose stemming (trailing s/es) so "trees" matches "tree"
+   ================================================================== */
+const SYNONYMS = {
+  tunnel:    ['underpass','subway','passage'],
+  bridge:    ['span','overpass','viaduct'],
+  staircase: ['stairs','stairway','steps'],
+  fountain:  ['waterfall','spring'],
+  industrial:['warehouse','factory','works'],
+  brick:     ['masonry'],
+  graveyard: ['cemetery','grave'],
+  mural:     ['artwork','painting','street art'],
+  forest:    ['woods','wood','grove','timber'],
+  water:     ['river','stream','pond','lake','creek'],
+  arch:      ['archway','vault'],
+  glass:     ['greenhouse','conservatory'],
+  modern:    ['contemporary','glass'],
+  historic:  ['old','heritage','vintage','antique'],
+  rust:      ['rusted','rusty','oxidized'],
+  abandoned: ['derelict','disused','ruin','ruined','vacant'],
+};
+function expandKeyword(k) {
+  const base = k.toLowerCase().replace(/[^a-z0-9 ]/g,'').trim();
+  if (!base) return [];
+  const out = new Set([base]);
+  // simple stem strip (s/es)
+  if (base.endsWith('es') && base.length > 4) out.add(base.slice(0,-2));
+  else if (base.endsWith('s') && base.length > 3) out.add(base.slice(0,-1));
+  // synonym expansion (both directions)
+  if (SYNONYMS[base]) SYNONYMS[base].forEach(s => out.add(s));
+  Object.entries(SYNONYMS).forEach(([k2, vs]) => { if (vs.includes(base)) out.add(k2); });
+  return [...out];
+}
+function matchScore(haystack, needle) {
+  const re = new RegExp('\\b' + needle.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'), 'i');
+  return re.test(haystack) ? 1 : 0;
+}
 function scoreLocation(loc) {
   if (!state.keywords.length) return 0;
-  const hay = (loc.title + ' ' + loc.tags.join(' ') + ' ' + JSON.stringify(loc.rawtags)).toLowerCase();
-  let s = 0;
-  state.keywords.forEach(k => { if (hay.includes(k)) s += 1; });
-  return s;
+  const title = (loc.title || '').toLowerCase();
+  const tagBlob = loc.tags.join(' ').toLowerCase();
+  const rawBlob = Object.values(loc.rawtags || {}).join(' ').toLowerCase();
+  let total = 0;
+  state.keywords.forEach(kw => {
+    const variants = expandKeyword(kw);
+    let best = 0;
+    variants.forEach(v => {
+      if (matchScore(title, v))   best = Math.max(best, 4);   // title hit: heavy
+      else if (matchScore(tagBlob, v)) best = Math.max(best, 2); // structural tag hit
+      else if (matchScore(rawBlob, v)) best = Math.max(best, 1); // raw tag hit
+    });
+    total += best;
+  });
+  return total;
 }
 
 /* ==================================================================
@@ -992,6 +1235,77 @@ async function getAllPhotos(loc) {
 }
 
 /* ==================================================================
+   SEARCH HISTORY (localStorage)
+   ================================================================== */
+const HISTORY_KEY = 'scoutpdx_history_v1';
+const HISTORY_MAX = 8;
+function loadHistory() { try { return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]'); } catch (e) { return []; } }
+function saveHistoryEntry() {
+  if (!state.type) return;
+  const entry = {
+    type: state.type, setting: state.setting,
+    neighborhood: state.neighborhood ? { name: state.neighborhood.name, lat: state.neighborhood.lat, lng: state.neighborhood.lng } : null,
+    keywords: [...state.keywords], petOnly: state.petOnly, accessibleOnly: state.accessibleOnly,
+    ts: Date.now(),
+  };
+  const list = loadHistory();
+  // De-dupe by signature
+  const sig = JSON.stringify({t:entry.type,s:entry.setting,n:entry.neighborhood && entry.neighborhood.name,k:entry.keywords,p:entry.petOnly,a:entry.accessibleOnly});
+  const dedup = list.filter(x => JSON.stringify({t:x.type,s:x.setting,n:x.neighborhood && x.neighborhood.name,k:x.keywords,p:x.petOnly,a:x.accessibleOnly}) !== sig);
+  dedup.unshift(entry);
+  try { localStorage.setItem(HISTORY_KEY, JSON.stringify(dedup.slice(0, HISTORY_MAX))); } catch (e) {}
+  renderHistory();
+}
+function clearHistoryEntry(idx) {
+  const list = loadHistory();
+  list.splice(idx, 1);
+  try { localStorage.setItem(HISTORY_KEY, JSON.stringify(list)); } catch (e) {}
+  renderHistory();
+}
+function renderHistory() {
+  const list = loadHistory();
+  const wrap = document.getElementById('history');
+  const chips = document.getElementById('history-chips');
+  if (!list.length) { wrap.style.display = 'none'; return; }
+  wrap.style.display = '';
+  chips.innerHTML = '';
+  list.forEach((h, i) => {
+    const t = TYPES.find(x => x.id === h.type);
+    if (!t) return;
+    const area = h.neighborhood ? h.neighborhood.name : ((SETTINGS.find(s => s.id === h.setting) || {}).label || 'metro');
+    const kw = h.keywords && h.keywords.length ? ' · ' + h.keywords.join(', ') : '';
+    const chip = document.createElement('span');
+    chip.className = 'history-chip';
+    chip.innerHTML = `<span class="lbl">${escapeHtml(t.label)} · ${escapeHtml(area)}${escapeHtml(kw)}</span><span class="x" title="Remove">✕</span>`;
+    chip.querySelector('.lbl').addEventListener('click', () => rerunHistoryEntry(h));
+    chip.querySelector('.x').addEventListener('click', (e) => { e.stopPropagation(); clearHistoryEntry(i); });
+    chips.appendChild(chip);
+  });
+}
+function rerunHistoryEntry(h) {
+  state.type = h.type;
+  state.setting = h.setting || 'any';
+  state.keywords = [...(h.keywords || [])];
+  state.petOnly = !!h.petOnly;
+  state.accessibleOnly = !!h.accessibleOnly;
+  state.neighborhood = h.neighborhood ? { name: h.neighborhood.name, lat: h.neighborhood.lat, lng: h.neighborhood.lng } : null;
+  // Reflect into UI
+  renderTypeOpts(); renderKeywords();
+  document.getElementById('pet-check').checked = state.petOnly;
+  document.getElementById('access-check').checked = state.accessibleOnly;
+  const nbInput = document.getElementById('nbhd-input');
+  const nbChosen = document.getElementById('nbhd-chosen');
+  if (state.neighborhood) {
+    nbInput.value = state.neighborhood.name;
+    nbChosen.innerHTML = `Searching within <strong>${escapeHtml(state.neighborhood.name)}</strong> <span class="clear" id="nbhd-clear">clear</span>`;
+    document.getElementById('nbhd-clear').addEventListener('click', () => {
+      state.neighborhood = null; nbInput.value = ''; nbChosen.innerHTML = '';
+    });
+  } else { nbInput.value = ''; nbChosen.innerHTML = ''; }
+  runSearch();
+}
+
+/* ==================================================================
    SEARCH FLOW
    ================================================================== */
 const PAGE_SIZE = 60;
@@ -1011,8 +1325,9 @@ async function runSearch() {
     : (SETTINGS.find(s => s.id === state.setting) || {}).label || 'Portland';
   const kwChips = state.keywords.map(k => `<span class="chip">${escapeHtml(k)}</span>`).join(' ');
   const petBadge = state.petOnly ? ` · <span class="chip">pet-friendly</span>` : '';
+  const accBadge = state.accessibleOnly ? ` · <span class="chip">accessible</span>` : '';
   document.getElementById('results-sub').innerHTML =
-    `${t.label} · ${areaLabel}${state.keywords.length ? ' · ' + kwChips : ''}${petBadge}`;
+    `${t.label} · ${areaLabel}${state.keywords.length ? ' · ' + kwChips : ''}${petBadge}${accBadge}`;
   status.innerHTML = `<span class="dot"></span>Querying OpenStreetMap${state.neighborhood ? ' within ' + escapeHtml(state.neighborhood.name) : ' across the metro'}…`;
 
   let elements;
@@ -1036,7 +1351,38 @@ async function runSearch() {
     if (n && !seen.has(n.id)) { seen.add(n.id); locs.push(n); }
   });
 
-  // Pet-friendly post-filter (when the toggle is on)
+  // ----- Quality filters -----
+  // 1) Blacklist commercial chains by name (any category)
+  const CHAIN_NAMES = [
+    'safeway','fred meyer','plaid pantry','7-eleven','7 eleven','trader joe',
+    'new seasons','whole foods','walgreens','cvs','rite aid','target','walmart',
+    'costco','albertsons','starbucks','mcdonald','burger king','taco bell','subway',
+    'chipotle','dutch bros','wendys','wendy\'s','jack in the box','panda express',
+    'shari\'s','dennys','denny\'s','ihop','arbys','arby\'s','kfc','popeyes',
+    'little caesars','dominos','domino\'s','pizza hut','panera','jamba','chevron',
+    'shell','arco','76 station','speedway','circle k','am pm','best buy','home depot',
+    'lowes','lowe\'s','ross','tj maxx','ulta','sephora','petco','petsmart','goodwill',
+    'value village','bank of america','wells fargo','chase','us bank','umpqua bank',
+    'verizon','at&t','t-mobile','xfinity','comcast'
+  ];
+  locs = locs.filter(l => {
+    const t = (l.title || '').toLowerCase();
+    return !CHAIN_NAMES.some(c => t.includes(c));
+  });
+
+  // 2) For religious type, require at least one religious signal beyond amenity=place_of_worship
+  if (state.type === 'religious') {
+    const RELIGIOUS_BUILDINGS = new Set(['church','cathedral','chapel','mosque','synagogue','temple','shrine','monastery','gurdwara']);
+    locs = locs.filter(l => {
+      const r = l.rawtags || {};
+      if (r.religion) return true;
+      if (r.denomination) return true;
+      if (RELIGIOUS_BUILDINGS.has((r.building || '').toLowerCase())) return true;
+      return false;
+    });
+  }
+
+  // 3) Pet-friendly post-filter (when the toggle is on)
   if (state.petOnly) {
     const ALLOWED_DOG = new Set(['yes','leashed','unleashed','designated','permissive']);
     locs = locs.filter(l => {
@@ -1045,6 +1391,14 @@ async function runSearch() {
       if (r['pets_allowed'] === 'yes') return true;
       if (r['leisure'] === 'dog_park') return true;
       return false;
+    });
+  }
+
+  // 4) Accessibility post-filter (when the toggle is on)
+  if (state.accessibleOnly) {
+    locs = locs.filter(l => {
+      const w = (l.rawtags && l.rawtags.wheelchair || '').toLowerCase();
+      return w === 'yes' || w === 'limited' || w === 'designated';
     });
   }
 
@@ -1066,6 +1420,8 @@ async function runSearch() {
 
   // Keep the FULL set; pagination + filters work against this.
   state.allResults = locs;
+  saveHistoryEntry();
+  renderMapPins(locs);
   buildFilterPills(locs);
   renderResultsPage(true);
 }
@@ -1107,12 +1463,97 @@ function filteredResults() {
   });
 }
 
+/* ==================================================================
+   MAP VIEW — Leaflet, OSM tiles. Initialized lazily on first results.
+   ================================================================== */
+let mapInstance = null;
+let mapLayer = null;
+function ensureMap() {
+  if (mapInstance) return mapInstance;
+  if (typeof L === 'undefined') return null;
+  const container = document.getElementById('results-map');
+  if (!container) return null;
+  mapInstance = L.map(container, { zoomControl: true, attributionControl: true })
+    .setView([PDX_LAT, PDX_LNG], 11);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '© OpenStreetMap'
+  }).addTo(mapInstance);
+  mapLayer = L.layerGroup().addTo(mapInstance);
+  return mapInstance;
+}
+
+function renderMapPins(locs, attempts = 0) {
+  // Retry briefly if Leaflet hasn't finished loading from CDN yet
+  if (typeof L === 'undefined') {
+    if (attempts < 30) setTimeout(() => renderMapPins(locs, attempts + 1), 200);
+    return;
+  }
+  // Only build the map when results view is actually visible (and map not hidden)
+  const split = document.querySelector('.results-split');
+  if (!split || split.classList.contains('no-map')) return;
+  ensureMap();
+  if (!mapInstance) return;
+  mapInstance.invalidateSize();
+  mapLayer.clearLayers();
+  if (!locs || !locs.length) return;
+  const bounds = [];
+  locs.forEach(loc => {
+    if (loc.lat == null || loc.lng == null) return;
+    const icon = L.divIcon({
+      className: '',
+      html: `<div class="scout-pin"></div>`,
+      iconSize: [14, 14], iconAnchor: [7, 7]
+    });
+    const marker = L.marker([loc.lat, loc.lng], { icon })
+      .bindPopup(`<span class="pop-kind">${escapeHtml(loc.kind)}</span><span class="pop-title">${escapeHtml(loc.title)}</span><span class="pop-link" data-locid="${escapeAttr(loc.id)}">View photos →</span>`);
+    marker.on('popupopen', (ev) => {
+      const el = ev.popup.getElement();
+      const link = el && el.querySelector('.pop-link');
+      if (link) link.addEventListener('click', () => openDetail(link.dataset.locid));
+    });
+    marker.addTo(mapLayer);
+    bounds.push([loc.lat, loc.lng]);
+  });
+  if (bounds.length) {
+    mapInstance.fitBounds(bounds, { padding: [30, 30], maxZoom: 14 });
+  }
+}
+
+function toggleMap() {
+  const split = document.querySelector('.results-split');
+  if (!split) return;
+  const hidden = split.classList.toggle('no-map');
+  try { localStorage.setItem('scoutpdx_map_hidden', hidden ? '1' : '0'); } catch (e) {}
+  document.getElementById('btn-toggle-map').textContent = hidden ? '🗺 Show map' : '🗺 Hide map';
+  if (!hidden) {
+    // Map became visible — render pins for current results
+    renderMapPins(state.allResults || []);
+  }
+}
+
+function initMapPreference() {
+  const split = document.querySelector('.results-split');
+  if (!split) return;
+  let hidden = false;
+  try { hidden = localStorage.getItem('scoutpdx_map_hidden') === '1'; } catch (e) {}
+  if (hidden) split.classList.add('no-map');
+  const btn = document.getElementById('btn-toggle-map');
+  if (btn) btn.textContent = hidden ? '🗺 Show map' : '🗺 Hide map';
+}
+
 /* Render the next page of results. reset=true clears and starts fresh. */
 async function renderResultsPage(reset) {
   const grid = document.getElementById('results-grid');
   const status = document.getElementById('status-bar');
   const all = filteredResults();
-  if (reset) { grid.innerHTML = ''; state.shownCount = 0; document.getElementById('load-more-row').innerHTML = ''; }
+  if (reset) {
+    grid.innerHTML = '';
+    state.shownCount = 0;
+    document.getElementById('load-more-row').innerHTML = '';
+    // Filter pills may have thinned the set — re-render map to match
+    renderMapPins(all);
+  }
 
   const start = state.shownCount;
   const batch = all.slice(start, start + PAGE_SIZE);
@@ -1219,11 +1660,62 @@ async function openDetail(locId) {
     `<span>📍 ${loc.lat.toFixed(5)}, ${loc.lng.toFixed(5)}</span>
      <a href="${gmaps}" target="_blank" rel="noopener">Open in Google Maps ↗</a>
      <a href="${osm}" target="_blank" rel="noopener">View on OpenStreetMap ↗</a>`;
+  renderSunPanel(loc);
   document.getElementById('detail-status').textContent = 'Searching Wikimedia Commons for photos…';
   document.getElementById('detail-photos').innerHTML = '';
   document.getElementById('detail').classList.add('show');
   const photos = await getAllPhotos(loc);
   renderDetailPhotos(loc, photos);
+  maybeShowProjectTip();    // one-time coachmark, triggers after first detail open
+}
+
+/* Render the sun-direction compass for this location at the date currently
+   chosen in the golden hour panel. Direction = where the sun is in the sky
+   (where its light comes FROM). Pointer in the compass faces that direction. */
+function renderSunPanel(loc) {
+  const panel = document.getElementById('sun-panel');
+  if (!loc || loc.lat == null) { panel.style.display = 'none'; return; }
+  const dateStr = document.getElementById('gh-date').value;
+  let date;
+  if (dateStr) { const [y,m,d] = dateStr.split('-').map(Number); date = new Date(y, m-1, d, 12); }
+  else date = new Date();
+  const t = getSunTimes(date, loc.lat, loc.lng);
+  const amAz = t.morningAzimuth, pmAz = t.eveningAzimuth;
+  const amLbl = compassLabel(amAz), pmLbl = compassLabel(pmAz);
+  const fmt = d => d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+  // Build SVG compass with two pointer arrows (AM in plum, PM in sage)
+  const c = 48, r = 40;
+  function tip(az, len) {
+    const a = (az - 90) * Math.PI / 180;  // 0=N at top, clockwise
+    return [c + Math.cos(a) * len, c + Math.sin(a) * len];
+  }
+  const [ax, ay] = tip(amAz, 34);
+  const [px, py] = tip(pmAz, 34);
+  panel.style.display = '';
+  panel.innerHTML = `
+    <div class="sun-compass" aria-hidden="true">
+      <svg viewBox="0 0 96 96">
+        <circle cx="${c}" cy="${c}" r="${r}" fill="none" stroke="#c0cdad" stroke-width="1"/>
+        <line x1="${c}" y1="${c-r-3}" x2="${c}" y2="${c-r+3}" stroke="#5f7a48" stroke-width="1.5"/>
+        <line x1="${c}" y1="${c+r-3}" x2="${c}" y2="${c+r+3}" stroke="#c0cdad" stroke-width="1"/>
+        <line x1="${c-r-3}" y1="${c}" x2="${c-r+3}" y2="${c}" stroke="#c0cdad" stroke-width="1"/>
+        <line x1="${c+r-3}" y1="${c}" x2="${c+r+3}" y2="${c}" stroke="#c0cdad" stroke-width="1"/>
+        <text x="${c}" y="${c-r-6}" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="9" fill="#5f7a48" font-style="italic">N</text>
+        <!-- AM arrow (plum) -->
+        <line x1="${c}" y1="${c}" x2="${ax}" y2="${ay}" stroke="#7a3f68" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="${ax}" cy="${ay}" r="3" fill="#7a3f68"/>
+        <!-- PM arrow (sage) -->
+        <line x1="${c}" y1="${c}" x2="${px}" y2="${py}" stroke="#7a9461" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="${px}" cy="${py}" r="3" fill="#7a9461"/>
+        <!-- Center -->
+        <circle cx="${c}" cy="${c}" r="2.5" fill="#2c3a28"/>
+      </svg>
+    </div>
+    <div class="sun-info">
+      <div class="sun-line"><span class="lbl">AM gold</span><span class="val">${fmt(t.sunrise)}–${fmt(t.morningGoldenEnd)}</span><span class="compass">sun from the ${amLbl}</span></div>
+      <div class="sun-line"><span class="lbl">PM gold</span><span class="val">${fmt(t.eveningGoldenStart)}–${fmt(t.sunset)}</span><span class="compass">sun from the ${pmLbl}</span></div>
+      <div class="sun-note">For the date in the golden hour panel · arrow points to where the sun sits in the sky</div>
+    </div>`;
 }
 
 function renderDetailPhotos(loc, photos) {
@@ -1304,22 +1796,53 @@ function renderFolderPanel() {
   const names = folderNames();
   if (!names.length) { list.innerHTML = `<div class="folder-empty">No projects yet. Create one above, then save locations and photos into it.</div>`; return; }
   list.innerHTML = '';
+
+  // Top toolbar: combine into a single lookbook
+  if (names.length > 1) {
+    const bar = document.createElement('div');
+    bar.className = 'folder-toolbar';
+    bar.innerHTML = `<button class="btn small" id="btn-combine">⬇ Export combined lookbook…</button>`;
+    bar.querySelector('#btn-combine').addEventListener('click', openCombineDialog);
+    list.appendChild(bar);
+  }
+
   names.forEach(name => {
     const items = store.folders[name];
     const row = document.createElement('div');
     row.className = 'folder-row';
-    let thumbs = '';
-    items.slice(0, 6).forEach((it, idx) => {
-      const inner = it.thumbUrl
-        ? `<img class="photo-bg" src="${it.thumbUrl}" alt="" /><div class="scrim"></div>`
-        : `<div class="bg"></div><div class="scrim"></div>`;
-      thumbs += `<div class="folder-thumb">${inner}<div class="label">${escapeHtml(it.title || 'Location')}</div><div class="rm" data-idx="${idx}" title="Remove">✕</div></div>`;
+
+    // Group items by location for cleaner display
+    const byLoc = new Map();
+    items.forEach((it, idx) => {
+      if (!byLoc.has(it.locId)) byLoc.set(it.locId, { title: it.title, items: [], firstIdx: idx, locId: it.locId });
+      byLoc.get(it.locId).items.push({ ...it, _idx: idx });
     });
+
+    let groupsHTML = '';
+    byLoc.forEach(group => {
+      const photoItems = group.items.filter(i => i.thumbUrl);
+      const thumbs = photoItems.slice(0, 4).map(it =>
+        `<div class="folder-thumb"><img class="photo-bg" src="${it.thumbUrl}" alt="" /><div class="scrim"></div><div class="rm" data-idx="${it._idx}" title="Remove">✕</div></div>`
+      ).join('');
+      // notes are stored on the first item of the group (the "location anchor")
+      const anchor = group.items[0];
+      const notes = anchor.notes || '';
+      groupsHTML += `
+        <div class="loc-group" data-locid="${escapeAttr(group.locId)}">
+          <div class="loc-group-head">
+            <span class="loc-group-title">${escapeHtml(group.title || 'Location')}</span>
+            <span class="loc-group-count">${photoItems.length} photo${photoItems.length === 1 ? '' : 's'}</span>
+          </div>
+          ${thumbs ? `<div class="folder-contents">${thumbs}</div>` : ''}
+          <textarea class="loc-notes" data-anchor-idx="${anchor._idx}" placeholder="Notes about this location (lighting, access, ideas)…">${escapeHtml(notes)}</textarea>
+        </div>`;
+    });
+
     row.innerHTML = `
       <div class="fname"><span>${escapeHtml(name)}</span><span class="fdel" title="Delete project">🗑</span></div>
-      <div class="fcount">${items.length} saved</div>
-      ${items.length ? `<div class="folder-contents">${thumbs}</div>` : ''}
-      ${items.length ? `<button class="btn plum small fexport" style="margin-top:12px;width:100%;justify-content:center;">⬇ Export as PDF lookbook</button>` : ''}`;
+      <div class="fcount">${items.length} saved · ${byLoc.size} location${byLoc.size === 1 ? '' : 's'}</div>
+      ${groupsHTML}
+      ${items.length ? `<button class="btn plum small fexport" style="margin-top:14px;width:100%;justify-content:center;">⬇ Export as PDF lookbook</button>` : ''}`;
     const exportBtn = row.querySelector('.fexport');
     if (exportBtn) exportBtn.addEventListener('click', () => exportProjectPDF(name));
     row.querySelector('.fdel').addEventListener('click', () => {
@@ -1331,7 +1854,59 @@ function renderFolderPanel() {
       const idx = Number(rm.dataset.idx);
       store.folders[name].splice(idx, 1); saveStore(); renderFolderPanel(); updateFolderCount(); refreshTilesSavedState();
     }));
+    row.querySelectorAll('.loc-notes').forEach(ta => {
+      let to;
+      ta.addEventListener('input', () => {
+        clearTimeout(to);
+        to = setTimeout(() => {
+          const idx = Number(ta.dataset.anchorIdx);
+          store.folders[name][idx].notes = ta.value;
+          saveStore();
+        }, 350);
+      });
+    });
     list.appendChild(row);
+  });
+}
+
+/* Combine-projects dialog: pick projects, export one PDF. */
+function openCombineDialog() {
+  const names = folderNames();
+  const dlg = document.createElement('div');
+  dlg.className = 'combine-dialog';
+  dlg.innerHTML = `
+    <div class="combine-inner">
+      <div class="combine-head">
+        <h3>Combine projects</h3>
+        <button class="btn ghost icon" id="combine-close">✕</button>
+      </div>
+      <div class="combine-body">
+        <div class="combine-hint">Pick the projects to include in one combined PDF lookbook.</div>
+        <div class="combine-list" id="combine-list"></div>
+        <input class="combine-name" id="combine-name" placeholder="Name for the combined lookbook (e.g. Q2 deliverables)" />
+        <button class="btn primary" id="combine-go" style="width:100%;justify-content:center;">⬇ Generate combined PDF</button>
+      </div>
+    </div>`;
+  document.body.appendChild(dlg);
+  const listEl = dlg.querySelector('#combine-list');
+  const picks = new Set();
+  names.forEach(n => {
+    const row = document.createElement('label');
+    row.className = 'combine-row';
+    row.innerHTML = `<input type="checkbox" data-name="${escapeAttr(n)}" /> <span>${escapeHtml(n)}</span> <span class="combine-count">${store.folders[n].length} saved</span>`;
+    row.querySelector('input').addEventListener('change', (e) => {
+      if (e.target.checked) picks.add(n); else picks.delete(n);
+    });
+    listEl.appendChild(row);
+  });
+  function close() { dlg.remove(); }
+  dlg.querySelector('#combine-close').addEventListener('click', close);
+  dlg.addEventListener('click', (e) => { if (e.target === dlg) close(); });
+  dlg.querySelector('#combine-go').addEventListener('click', () => {
+    if (!picks.size) { toast('Select at least one project'); return; }
+    const name = dlg.querySelector('#combine-name').value.trim() || 'Combined lookbook';
+    close();
+    exportCombinedPDF([...picks], name);
   });
 }
 function refreshTilesSavedState() {
@@ -1376,26 +1951,35 @@ function loadImageData(url) {
 async function exportProjectPDF(projectName) {
   const items = store.folders[projectName] || [];
   if (!items.length) { toast('Nothing saved in this project yet'); return; }
+  return generateLookbookPDF([{ name: projectName, items }], projectName);
+}
+
+async function exportCombinedPDF(projectNames, lookbookName) {
+  const projects = projectNames.map(n => ({ name: n, items: store.folders[n] || [] })).filter(p => p.items.length);
+  if (!projects.length) { toast('Selected projects are empty'); return; }
+  return generateLookbookPDF(projects, lookbookName);
+}
+
+async function generateLookbookPDF(projects, lookbookName) {
   if (!window.jspdf || !window.jspdf.jsPDF) { toast('PDF library not loaded — check your connection'); return; }
-
-  toast(`Building “${escapeHtml(projectName)}” lookbook…`);
-
-  // Group saved items by location
-  const byLoc = new Map();
-  items.forEach(it => {
-    if (!byLoc.has(it.locId)) byLoc.set(it.locId, { title: it.title || 'Location', kind: it.kind || '', lat: it.lat, lng: it.lng, photos: [] });
-    if (it.photoId) byLoc.get(it.locId).photos.push(it.fullUrl || it.thumbUrl);
-  });
+  toast(`Building “${escapeHtml(lookbookName)}” lookbook…`);
 
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({ unit: 'pt', format: 'letter' });
   const PW = doc.internal.pageSize.getWidth();
   const PH = doc.internal.pageSize.getHeight();
-  const M = 48;                       // margin
+  const M = 48;
   const sage = [122, 148, 97];
   const plum = [122, 63, 104];
   const ink  = [44, 58, 40];
   const mute = [122, 138, 110];
+
+  // ---- Aggregate totals for cover ----
+  let totalLocs = 0, totalPhotos = 0;
+  projects.forEach(p => {
+    const seen = new Set();
+    p.items.forEach(it => { if (!seen.has(it.locId)) { seen.add(it.locId); totalLocs++; } if (it.photoId) totalPhotos++; });
+  });
 
   // ---- Cover ----
   doc.setFillColor(238, 241, 231); doc.rect(0, 0, PW, PH, 'F');
@@ -1405,85 +1989,105 @@ async function exportProjectPDF(projectName) {
   doc.text('Scout PDX', M, 60);
   doc.setFont('times', 'normal'); doc.setFontSize(11);
   doc.text('Portland location lookbook', M, 80);
-
   doc.setTextColor(...ink);
   doc.setFont('times', 'bold'); doc.setFontSize(34);
-  const titleLines = doc.splitTextToSize(projectName, PW - M * 2);
+  const titleLines = doc.splitTextToSize(lookbookName, PW - M * 2);
   doc.text(titleLines, M, 230);
   doc.setFont('times', 'normal'); doc.setFontSize(12); doc.setTextColor(...mute);
   const today = new Date().toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
-  const locCount = byLoc.size;
-  const photoCount = items.filter(i => i.photoId).length;
-  doc.text(`${locCount} location${locCount === 1 ? '' : 's'} · ${photoCount} photo${photoCount === 1 ? '' : 's'} · ${today}`, M, 230 + titleLines.length * 34 + 18);
+  const projLabel = projects.length > 1 ? `${projects.length} projects · ` : '';
+  doc.text(`${projLabel}${totalLocs} location${totalLocs === 1 ? '' : 's'} · ${totalPhotos} photo${totalPhotos === 1 ? '' : 's'} · ${today}`,
+           M, 230 + titleLines.length * 34 + 18);
   doc.setFontSize(10); doc.setTextColor(...mute);
   doc.text('Photographs sourced from Wikimedia Commons. Locations from OpenStreetMap.', M, PH - M);
 
-  // ---- One section per location ----
-  for (const [, loc] of byLoc) {
-    doc.addPage();
-    let y = M + 6;
-    // Kind label
-    if (loc.kind) {
-      doc.setFont('times', 'normal'); doc.setFontSize(10); doc.setTextColor(...plum);
-      doc.text(loc.kind.toUpperCase(), M, y); y += 18;
+  // ---- For each project: section header, then one page per location ----
+  for (const project of projects) {
+    if (projects.length > 1) {
+      doc.addPage();
+      doc.setFillColor(238, 241, 231); doc.rect(0, 0, PW, PH, 'F');
+      doc.setFont('times', 'italic'); doc.setFontSize(13); doc.setTextColor(...plum);
+      doc.text('PROJECT', M, 90);
+      doc.setFont('times', 'bold'); doc.setFontSize(38); doc.setTextColor(...ink);
+      const pn = doc.splitTextToSize(project.name, PW - M * 2);
+      doc.text(pn, M, 130);
     }
-    // Title
-    doc.setFont('times', 'bold'); doc.setFontSize(24); doc.setTextColor(...ink);
-    const nameLines = doc.splitTextToSize(loc.title, PW - M * 2);
-    doc.text(nameLines, M, y); y += nameLines.length * 26 + 4;
-    // Coords + map link
-    if (loc.lat != null && loc.lng != null) {
-      doc.setFont('times', 'normal'); doc.setFontSize(11); doc.setTextColor(...mute);
-      doc.text(`${loc.lat.toFixed(5)}, ${loc.lng.toFixed(5)}`, M, y);
-      const mapUrl = `https://www.google.com/maps?q=${loc.lat}%2C${loc.lng}&ll=${loc.lat}%2C${loc.lng}&z=18`;
-      doc.setTextColor(...sage);
-      const cw = doc.getTextWidth(`${loc.lat.toFixed(5)}, ${loc.lng.toFixed(5)}`);
-      doc.textWithLink('Open in Google Maps', M + cw + 14, y, { url: mapUrl });
-      y += 22;
-    }
-    // Divider
-    doc.setDrawColor(200, 210, 180); doc.line(M, y, PW - M, y); y += 18;
 
-    // Photo grid: 2 columns
-    const cols = 2, gap = 14;
-    const cellW = (PW - M * 2 - gap * (cols - 1)) / cols;
-    let col = 0, rowY = y, rowMaxH = 0;
-    if (!loc.photos.length) {
-      doc.setFont('times', 'italic'); doc.setFontSize(12); doc.setTextColor(...mute);
-      doc.text('Location saved without photos.', M, y + 10);
-    }
-    for (const url of loc.photos) {
-      const data = await loadImageData(url);
-      const x = M + col * (cellW + gap);
-      if (data) {
-        const ratio = data.h / data.w;
-        const drawW = cellW, drawH = cellW * ratio;
-        // Page break if this image would overflow
-        if (rowY + drawH > PH - M) { doc.addPage(); rowY = M; col = 0; rowMaxH = 0; }
-        const xx = M + col * (cellW + gap);
-        doc.addImage(data.dataUrl, 'JPEG', xx, rowY, drawW, drawH, undefined, 'FAST');
-        rowMaxH = Math.max(rowMaxH, drawH);
-      } else {
-        // placeholder box for a failed image
-        doc.setFillColor(226, 232, 214); doc.rect(x, rowY, cellW, cellW * 0.66, 'F');
-        doc.setTextColor(...mute); doc.setFont('times', 'italic'); doc.setFontSize(9);
-        doc.text('image unavailable', x + 10, rowY + 22);
-        rowMaxH = Math.max(rowMaxH, cellW * 0.66);
+    // Group items by location, carrying notes from the anchor item
+    const byLoc = new Map();
+    project.items.forEach(it => {
+      if (!byLoc.has(it.locId)) byLoc.set(it.locId, { title: it.title || 'Location', kind: it.kind || '', lat: it.lat, lng: it.lng, notes: it.notes || '', photos: [] });
+      else if (it.notes && !byLoc.get(it.locId).notes) byLoc.get(it.locId).notes = it.notes;
+      if (it.photoId) byLoc.get(it.locId).photos.push(it.fullUrl || it.thumbUrl);
+    });
+
+    for (const [, loc] of byLoc) {
+      doc.addPage();
+      let y = M + 6;
+      if (loc.kind) {
+        doc.setFont('times', 'normal'); doc.setFontSize(10); doc.setTextColor(...plum);
+        doc.text(loc.kind.toUpperCase(), M, y); y += 18;
       }
-      col++;
-      if (col >= cols) { col = 0; rowY += rowMaxH + gap; rowMaxH = 0; }
+      doc.setFont('times', 'bold'); doc.setFontSize(24); doc.setTextColor(...ink);
+      const nameLines = doc.splitTextToSize(loc.title, PW - M * 2);
+      doc.text(nameLines, M, y); y += nameLines.length * 26 + 4;
+      if (loc.lat != null && loc.lng != null) {
+        doc.setFont('times', 'normal'); doc.setFontSize(11); doc.setTextColor(...mute);
+        doc.text(`${loc.lat.toFixed(5)}, ${loc.lng.toFixed(5)}`, M, y);
+        const mapUrl = `https://www.google.com/maps?q=${loc.lat}%2C${loc.lng}&ll=${loc.lat}%2C${loc.lng}&z=18`;
+        doc.setTextColor(...sage);
+        const cw = doc.getTextWidth(`${loc.lat.toFixed(5)}, ${loc.lng.toFixed(5)}`);
+        doc.textWithLink('Open in Google Maps', M + cw + 14, y, { url: mapUrl });
+        y += 22;
+      }
+      // User notes block (if present)
+      if (loc.notes && loc.notes.trim()) {
+        doc.setFont('times', 'italic'); doc.setFontSize(11); doc.setTextColor(...ink);
+        const notesLines = doc.splitTextToSize('“' + loc.notes.trim() + '”', PW - M * 2);
+        // limit to reasonable height before photo grid
+        const maxNotesLines = 6;
+        const shown = notesLines.slice(0, maxNotesLines);
+        doc.text(shown, M, y);
+        y += shown.length * 14 + 8;
+      }
+      doc.setDrawColor(200, 210, 180); doc.line(M, y, PW - M, y); y += 18;
+
+      const cols = 2, gap = 14;
+      const cellW = (PW - M * 2 - gap * (cols - 1)) / cols;
+      let col = 0, rowY = y, rowMaxH = 0;
+      if (!loc.photos.length) {
+        doc.setFont('times', 'italic'); doc.setFontSize(12); doc.setTextColor(...mute);
+        doc.text('Location saved without photos.', M, y + 10);
+      }
+      for (const url of loc.photos) {
+        const data = await loadImageData(url);
+        const x = M + col * (cellW + gap);
+        if (data) {
+          const ratio = data.h / data.w;
+          const drawW = cellW, drawH = cellW * ratio;
+          if (rowY + drawH > PH - M) { doc.addPage(); rowY = M; col = 0; rowMaxH = 0; }
+          const xx = M + col * (cellW + gap);
+          doc.addImage(data.dataUrl, 'JPEG', xx, rowY, drawW, drawH, undefined, 'FAST');
+          rowMaxH = Math.max(rowMaxH, drawH);
+        } else {
+          doc.setFillColor(226, 232, 214); doc.rect(x, rowY, cellW, cellW * 0.66, 'F');
+          doc.setTextColor(...mute); doc.setFont('times', 'italic'); doc.setFontSize(9);
+          doc.text('image unavailable', x + 10, rowY + 22);
+          rowMaxH = Math.max(rowMaxH, cellW * 0.66);
+        }
+        col++;
+        if (col >= cols) { col = 0; rowY += rowMaxH + gap; rowMaxH = 0; }
+      }
     }
   }
 
-  // ---- Footer page numbers ----
   const pages = doc.internal.getNumberOfPages();
   for (let i = 1; i <= pages; i++) {
     doc.setPage(i);
     doc.setFont('times', 'normal'); doc.setFontSize(9); doc.setTextColor(...mute);
     doc.text(`Scout PDX · ${i} / ${pages}`, PW - M, PH - 24, { align: 'right' });
   }
-
-  const safe = projectName.replace(/[^a-z0-9]+/gi, '-').replace(/^-+|-+$/g, '').toLowerCase() || 'lookbook';
+  const safe = lookbookName.replace(/[^a-z0-9]+/gi, '-').replace(/^-+|-+$/g, '').toLowerCase() || 'lookbook';
   doc.save(`scout-pdx-${safe}.pdf`);
   toast('Lookbook downloaded ✓');
 }
@@ -1563,10 +2167,13 @@ document.getElementById('detail').addEventListener('click', (e) => { if (e.targe
 
 document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
 document.getElementById('lightbox').addEventListener('click', (e) => { if (e.target.id === 'lightbox') closeLightbox(); });
+document.getElementById('coachmark-close').addEventListener('click', dismissCoach);
+document.getElementById('btn-toggle-map').addEventListener('click', toggleMap);
 
 document.getElementById('kw-add').addEventListener('click', () => { const i = document.getElementById('kw-input'); addKeyword(i.value); i.value=''; i.focus(); });
 document.getElementById('kw-input').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); addKeyword(e.target.value); e.target.value=''; } });
 document.getElementById('pet-check').addEventListener('change', (e) => { state.petOnly = e.target.checked; });
+document.getElementById('access-check').addEventListener('change', (e) => { state.accessibleOnly = e.target.checked; });
 
 document.getElementById('folder-new-btn').addEventListener('click', () => {
   const input = document.getElementById('folder-new-input');
@@ -1592,12 +2199,39 @@ function escapeAttr(s){ return escapeHtml(s); }
 function cssEsc(s){ return String(s).replace(/["\\]/g, '\\$&'); }
 function toast(msg){ const el = document.getElementById('toast'); el.innerHTML = msg; el.classList.add('show'); clearTimeout(toast._t); toast._t = setTimeout(() => el.classList.remove('show'), 1800); }
 
+/* ==================================================================
+   COACHMARK — show the project-saving tip once, ever, on first detail open.
+   ================================================================== */
+const COACH_KEY = 'scoutpdx_coach_v1';
+function maybeShowProjectTip() {
+  try {
+    if (localStorage.getItem(COACH_KEY)) return;
+    // Don't show if the user already has saves (then they obviously know)
+    if (Object.values(store.folders).some(arr => arr.length > 0)) {
+      localStorage.setItem(COACH_KEY, '1'); return;
+    }
+  } catch (e) {}
+  const el = document.getElementById('coachmark');
+  setTimeout(() => el.classList.add('show'), 600);
+  // Auto-dismiss after 14s
+  const auto = setTimeout(() => dismissCoach(), 14000);
+  el._auto = auto;
+}
+function dismissCoach() {
+  const el = document.getElementById('coachmark');
+  el.classList.remove('show');
+  if (el._auto) clearTimeout(el._auto);
+  try { localStorage.setItem(COACH_KEY, '1'); } catch (e) {}
+}
+
 /* INIT */
 renderTypeOpts();
 renderKeywords();
+renderHistory();
 updateFolderCount();
 initGoldenHour();
 loadNeighborhoods();
+initMapPreference();
 </script>
 </body>
 </html>
