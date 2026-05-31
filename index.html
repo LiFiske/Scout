@@ -317,9 +317,6 @@
   .about-wrap li { margin-bottom: 8px; }
   .about-wrap a { color: var(--sage-deep); text-decoration: none; border-bottom: 1px solid var(--sage-soft); }
   .about-wrap a:hover { border-color: var(--sage); }
-  .about-stack { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 20px; }
-  .about-stack .s { font-size: 17px; padding: 6px 13px; border-radius: 999px; background: var(--bg-3); border: 1px solid var(--line); color: var(--ink-dim); }
-  .about-divider { height: 1px; background: var(--line); margin: 36px 0; border: 0; }
 
   /* ---------- FOLDERS / PROJECTS ---------- */
   .backdrop { position: fixed; inset: 0; background: rgba(43,42,50,0.3); z-index: 30; display: none; }
@@ -472,7 +469,7 @@
   <div class="home-wrap">
     <div class="home-kicker">Portland, Oregon</div>
     <h1 class="home-h1">What location do you <em>need</em>?</h1>
-    <p class="home-lede">Tell us the kind of place, the setting, and a few details. Scout pulls real Portland locations from OpenStreetMap and finds photographs of each one from Wikimedia Commons.</p>
+    <p class="home-lede">A location scouting tool for Portland, OR.</p>
 
     <div class="history" id="history" style="display:none;">
       <div class="history-label">Recent searches</div>
@@ -566,24 +563,24 @@
     <div class="about-kicker">About</div>
     <h1>Scout <em>PDX</em></h1>
     <p>Scout PDX is a location-scouting tool for Portland, Oregon. It's built for the moment you know <em>exactly</em> what you need — a mossy stairwell for an indie film, a clean modern plaza for a graduation portrait, an industrial backlot, a rose garden — but you don't know <em>where</em> it is.</p>
-    <p>Instead of a short hand-picked list, Scout queries the full map of Portland and surfaces real, specific places that match what you describe, then pulls photographs of each one so you can judge a spot before you ever drive out to it.</p>
+    <p>Instead of a short hand-picked list, Scout surfaces real, specific places that match what you describe, then pulls photographs of each one so you can judge a spot before you ever drive out to it.</p>
 
     <h2>How it works</h2>
-    <p>You describe the location you need — a type, a setting, and a handful of keywords. Scout translates that into a live query against <a href="https://www.openstreetmap.org" target="_blank" rel="noopener">OpenStreetMap</a> via the Overpass API, retrieving real tagged places across the city. For each candidate it searches <a href="https://commons.wikimedia.org" target="_blank" rel="noopener">Wikimedia Commons</a> for geotagged photographs nearby, so what you see are openly-licensed pictures of the actual place. Locations and photos you like get saved into project folders you can return to.</p>
+    <p><strong>Run a search.</strong> On the home page, pick a <em>location type</em> — park, bridge, industrial, viewpoint, church, mural, and so on. Optionally narrow the search by typing a Portland neighborhood (Hawthorne, Pearl, St. Johns…) or leave it blank to search the whole metro. Add up to five <em>keywords</em> to refine — words like "brick," "tunnel," "moss," "fountain." Toggle <em>pet-friendly</em> or <em>wheelchair accessible</em> if you need those. Hit <em>Find locations</em>, or use the <em>Randomize</em> button if you just want to be surprised.</p>
 
-    <h2>Built with</h2>
-    <div class="about-stack">
-      <span class="s">OpenStreetMap / Overpass API</span>
-      <span class="s">Wikimedia Commons photos</span>
-      <span class="s">Vanilla JS</span>
-      <span class="s">No build step</span>
-      <span class="s">Local-first saves</span>
-    </div>
+    <p><strong>Browse the results.</strong> Results appear as a grid of photo cards next to a map. Each tile shows a real location with a photograph. Use the <em>Narrow by feature</em> filter pills above the grid to thin the list further — these are pulled from the actual tags on the results, so they're always useful. Pins on the map are clickable and will jump you straight to that location's details.</p>
 
-    <hr class="about-divider" />
+    <p><strong>Open a location.</strong> Tap any tile (or any pin) to open the detail view. You'll see all available photographs of the place, the exact coordinates, and a <em>sun direction compass</em> showing where the sun will be at this date's golden hour — useful for planning the lighting on a shoot. Click any photo to view it full-size.</p>
 
-    <h2>Where it's going</h2>
-    <p>Today, saved projects live in your browser. The natural growth path is a shared layer: <em>user-contributed locations</em> for spots the map doesn't know about, <em>user-uploaded photos</em> for places without street coverage, and <em>community tags</em> so scouts can describe locations in the language of a shoot, not just map data. Those turn Scout from a lookup tool into a living, scout-built database of where to film and shoot in Portland.</p>
+    <p><strong>Save to a project.</strong> Projects are how Scout groups the locations and photos you want to keep. On any photo in the detail view, tap the <em>+</em> button — a small menu appears letting you save into an existing project or create a new one (just type a name and hit Add). You can save the location itself even when it has no photos. Your saved items live in <em>Projects</em> in the top-right corner of the page.</p>
+
+    <p><strong>Annotate and refine.</strong> Open the Projects panel anytime to review what you've saved. Each location in a project has a <em>notes</em> field — write whatever you want (lighting observations, access details, shot ideas) and it saves automatically. Remove individual photos or whole locations with the ✕ buttons.</p>
+
+    <p><strong>Export as a PDF lookbook.</strong> When a project is ready to share, hit <em>Export as PDF lookbook</em> at the bottom of the project. Scout generates a printable PDF with a cover page, one page per location, your notes inline, and the photos laid out as a grid. If you have multiple projects, the <em>Export combined lookbook</em> button lets you bundle several into one document — useful for client deliverables. Open the PDF, email it, AirDrop it, or upload it wherever it needs to go.</p>
+
+    <p><strong>Plan around the light.</strong> The <em>golden hour</em> panel on the right shows today's morning and evening golden hours, plus sunrise and sunset, with cloud cover for each window. Change the date to see times for any day. The sun-direction compass on each location uses whatever date is selected there, so you can preview lighting for a future shoot.</p>
+
+    <p><strong>Pick up where you left off.</strong> Your recent searches appear on the home page as clickable chips — tap one to re-run that search with all its settings intact.</p>
 
     <div style="margin-top:32px;">
       <button class="btn primary" id="btn-about-start">Start scouting →</button>
